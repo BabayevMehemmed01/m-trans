@@ -546,3 +546,53 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+// =========================================================
+// Vakansiyalar: Drag & Drop CV Yükləmə Sistemi
+// =========================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('cvFile');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+    if (dropZone && fileInput) {
+        // Kliklədikdə fayl pəncərəsini aç (Open file dialog on click)
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Fayl seçildikdə adını göstər (Show filename when selected)
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                fileNameDisplay.textContent = this.files[0].name;
+            }
+        });
+
+        // Sürüşdürüb buraxma (Drag & drop) hərəkətlərinin default davranışını ləğv et
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Dropzone üzərinə fayl gətirdikdə vizual dəyişiklik
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+        });
+
+        // Faylı drop etdikdə (buraxdıqda) input-a mənimsət
+        dropZone.addEventListener('drop', function(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files && files.length > 0) {
+                fileInput.files = files;
+                fileNameDisplay.textContent = files[0].name;
+            }
+        }, false);
+    }
+});

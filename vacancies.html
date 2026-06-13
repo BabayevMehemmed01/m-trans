@@ -43,10 +43,10 @@
         </div>
         
         <div class="nav-links">
-            <a href="index.html">Əsas səhifə</a>
+            <a href="#">Əsas səhifə</a>
             <a href="about.html">Haqqımızda</a>
             <a href="partners.html">Tərəfdaşlarımız</a>
-            <a href="vacancies.html">Vakansiyalar</a>
+            <a href="#vakansiyalar">Vakansiyalar</a>
             <div class="nav-drop">
     <a href="aletler.html">
         Alətlər
@@ -109,61 +109,75 @@
 <a href="#elaqe">Bizimlə əlaqə</a>
 <a href="#elaqe" class="btn btn-primary btn-block"><span data-i18n="nav_quote">Təklif Al</span></a>
 </aside>
-
-<section class="section services-page" style="padding-top: 150px;">
-    <div class="wrap">
-        <div class="sec-head" style="text-align: center; margin-bottom: 60px;">
-            <span class="eyebrow">Xidmətlərimiz</span>
-            <h1 class="sec-title">Daşıma Növləri</h1>
+<section class="section vacancies-section" id="vakansiyalar">
+    <div class="vac-bg" aria-hidden="true"></div>
+    
+    <div class="wrap" style="position: relative; z-index: 2;">
+        
+        <div class="sec-head fade-in-up" style="text-align: center; margin-bottom: 40px;">
+            <span class="eyebrow">Vakansiyalar</span>
+            <h2 class="sec-title" style="color: #fff;">Komandamıza Qoşul</h2>
+            <p class="sec-lead" style="margin: 15px auto; color: #c4d1e0;">Açıq vəzifələri izləyin və ya CV-nizi bazamıza əlavə edin — uyğun vakansiya yaranan kimi sizinlə əlaqə saxlayaq.</p>
         </div>
 
-        <div class="service-tab-container">
-            <div class="srv-tabs-nav">
-                <button class="srv-tab-btn active" data-target="deniz">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l1.5 3.5h15L21 17"/><path d="M5 17V9h14v8"/><path d="M12 9V4M9 6h6"/></svg>
-                    Dəniz Daşımacılığı
-                </button>
-                <button class="srv-tab-btn" data-target="hava">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3 15 21l-3.5-7L4 10.5 22 3z"/></svg>
-                    Hava Daşımacılığı
-                </button>
-                <button class="srv-tab-btn" data-target="quru">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="11" height="9" rx="1"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
-                    Quru Yol Daşımacılığı
-                </button>
-                <button class="srv-tab-btn" data-target="demir">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="16" rx="2" ry="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="M8 19l-2 3"/><path d="M16 19l2 3"/></svg>
-                    Dəmir Yolu Daşımacılığı
-                </button>
+        <div class="vac-card fade-in-up" style="animation-delay: 0.2s; text-align: center; max-width: 600px; margin: 0 auto 24px;">
+            <div class="vac-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
             </div>
-
-            <div class="srv-tab-content active" id="deniz">
-                <h2>Dəniz Daşımacılığı</h2>
-                <p>FCL və LCL konteyner həlləri ilə qənaətcil və təhlükəsiz beynəlxalq dəniz daşımaları xidmətimiz yüklərinizin uzaq məsafələrə ən münasib qiymətlərlə çatdırılmasını təmin edir...</p>
-                <img src="https://images.unsplash.com/photo-1586528116311-ad8ed7c80a30?w=900&q=80" alt="Dəniz">
-            </div>
-
-            <div class="srv-tab-content" id="hava">
-                <h2>Hava Daşımacılığı</h2>
-                <p>Təcili və qiymətli yükləriniz üçün ən sürətli, etibarlı çatdırılma variantıdır. Qlobal aeroport şəbəkəmizlə yükləriniz vaxtında ünvandadır...</p>
-                <img src="https://images.unsplash.com/photo-1570710891163-6d2419076c5b?w=900&q=80" alt="Hava">
-            </div>
-
-            <div class="srv-tab-content" id="quru">
-                <h2>Quru Yol Daşımacılığı</h2>
-                <p>Avropa və Asiya boyunca etibarlı yük maşını və TIR xidmətləri ilə qapıya çatdırılma. GPS izləmə sistemi vasitəsilə yükünüz hər an nəzarətdədir...</p>
-                <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=900&q=80" alt="Quru">
-            </div>
-
-            <div class="srv-tab-content" id="demir">
-                <h2>Dəmir Yolu Daşımacılığı</h2>
-                <p>Böyük həcmli yükləriniz üçün təhlükəsiz və ekoloji cəhətdən təmiz qatar daşımaları. Uzaq məsafələr üçün həm sürətli, həm də qənaətcil seçimdir...</p>
-                <img src="https://images.unsplash.com/photo-1496262967815-132206202600?w=900&q=80" alt="Dəmir">
-            </div>
+            <h3 class="vac-card-title">Hal hazırda açıq vakansiya yoxdur</h3>
+            <p class="vac-card-desc">Yeni vəzifələr açılan kimi burada görünəcək. İndidən müraciət etmək istəyirsinizsə, aşağıdan CV-nizi göndərin.</p>
         </div>
+
+        <div class="vac-card fade-in-up" style="animation-delay: 0.4s; max-width: 720px; margin: 0 auto;">
+            <div class="vac-card-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 26px; height: 26px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <h3 class="vac-card-title" style="margin: 0;">CV-nizi bazamıza əlavə edin</h3>
+            </div>
+            <p class="vac-card-desc" style="margin-left: 38px; margin-top: 4px; margin-bottom: 26px; text-align: left;">Məlumatlar birbaşa e-poçtumuza göndərilir və namizəd bazasında saxlanılır</p>
+
+            <form id="cvForm" class="vac-form">
+                <div class="calc-grid">
+                    <div>
+                        <label class="field-label">Ad, Soyad</label>
+                        <input type="text" class="input" placeholder="Adınızı daxil edin" required>
+                    </div>
+                    <div>
+                        <label class="field-label">E-poçt</label>
+                        <input type="email" class="input" placeholder="namized@mail.com" required>
+                    </div>
+                    <div>
+                        <label class="field-label">Telefon</label>
+                        <input type="tel" class="input mono" placeholder="+994 __ ___ __ __" required>
+                    </div>
+                    <div>
+                        <label class="field-label">Maraqlandığınız sahə</label>
+                        <input type="text" class="input" placeholder="Sürücü, logist, operator..." required>
+                    </div>
+                </div>
+
+                <div class="vac-upload-area" id="dropZone">
+                    <input type="file" id="cvFile" hidden accept=".pdf,.doc,.docx" required>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px; color: var(--dim); margin-bottom: 12px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <div class="vac-upload-title">CV faylını buraya yükləyin və ya seçin</div>
+                    <div class="vac-upload-desc">PDF, DOCX — maksimum 5 MB</div>
+                    <div id="fileNameDisplay" class="vac-filename"></div>
+                </div>
+
+                <div class="vac-form-footer">
+                    <span class="vac-privacy">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        Məlumatlarınız məxfi saxlanılır
+                    </span>
+                    <button type="submit" class="btn btn-primary">
+                        <span>CV göndər</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+
     </div>
 </section>
-
 <footer class="site-footer">
 <div class="wrap">
 <div class="foot-grid">
