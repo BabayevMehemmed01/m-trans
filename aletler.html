@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M Trans Logistik — Qlobal Daşıma Şəbəkəsi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="top-bar">
+    <div class="wrap top-bar-inner">
+        <div class="contact-info">
+            <a href="mailto:info@m-trans.az">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                info@m-trans.az
+            </a>
+            <a href="tel:*0027">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                *0027
+            </a>
+        </div>
+        <div class="top-right">
+            <div class="lang">
+                <button class="lang-btn on" data-lang="az">AZ</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ru">RU</button>
+            </div>
+            <a href="#elaqe" class="btn btn-ghost btn-pill">Qiymət sorğusu</a>
+        </div>
+    </div>
+</div>
+
+<nav class="nav" id="nav">
+    <div class="wrap nav-inner">
+        
+        <div class="logo-wrapper">
+            <a href="#" class="logo">
+                <img src="M-Trans_logo_dark_site.png" alt="M Trans" style="height:38px;width:auto;">
+            </a>
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html">Əsas səhifə</a>
+            <a href="about.html">Haqqımızda</a>
+            <a href="partners.html">Tərəfdaşlarımız</a>
+            <a href="#vakansiyalar">Vakansiyalar</a>
+            <div class="nav-drop">
+    <a href="aletler.html">
+        Alətlər
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </a>
+    <div class="nav-drop-menu">
+        <a href="aletler.html#track">Yükü izlə</a>
+        <a href="aletler.html#calc">Qiymət hesabla</a>
+        <a href="aletler.html#cbm">Həcm kalkulyatoru</a>
+        <a href="aletler.html#currency">Valyuta çevirici</a>
+        <a href="aletler.html#transit">Tranzit vaxtı</a>
+        <a href="aletler.html#hs">Gömrük kodları</a>
+    </div>
+</div>
+            
+            <div class="nav-drop">
+    <a href="#">
+        Xidmətlərimiz
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </a>
+    <div class="nav-drop-menu">
+        <a href="dasimalar.html#deniz">Dəniz daşınmaları</a>
+        <a href="dasimalar.html#hava">Hava daşınmaları</a>
+        <a href="dasimalar.html#demir">Dəmir yolu daşınmaları</a>
+        <a href="dasimalar.html#quru">Quru yol daşımaları</a>
+        <a href="temir.html">Təmir və diaqnostika</a>
+        <a href="ehtiyat-hisseleri.html">Ehtiyat hissələri</a>
+    </div>
+</div>
+            
+            <div class="nav-drop">
+                <a href="mforward.html">
+                    Şirkətlər qrupu
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </a>
+                <div class="nav-drop-menu">
+                    <a href="mforward.html">M-FORWARD</a>
+                </div>
+            </div>
+            <a href="contact.html">Bizimlə əlaqə</a>
+        </div>
+        
+        <button class="burger" id="burger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+</nav>
+<div class="scrim" id="scrim"></div>
+<aside class="mobile-menu" id="mobileMenu">
+<button class="m-close" id="mClose" aria-label="Bağla"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+<a href="#">Əsas səhifə</a>
+<a href="#haqqimizda">Haqqımızda</a>
+<a href="#terefdaslar">Tərəfdaşlarımız</a>
+<a href="#vakansiyalar">Vakansiyalar</a>
+<a href="aletler.html">Alətlər</a>
+<a href="#xidmetler">Dəniz daşınmaları</a>
+<a href="#xidmetler">Hava daşınmaları</a>
+<a href="#xidmetler">Dəmir yolu daşınmaları</a>
+<a href="#xidmetler">Təmir xidmətləri</a>
+<a href="#xidmetler">Quru daşımalar</a>
+<a href="#">M-FORWARD</a>
+<a href="#elaqe">Bizimlə əlaqə</a>
+<a href="#elaqe" class="btn btn-primary btn-block"><span data-i18n="nav_quote">Təklif Al</span></a>
+</aside>
+
+<header class="hero" style="min-height: 80vh; padding-bottom: 60px;">
+    <div class="hero-map" aria-hidden="true">
+        <div class="glow-orb orb-red"></div>
+        <div class="glow-orb orb-dark"></div>
+        <div class="hero-grid"></div>
+    </div>
+    <div class="hero-inner">
+        <div class="sec-head fade-in-up" style="text-align: center; margin-bottom: 40px; animation-delay: 0.1s;">
+            <span class="eyebrow" data-i18n="tools_eyebrow">Alətlər</span>
+            <h1 class="sec-title" data-i18n="tools_title">Logistika Alətləri</h1>
+            <p class="sec-lead" data-i18n="tools_lead" style="margin: 15px auto; color: #c4d1e0;">Daşımalarınızı daha asan planlaşdırmaq üçün onlayn alətlərimizdən istifadə edin.</p>
+        </div>
+
+        <div class="tool-card fade-in-up" style="margin-top: 0; animation-delay: 0.3s;">
+    <div class="tabs scrollable-tabs">
+        <button class="tab active" data-tab="track">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Yükü İzlə</span>
+        </button>
+        <button class="tab" data-tab="calc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M14 11h2M8 15h2M14 15h2"/></svg>
+            <span>Qiymət Hesabla</span>
+        </button>
+        <button class="tab" data-tab="cbm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>CBM Kalkulyator</span>
+        </button>
+        <button class="tab" data-tab="currency">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span>Valyuta Çevirici</span>
+        </button>
+        <button class="tab" data-tab="transit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Tranzit Vaxtı</span>
+        </button>
+        <button class="tab" data-tab="hs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span>Gömrük Kodları</span>
+        </button>
+    </div>
+    
+    <div class="panel active" data-panel="track">
+        <label class="field-label" for="trackInput">İzləmə kodu</label>
+        <div class="track-row">
+            <div class="grow">
+                <input class="input mono" id="trackInput" placeholder="MT-0000-0000-00" value="MT-2891-4730-21">
+            </div>
+            <button class="btn btn-primary btn-lg" id="trackBtn">
+                <span>İzlə</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+        </div>
+        <p style="font-family:var(--f-mono);font-size:.74rem;color:var(--ink-2);margin-top:12px">12 rəqəmli kodu daxil edin — nümunə kod artıq yazılıb.</p>
+    </div>
+    
+    <div class="panel" data-panel="calc">
+        <div class="calc-grid">
+            <div>
+                <label class="field-label" for="cFrom">Haradan</label>
+                <input class="input" id="cFrom" placeholder="Şəhər / Ölkə" value="Bakı, AZ">
+            </div>
+            <div>
+                <label class="field-label" for="cTo">Haraya</label>
+                <input class="input" id="cTo" placeholder="Şəhər / Ölkə" value="İstanbul, TR">
+            </div>
+            <div>
+                <label class="field-label" for="cWeight">Çəki (kq)</label>
+                <input class="input mono" id="cWeight" type="number" min="1" placeholder="0" value="250">
+            </div>
+            <div>
+                <label class="field-label" for="cMode">Daşıma növü</label>
+                <select class="select" id="cMode">
+                    <option value="road">Quru</option>
+                    <option value="sea">Dəniz</option>
+                    <option value="air">Hava</option>
+                    <option value="rail">Dəmir yolu</option>
+                </select>
+            </div>
+            <div class="full">
+                <button class="btn btn-primary btn-block btn-lg" id="calcBtn">Hesabla</button>
+            </div>
+        </div>
+        <div class="calc-result" id="calcResult">
+            <div class="cr-item"><div class="v" id="crPrice">— <span>USD</span></div><div class="k">Təxmini qiymət</div></div>
+            <div class="cr-item"><div class="v" id="crDays">—</div><div class="k">Təxmini müddət</div></div>
+            <div class="cr-note">Bu yalnız nümunə hesablamadır. Dəqiq təklif üçün <a href="index.html#elaqe" style="color:var(--orange)">bizimlə əlaqə saxlayın</a>.</div>
+        </div>
+    </div>
+
+    <div class="panel" data-panel="cbm">
+        <div class="calc-grid">
+            <div>
+                <label class="field-label">Uzunluq (sm)</label>
+                <input class="input mono" type="number" id="cbmL" placeholder="0">
+            </div>
+            <div>
+                <label class="field-label">En (sm)</label>
+                <input class="input mono" type="number" id="cbmW" placeholder="0">
+            </div>
+            <div>
+                <label class="field-label">Hündürlük (sm)</label>
+                <input class="input mono" type="number" id="cbmH" placeholder="0">
+            </div>
+            <div>
+                <label class="field-label">Bağlama Sayı</label>
+                <input class="input mono" type="number" id="cbmQ" value="1" min="1">
+            </div>
+            <div class="full">
+                <button class="btn btn-primary btn-block btn-lg" id="cbmBtn">Həcmi Hesabla</button>
+            </div>
+        </div>
+        <div class="calc-result" id="cbmResult" style="display:none;">
+            <div class="cr-item"><div class="v" id="crCbm">0 <span>CBM</span></div><div class="k">Ümumi Həcm</div></div>
+        </div>
+    </div>
+
+    <div class="panel" data-panel="currency">
+        <div class="calc-grid">
+            <div>
+                <label class="field-label">Məbləğ</label>
+                <input class="input mono" type="number" id="currAmt" placeholder="Məs: 1000">
+            </div>
+            <div>
+                <label class="field-label">Bu Valyutadan</label>
+                <select class="select" id="currFrom">
+                    <option value="USD">USD - ABŞ Dolları</option>
+                    <option value="EUR">EUR - Avro</option>
+                    <option value="AZN">AZN - Azərbaycan Manatı</option>
+                </select>
+            </div>
+            <div>
+                <label class="field-label">Bu Valyutaya</label>
+                <select class="select" id="currTo">
+                    <option value="AZN">AZN - Azərbaycan Manatı</option>
+                    <option value="USD">USD - ABŞ Dolları</option>
+                    <option value="EUR">EUR - Avro</option>
+                </select>
+            </div>
+            <div style="display:flex; align-items:flex-end;">
+                <button class="btn btn-primary btn-block btn-lg" id="currBtn" style="height: 48px;">Çevir</button>
+            </div>
+        </div>
+        <div class="calc-result" id="currResult" style="display:none;">
+            <div class="cr-item"><div class="v" id="crCurrAmt">0</div><div class="k">Məzənnə Nəticəsi</div></div>
+        </div>
+    </div>
+
+    <div class="panel" data-panel="transit">
+        <div class="calc-grid">
+            <div>
+                <label class="field-label">Çıxış Limanı / Şəhər</label>
+                <input class="input" id="transFrom" placeholder="Məs: Şanxay">
+            </div>
+            <div>
+                <label class="field-label">Təyinat Limanı / Şəhər</label>
+                <input class="input" id="transTo" placeholder="Məs: Bakı">
+            </div>
+            <div class="full">
+                <button class="btn btn-primary btn-block btn-lg" id="transBtn">Vaxtı Öyrən</button>
+            </div>
+        </div>
+        <div class="calc-result" id="transResult" style="display:none;">
+            <div class="cr-item"><div class="v" id="crTransDays">0 <span>Gün</span></div><div class="k">Təxmini Tranzit Vaxtı</div></div>
+        </div>
+    </div>
+
+    <div class="panel" data-panel="hs">
+        <div class="track-row">
+            <div class="grow">
+                <label class="field-label">Məhsul adı və ya açar söz</label>
+                <input class="input" id="hsInput" placeholder="Məs: Elektronika, Avto ehtiyat hissələri...">
+            </div>
+            <button class="btn btn-primary btn-lg" id="hsBtn">Axtar</button>
+        </div>
+        <div class="calc-result" id="hsResult" style="display:none; align-items:flex-start;">
+            <div class="cr-item">
+                <div class="v" id="crHsCode" style="letter-spacing: 2px;">----.--.--</div>
+                <div class="k">Gömrük Kodu (HS)</div>
+                <p style="font-size:0.75rem; color:var(--dim); margin-top:8px;">Qeyd: Dəqiq gömrük bəyannaməsi üçün brokerinizlə əlaqə saxlayın.</p>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</header>
+
+<section class="section track" id="izleme">
+    <div class="wrap">
+        <div class="sec-head">
+            <span class="eyebrow" data-i18n="trk_eyebrow">Canlı İzləmə</span>
+            <h2 class="sec-title" data-i18n="trk_title">Yükünüz hər an harada olduğunu bilin</h2>
+            <p class="sec-lead" data-i18n="trk_lead">İzləmə kodunuzu daxil etdikdən sonra görəcəyiniz ekran budur — detallı status, mərhələlər və canlı xəritə.</p>
+        </div>
+        <div class="track-panels">
+            <div class="track-info">
+                <div class="ti-head">
+                    <div class="ti-code"><small data-i18n="trk_lbl_code">İzləmə kodu</small><span id="resCode">MT-2891-4730-21</span></div>
+                    <span class="badge"><span class="dot"></span> <span data-i18n="trk_badge">Yoldadır</span></span>
+                </div>
+                <div class="ti-meta">
+                    <div><div class="k" data-i18n="trk_meta_sender">Göndərən</div><div class="v">Bakı, AZ</div></div>
+                    <div><div class="k" data-i18n="trk_meta_receiver">Alan</div><div class="v">İstanbul, TR</div></div>
+                    <div><div class="k" data-i18n="trk_meta_weight">Çəki</div><div class="v">250 kq</div></div>
+                    <div><div class="k" data-i18n="trk_meta_mode">Daşıma növü</div><div class="v" data-i18n="trk_meta_mode_v">Quru / TIR</div></div>
+                </div>
+                <ul class="timeline">
+                    <li class="done">
+                        <span class="tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>
+                        <div class="tl-title" data-i18n="trk_tl_1_t">Anbarda qəbul edildi</div>
+                        <div class="tl-sub" data-i18n="trk_tl_1_d">08 İYUN · 09:14 · Bakı</div>
+                    </li>
+                    <li class="now">
+                        <span class="tl-dot"></span>
+                        <div class="tl-title" data-i18n="trk_tl_2_t">Yoldadır</div>
+                        <div class="tl-sub" data-i18n="trk_tl_2_d">10 İYUN · 06:00 · Gürcüstan sərhədi</div>
+                    </li>
+                    <li class="upcoming">
+                        <span class="tl-dot"></span>
+                        <div class="tl-title" data-i18n="trk_tl_3_t">Çatdırılacaq</div>
+                        <div class="tl-sub" data-i18n="trk_tl_3_d">Təxmini: 13 İYUN · İstanbul</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="track-map">
+                <svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                    <g stroke="#1c2e46" stroke-width="1" fill="none" opacity="0.6">
+                        <path d="M-20 100 Q300 70 620 100"/>
+                        <path d="M-20 200 Q300 170 620 200"/>
+                        <path d="M-20 300 Q300 270 620 300"/>
+                        <path d="M150 -20 Q120 200 150 420"/>
+                        <path d="M450 -20 Q420 200 450 420"/>
+                    </g>
+                    <path id="routeTrack" d="M110 320 C220 240 360 180 500 90" fill="none" stroke="#FF6B35" stroke-width="2.4" stroke-dasharray="6 8"/>
+                    <path d="M110 320 C220 240 360 180 500 90" fill="none" stroke="#FF6B35" stroke-width="2.4" opacity="0.16"/>
+                    <circle cx="110" cy="320" r="6" fill="#1BC47D"/>
+                    <circle cx="110" cy="320" r="12" fill="none" stroke="#1BC47D" stroke-width="1.4" opacity="0.5"/>
+                    <circle cx="500" cy="90" r="6" fill="#fff"/>
+                    <circle cx="500" cy="90" r="12" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.4"/>
+                    <g>
+                        <animateMotion dur="5s" repeatCount="indefinite" rotate="auto"><mpath href="#routeTrack"/></animateMotion>
+                        <circle r="13" fill="#FF6B35" opacity="0.25"/>
+                        <circle r="7" fill="#fff"/>
+                        <path d="M-4 1.5h6l2-2h-6z M-4 1.5l-1.5 3h9l-1.5-3" fill="#FF6B35" transform="scale(.9)"/>
+                    </g>
+                </svg>
+                <div class="map-eta" data-i18n="trk_map_eta">ETA · 3 gün</div>
+                <div class="map-tag" id="mapFrom"><span class="sm" data-i18n="trk_map_from">Çıxış</span><b>Bakı, AZ</b></div>
+                <div class="map-tag" id="mapTo"><span class="sm" data-i18n="trk_map_to">Təyinat</span><b>İstanbul, TR</b></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="site-footer">
+<div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand">
+<div class="foot-logo-text">
+<span>M-TRANS</span>
+<span class="small">Logistics</span>
+</div>
+<p data-i18n="ft_brand_desc">"M-TRANS"MMC Beynəlxalq yük daşımaları.</p>
+<div class="socials">
+<a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2 0-3 1-3 3v2H9v3h2v6h3v-6h2.5l.5-3H14V9.5c0-.4.2-.5.6-.5z"/></svg></a>
+<a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 8A1.5 1.5 0 1 0 6.5 5a1.5 1.5 0 0 0 0 3zM5 10h3v9H5zM11 10h3v1.3c.5-.8 1.6-1.5 3-1.5 2.3 0 3 1.5 3 4v5h-3v-4.5c0-1.2-.5-1.8-1.5-1.8s-1.5.7-1.5 1.8V19h-3z"/></svg></a>
+<a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+</div>
+</div>
+<div class="foot-col">
+<h4 data-i18n="ft_col1_title">Səhifələr</h4>
+<a href="#" data-i18n="ft_link_home">Əsas səhifə</a>
+<a href="#haqqimizda" data-i18n="nav_about">Haqqımızda</a>
+<a href="#" data-i18n="ft_link_partners">Tərəfdaşlarımız</a>
+</div>
+<div class="foot-col">
+<h4 data-i18n="ft_col2_title">Xidmətlərimiz</h4>
+<a href="#" data-i18n="ft_link_sea">Dəniz daşınmaları</a>
+<a href="#" data-i18n="ft_link_repair">Təmir və diaqnostika xidmətləri</a>
+<a href="#" data-i18n="ft_link_road">Avtomobil quru yol daşımaları</a>
+<a href="#" data-i18n="ft_link_parts">Avtomobil ehtiyat hissələri</a>
+</div>
+<div class="foot-col">
+<h4 data-i18n="ft_col3_title">Bizimlə əlaqə</h4>
+<p><span data-i18n="cnt_lbl_addr">Ünvan</span>: <span data-i18n="cnt_val_addr">Binəqədi rayonu, 6-cı mikrorayon. Həmzə Babaşov küçəsi, 5a, mənzil 12.</span></p>
+<p>Tel: *0027</p>
+<p>E-poçt: info@m-trans.az</p>
+</div>
+</div>
+</div>
+<div class="foot-bottom-wrapper">
+<div class="wrap foot-bottom">
+<p data-i18n="ft_copy">© 2013 - 2026 | M-TRANS MMC | Bütün hüquqlar qorunur.</p>
+</div>
+<button class="scroll-top" id="scrollTopBtn" aria-label="Yuxarı qalx">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 19V5M5 12l7-7 7 7"/>
+</svg>
+</button>
+</div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>

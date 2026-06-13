@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M Trans Logistik — Qlobal Daşıma Şəbəkəsi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="top-bar">
+    <div class="wrap top-bar-inner">
+        <div class="contact-info">
+            <a href="mailto:info@m-trans.az">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                info@m-trans.az
+            </a>
+            <a href="tel:*0027">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                *0027
+            </a>
+        </div>
+        <div class="top-right">
+            <div class="lang">
+                <button class="lang-btn on" data-lang="az">AZ</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ru">RU</button>
+            </div>
+            <a href="#elaqe" class="btn btn-ghost btn-pill">Qiymət sorğusu</a>
+        </div>
+    </div>
+</div>
+
+<nav class="nav" id="nav">
+    <div class="wrap nav-inner">
+        
+        <div class="logo-wrapper">
+            <a href="#" class="logo">
+                <img src="M-Trans_logo_dark_site.png" alt="M Trans" style="height:38px;width:auto;">
+            </a>
+        </div>
+        
+        <div class="nav-links">
+            <a href="#">Əsas səhifə</a>
+            <a href="about.html">Haqqımızda</a>
+            <a href="partners.html">Tərəfdaşlarımız</a>
+            <a href="#vakansiyalar">Vakansiyalar</a>
+            <div class="nav-drop">
+    <a href="aletler.html">
+        Alətlər
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </a>
+    <div class="nav-drop-menu">
+        <a href="aletler.html#track">Yükü izlə</a>
+        <a href="aletler.html#calc">Qiymət hesabla</a>
+        <a href="aletler.html#cbm">Həcm kalkulyatoru</a>
+        <a href="aletler.html#currency">Valyuta çevirici</a>
+        <a href="aletler.html#transit">Tranzit vaxtı</a>
+        <a href="aletler.html#hs">Gömrük kodları</a>
+    </div>
+</div>
+            
+            <div class="nav-drop">
+    <a href="#">
+        Xidmətlərimiz
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </a>
+    <div class="nav-drop-menu">
+        <a href="dasimalar.html#deniz">Dəniz daşınmaları</a>
+        <a href="dasimalar.html#hava">Hava daşınmaları</a>
+        <a href="dasimalar.html#demir">Dəmir yolu daşınmaları</a>
+        <a href="dasimalar.html#quru">Quru yol daşımaları</a>
+        <a href="temir.html">Təmir və diaqnostika</a>
+        <a href="ehtiyat-hisseleri.html">Ehtiyat hissələri</a>
+    </div>
+</div>
+            
+            <div class="nav-drop">
+                <a href="mforward.html">
+                    Şirkətlər qrupu
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </a>
+                <div class="nav-drop-menu">
+                    <a href="mforward.html">M-FORWARD</a>
+                </div>
+            </div>
+            <a href="contact.html">Bizimlə əlaqə</a>
+        </div>
+        
+        <button class="burger" id="burger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+</nav>
+<div class="scrim" id="scrim"></div>
+<aside class="mobile-menu" id="mobileMenu">
+<button class="m-close" id="mClose" aria-label="Bağla"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+<a href="#">Əsas səhifə</a>
+<a href="#haqqimizda">Haqqımızda</a>
+<a href="#terefdaslar">Tərəfdaşlarımız</a>
+<a href="#vakansiyalar">Vakansiyalar</a>
+<a href="aletler.html">Alətlər</a>
+<a href="#xidmetler">Dəniz daşınmaları</a>
+<a href="#xidmetler">Hava daşınmaları</a>
+<a href="#xidmetler">Dəmir yolu daşınmaları</a>
+<a href="#xidmetler">Təmir xidmətləri</a>
+<a href="#xidmetler">Quru daşımalar</a>
+<a href="#">M-FORWARD</a>
+<a href="#elaqe">Bizimlə əlaqə</a>
+<a href="#elaqe" class="btn btn-primary btn-block"><span data-i18n="nav_quote">Təklif Al</span></a>
+</aside>
+<header class="hero">
+<div class="hero-map" aria-hidden="true">
+    <div class="glow-orb orb-red"></div>
+    <div class="glow-orb orb-dark"></div>
+
+    <div class="hero-grid"></div>
+
+    <svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" class="network-svg">
+        <defs>
+            <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="rgba(230,0,0,0)" />
+                <stop offset="50%" stop-color="rgba(255,77,77,1)" />
+                <stop offset="100%" stop-color="rgba(255,255,255,1)" />
+            </linearGradient>
+            <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+        </defs>
+
+        <path class="net-line" d="M -100 450 C 200 350, 300 200, 500 150 C 700 100, 900 300, 1300 250" />
+        <path class="net-line" d="M -100 200 C 150 250, 400 450, 700 400 C 900 350, 1000 200, 1300 150" />
+        <path class="net-line" d="M 200 650 C 300 400, 600 200, 800 -50" />
+
+        <path class="light-beam" d="M -100 450 C 200 350, 300 200, 500 150 C 700 100, 900 300, 1300 250" />
+        <path class="light-beam delay-1" d="M -100 200 C 150 250, 400 450, 700 400 C 900 350, 1000 200, 1300 150" />
+        <path class="light-beam delay-2" d="M 200 650 C 300 400, 600 200, 800 -50" />
+
+        <g class="net-nodes">
+    <circle cx="800" cy="180" r="4.5" />
+    <circle cx="700" cy="400" r="4" />
+    <circle cx="1050" cy="240" r="5" />
+    <circle cx="600" cy="200" r="4.5" />
+    <circle cx="400" cy="450" r="4" />
+</g>
+    </svg>
+</div>
+<div class="hero-inner">
+<div class="hero-copy">
+    <span class="eyebrow fade-in-up" data-i18n="hero_eyebrow" style="animation-delay: 0.1s;">Qlobal Daşıma Şəbəkəsi</span>
+    <h1 class="fade-in-up" data-i18n="hero_title" style="animation-delay: 0.2s;">Sizin Yükünüz,<br><em>Bizim Məsuliyyətimiz</em></h1>
+    
+    <p class="lead fade-in-up" style="animation-delay: 0.3s;">
+        <span class="typewriter-text" id="typewriter"></span> 
+        <span data-i18n="hero_lead_suffix">daşımalarında uçtan-uca həll. Yükünüzü göndərdiyiniz andan təhvil alana qədər real vaxtda izləyin.</span>
+    </p>
+    
+    <div class="hero-stats fade-in-up" style="animation-delay: 0.4s;">
+        <div class="hstat">
+            <div class="n"><span class="counter" data-target="120">0</span>+</div>
+            <div class="l" data-i18n="hero_stat_l1">Ölkə</div>
+        </div>
+        <div class="hstat">
+            <div class="n"><span class="counter" data-target="98.6">0</span>%</div>
+            <div class="l" data-i18n="hero_stat_l2">Vaxtında çatdırılma</div>
+        </div>
+        <div class="hstat">
+            <div class="n"><span class="counter" data-target="24" data-prefix="7/">0</span></div>
+            <div class="l" data-i18n="hero_stat_l3">Canlı izləmə</div>
+        </div>
+    </div>
+</div>
+</div>
+</header>
+<section class="section about" id="haqqimizda">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-text">
+        <span class="eyebrow" data-i18n="about_eyebrow">Şirkət Haqqında</span>
+        <h2 class="sec-title" data-i18n="about_title">M-Trans MMC Logistika</h2>
+        <p class="sec-lead" style="max-width: 100%; text-align: justify; margin-top: 18px; margin-bottom: 24px;">
+          "M-Trans" MMC 2011-ci ildə Azərbaycan Respublikasının, Xaçmaz şəhərində yaradılmışdır və "M-Forward" şirkətlər qrupuna daxildir. Şirkətimiz həm yerli, həm də beynəlxalq yüklərin daşınması ilə məşğuldur. Uzun illərə dayanan təcrübəmizə əsaslanaraq istər quru, istər dəniz, istərsə də hava yolları ilə müntəzəm olaraq yük daşınma ehtiyaclarınızı təmin edə biləcəyimizə əmin ola bilərsiniz...
+        </p>
+        <a href="about.html" class="btn btn-primary" style="display: inline-flex; margin-top: 10px;">Davamını oxu</a>
+      </div>
+      
+      <div class="about-image">
+        <img src="m-trans-main.jpeg" alt="M-Trans Haqqında" style="width:100%; border-radius: var(--radius-lg); box-shadow: 0 20px 50px -15px rgba(17,17,17,0.3); display: block;">
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section why" id="ustunlukler">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow reveal-up" style="transition-delay: 0.1s;" data-i18n="why_eyebrow">Niyə M Trans?</span>
+      <h2 class="sec-title reveal-up" style="transition-delay: 0.2s;" data-i18n="why_title">Etibar etdiyiniz hər addımda yanınızdayıq</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal-up" style="transition-delay: 0.3s;">
+        <div class="why-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.6-3 7.7-7 9-4-1.3-7-4.4-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3 data-i18n="why_1_t">100% Sığorta</h3>
+        <p data-i18n="why_1_d">Hər yük tam dəyəri ilə sığortalanır — qapıdan qapıya qədər təminat altındadır.</p>
+      </div>
+      
+      <div class="why-card reveal-up" style="transition-delay: 0.4s;">
+        <div class="why-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3L5 13h5l-1 8 8-11h-5l1-7z"/></svg>
+        </div>
+        <h3 data-i18n="why_2_t">Sürətli Çatdırılma</h3>
+        <p data-i18n="why_2_d">Optimallaşdırılmış marşrutlar və operativ yanaşma ilə vaxta qənaət.</p>
+      </div>
+      
+      <div class="why-card reveal-up" style="transition-delay: 0.5s;">
+        <div class="why-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12a7 7 0 0 1 14 0"/><rect x="3.5" y="12" width="3.5" height="6" rx="1.6"/><rect x="17" y="12" width="3.5" height="6" rx="1.6"/><path d="M19 18v1a3 3 0 0 1-3 3h-3"/></svg>
+        </div>
+        <h3 data-i18n="why_3_t">7/24 Dəstək</h3>
+        <p data-i18n="why_3_d">Komandamız günün istənilən saatı yükünüzlə bağlı suallarınıza cavab verir.</p>
+      </div>
+      
+      <div class="why-card reveal-up" style="transition-delay: 0.6s;">
+        <div class="why-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18" stroke-linecap="round"/><ellipse cx="12" cy="12" rx="4" ry="9"/></svg>
+        </div>
+        <h3 data-i18n="why_4_t">Qlobal Şəbəkə</h3>
+        <p data-i18n="why_4_d">120-dən çox ölkədə tərəfdaş limanlar və agentliklər ilə geniş əhatə dairəsi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section services" id="xidmetler">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow" data-i18n="srv_eyebrow">Xidmətlərimiz</span>
+      <h2 class="sec-title" data-i18n="srv_title">Hər ehtiyacınıza uyğun peşəkar həllər</h2>
+      <p class="sec-lead" data-i18n="srv_lead">Daşımadan təmirə və ehtiyat hissələrinə qədər bütün prosesləri bir mərkəzdən idarə edirik.</p>
+    </div>
+    <div class="srv-grid">
+      
+      <article class="srv-card">
+        <div class="srv-bg" style="background-image:url('https://images.unsplash.com/photo-1586528116311-ad8ed7c80a30?w=900&q=80')"></div>
+        <div class="srv-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l1.5 3.5h15L21 17"/><path d="M5 17V9h14v8"/><path d="M12 9V4M9 6h6"/></svg>
+        </div>
+        <h3 data-i18n="srv_1_t">Dəniz Daşınmaları</h3>
+        <p data-i18n="srv_1_d">FCL və LCL konteyner həlləri ilə qənaətcil və təhlükəsiz beynəlxalq dəniz daşımaları.</p>
+        <span class="srv-link"><span data-i18n="btn_details">Ətraflı</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </article>
+
+      <article class="srv-card">
+        <div class="srv-bg" style="background-image:url('https://images.unsplash.com/photo-1570710891163-6d2419076c5b?w=900&q=80')"></div>
+        <div class="srv-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3 15 21l-3.5-7L4 10.5 22 3z"/></svg>
+        </div>
+        <h3 data-i18n="srv_2_t">Hava Daşınmaları</h3>
+        <p data-i18n="srv_2_d">Təcili və qiymətli yükləriniz üçün ən sürətli, etibarlı çatdırılma variantı.</p>
+        <span class="srv-link"><span data-i18n="btn_details">Ətraflı</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </article>
+
+      <article class="srv-card">
+        <div class="srv-bg" style="background-image:url('https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=900&q=80')"></div>
+        <div class="srv-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="11" height="9" rx="1"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
+        </div>
+        <h3 data-i18n="srv_3_t">Quru Yol Daşınmaları</h3>
+        <p data-i18n="srv_3_d">Avropa və Asiya boyunca etibarlı yük maşını və TIR xidmətləri ilə qapıya çatdırılma.</p>
+        <span class="srv-link"><span data-i18n="btn_details">Ətraflı</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </article>
+
+      <article class="srv-card">
+        <div class="srv-bg" style="background-image:url('https://images.unsplash.com/photo-1496262967815-132206202600?w=900&q=80')"></div>
+        <div class="srv-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2" ry="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="M8 19l-2 3"/><path d="M16 19l2 3"/></svg>
+        </div>
+        <h3 data-i18n="srv_rail_t">Dəmir Yolu Daşınmaları</h3>
+        <p data-i18n="srv_rail_d">Böyük həcmli yükləriniz üçün təhlükəsiz və ekoloji cəhətdən təmiz qatar daşımaları.</p>
+        <span class="srv-link"><span data-i18n="btn_details">Ətraflı</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </article>
+
+      <article class="srv-card">
+        <div class="srv-bg" style="background-image:url('https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=900&q=80')"></div>
+        <div class="srv-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3 data-i18n="srv_repair_t">Təmir və Diaqnostika</h3>
+        <p data-i18n="srv_repair_d">Ağır texnika və yük maşınları üçün müasir avadanlıqlarla peşəkar servis xidməti.</p>
+        <span class="srv-link"><span data-i18n="btn_details">Ətraflı</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </article>
+
+      <article class="srv-card">
+        <div class="srv-bg" style="background-image:url('https://images.unsplash.com/photo-1486006920555-c77dcf18193c?w=900&q=80')"></div>
+        <div class="srv-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3 data-i18n="srv_parts_t">Ehtiyat Hissələri</h3>
+        <p data-i18n="srv_parts_d">Orijinal və zəmanətli avtomobil ehtiyat hissələrinin birbaşa idxalı və satışı.</p>
+        <span class="srv-link"><span data-i18n="btn_details">Ətraflı</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </article>
+
+    </div>
+  </div>
+</section>
+<section class="stats">
+<div class="wrap stats-grid">
+<div class="stat"><div class="n">120<span>+</span></div><div class="l" data-i18n="stat_lbl_1">Ölkə əhatəsi</div></div>
+<div class="stat"><div class="n">15K<span>+</span></div><div class="l" data-i18n="stat_lbl_2">İllik daşıma</div></div>
+<div class="stat"><div class="n">98.6<span>%</span></div><div class="l" data-i18n="stat_lbl_3">Vaxtında çatdırılma</div></div>
+<div class="stat"><div class="n">12</div><div class="l" data-i18n="stat_lbl_4">İl təcrübə</div></div>
+</div>
+</section>
+<footer class="site-footer">
+<div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand">
+<div class="foot-logo-text">
+<span>M-TRANS</span>
+<span class="small">Logistics</span>
+</div>
+<p data-i18n="ft_brand_desc">"M-TRANS"MMC Beynəlxalq yük daşımaları.</p>
+<div class="socials">
+<a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2 0-3 1-3 3v2H9v3h2v6h3v-6h2.5l.5-3H14V9.5c0-.4.2-.5.6-.5z"/></svg></a>
+<a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 8A1.5 1.5 0 1 0 6.5 5a1.5 1.5 0 0 0 0 3zM5 10h3v9H5zM11 10h3v1.3c.5-.8 1.6-1.5 3-1.5 2.3 0 3 1.5 3 4v5h-3v-4.5c0-1.2-.5-1.8-1.5-1.8s-1.5.7-1.5 1.8V19h-3z"/></svg></a>
+<a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+</div>
+</div>
+<div class="foot-col">
+<h4 data-i18n="ft_col1_title">Səhifələr</h4>
+<a href="#" data-i18n="ft_link_home">Əsas səhifə</a>
+<a href="#haqqimizda" data-i18n="nav_about">Haqqımızda</a>
+<a href="#" data-i18n="ft_link_partners">Tərəfdaşlarımız</a>
+</div>
+<div class="foot-col">
+<h4 data-i18n="ft_col2_title">Xidmətlərimiz</h4>
+<a href="#" data-i18n="ft_link_sea">Dəniz daşınmaları</a>
+<a href="#" data-i18n="ft_link_repair">Təmir və diaqnostika xidmətləri</a>
+<a href="#" data-i18n="ft_link_road">Avtomobil quru yol daşımaları</a>
+<a href="#" data-i18n="ft_link_parts">Avtomobil ehtiyat hissələri</a>
+</div>
+<div class="foot-col">
+<h4 data-i18n="ft_col3_title">Bizimlə əlaqə</h4>
+<p><span data-i18n="cnt_lbl_addr">Ünvan</span>: <span data-i18n="cnt_val_addr">Binəqədi rayonu, 6-cı mikrorayon. Həmzə Babaşov küçəsi, 5a, mənzil 12.</span></p>
+<p>Tel: *0027</p>
+<p>E-poçt: info@m-trans.az</p>
+</div>
+</div>
+</div>
+<div class="foot-bottom-wrapper">
+<div class="wrap foot-bottom">
+<p data-i18n="ft_copy">© 2013 - 2026 | M-TRANS MMC | Bütün hüquqlar qorunur.</p>
+</div>
+<button class="scroll-top" id="scrollTopBtn" aria-label="Yuxarı qalx">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 19V5M5 12l7-7 7 7"/>
+</svg>
+</button>
+</div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
