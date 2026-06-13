@@ -9,7 +9,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="locked">
+<div id="loader">
+  <div class="ld-grid"></div>
+  <div class="ld-brand">
+    <div class="ld-word" id="ldWord">
+      <span class="ch">M</span><span class="ch">-</span><span class="ch">T</span><span class="ch">R</span><span class="ch">A</span><span class="ch">N</span><span class="ch">S</span>
+    </div>
+    <div class="ld-sub">Logistics · Service · Parts</div>
+  </div>
+  <div class="ld-route">
+    <span class="ld-pct" id="ldPct">0%</span>
+    <div class="track"><div class="fill" id="ldFill"></div></div>
+    <div class="ld-pin"></div>
+    <div class="ld-truck" id="ldTruck">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17V7h11v10"/><path d="M14 10h4l3 3v4h-7"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17.5" cy="18.5" r="1.6"/></svg>
+    </div>
+  </div>
+</div>
 <div class="top-bar">
     <div class="wrap top-bar-inner">
         <div class="contact-info">
@@ -72,7 +89,7 @@
         <a href="dasimalar.html#hava">Hava daşınmaları</a>
         <a href="dasimalar.html#demir">Dəmir yolu daşınmaları</a>
         <a href="dasimalar.html#quru">Quru yol daşımaları</a>
-        <a href="temir.html">Təmir və diaqnostika</a>
+        <a href="repair.html">Təmir və diaqnostika</a>
         <a href="ehtiyat-hisseleri.html">Ehtiyat hissələri</a>
     </div>
 </div>

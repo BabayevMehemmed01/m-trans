@@ -1,3 +1,30 @@
+// ============================================================= //
+// PRELOADER LOGIC
+// ============================================================= //
+document.addEventListener('DOMContentLoaded', () => {
+  let progress = 0;
+  const ldFill = document.getElementById('ldFill');
+  const ldPct = document.getElementById('ldPct');
+  const ldTruck = document.getElementById('ldTruck');
+  const loader = document.getElementById('loader');
+  
+  const interval = setInterval(() => {
+    progress += Math.floor(Math.random() * 15) + 5;
+    if (progress >= 100) progress = 100;
+
+    ldFill.style.width = progress + '%';
+    ldTruck.style.left = progress + '%';
+    ldPct.textContent = progress + '%';
+    
+    if (progress === 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        loader.classList.add('done');
+        document.body.classList.remove('locked');
+      }, 500);
+    }
+  }, 150);
+});
 // Reduced motion: pause SVG (SMIL) animations
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.querySelectorAll('svg').forEach(function(s){ if(s.pauseAnimations) s.pauseAnimations(); });
@@ -595,4 +622,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, false);
     }
+});
+
+// M-Trans: Scroll Animation Observer
+document.addEventListener("DOMContentLoaded", () => {
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15 // Elementin 15%-i görünəndə animasiya işə düşür
+    };
+
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target); // Animasiya yalnız 1 dəfə işləyir
+            }
+        });
+    }, observerOptions);
+
+    const revealElements = document.querySelectorAll('.reveal-up, .fade-in-up');
+    revealElements.forEach(el => scrollObserver.observe(el));
 });
