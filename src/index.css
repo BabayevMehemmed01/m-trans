@@ -1,24 +1,46 @@
-:root{
---navy:#111111;
---navy-1:#1A1A1A;
---navy-2:#262626;
---line:#333333;
---gray:#F4F5F7;
---gray-2:#E6EAF0;
---white:#FFFFFF;
---ink:#111111;
---ink-2:#555555;
---dim:#999999;
---red:#E60000;
---red-d:#B30000;
---green:#1BC47D;
---radius:14px;
---radius-lg:22px;
---maxw:1180px;
---f-display:'Montserrat',system-ui,sans-serif;
---f-body:'Inter',system-ui,sans-serif;
---f-mono:'IBM Plex Mono',monospace;
+:root {
+  /* Əsas Rənglər */
+  --navy: #111111;
+  --navy-1: #1A1A1A;
+  --navy-2: #262626;
+  --line: #333333;
+  --gray: #F4F5F7;
+  --gray-2: #E6EAF0;
+  --white: #FFFFFF;
+  --ink: #111111;
+  --ink-2: #555555;
+  --dim: #999999;
+  --red: #E60000;
+  --red-d: #B30000;
+  --green: #1BC47D;
+
+  /* Əlavə Səhifələrin Rəngləri (Tərəfdaşlar, Vakansiyalar və s.) */
+  --mtrans-red: #E31E24;
+  --mtrans-black: #111111;
+  --mtrans-dark-gray: #222222;
+  --mtrans-light-gray: #F5F6F8;
+  --mtrans-border: #EAEAEA;
+  --mtrans-border-color: #EAEAEA;
+  --mtrans-text-color: #444444;
+  --mtrans-text-muted: #666666;
+
+  --mf-red: #E31E24;
+  --mf-black: #111111;
+  --mf-dark: #1A1A1A;
+  --mf-white: #FFFFFF;
+  --mf-gray-light: #F8F9FA;
+  --mf-border: #EAEAEA;
+  --mf-text-muted: #555555;
+
+  /* Ölçülər və Şriftlər */
+  --radius: 14px;
+  --radius-lg: 22px;
+  --maxw: 1180px;
+  --f-display: 'Montserrat', system-ui, sans-serif;
+  --f-body: 'Inter', system-ui, sans-serif;
+  --f-mono: 'IBM Plex Mono', monospace;
 }
+
 body.locked { overflow:hidden; height:100vh; }
 
 /* ============================================================= */
@@ -1168,18 +1190,6 @@ padding-left: 24px;
 @media(max-width: 600px) {
     .srv-tab-btn { width: 100%; }
 }
-/* ==========================================================================
-   M-TRANS LOGISTIC - TƏRƏFDAŞLARIMIZ SƏHİFƏSİ CSS STİLLƏRİ
-   ========================================================================== */
-
-:root {
-    --mtrans-red: #E31E24;
-    --mtrans-black: #1A1A1A;
-    --mtrans-dark-gray: #333333;
-    --mtrans-light-gray: #F8F9FA;
-    --mtrans-border-color: #EAEAEA;
-    --mtrans-text-muted: #666666;
-}
 
 /* Ümumi Struktur və Grid */
 .mtrans-partners-section {
@@ -1442,19 +1452,6 @@ padding-left: 24px;
     }
 }
 
-/* ==========================================================================
-   M FORWARD GROUP SƏHİFƏSİ STİLLƏRİ
-   ========================================================================== */
-
-:root {
-    --mf-red: #E31E24;
-    --mf-black: #111111;
-    --mf-dark: #1A1A1A;
-    --mf-white: #FFFFFF;
-    --mf-gray-light: #F8F9FA;
-    --mf-border: #EAEAEA;
-    --mf-text-muted: #555555;
-}
 
 /* Ümumi Konteyner */
 .mforward-container {
@@ -1721,18 +1718,6 @@ padding-left: 24px;
     .mforward-hero-section {
         padding: 50px 0 40px 0;
     }
-}
-/* ==========================================================================
-   M-TRANS BİZİMLƏ ƏLAQƏ BÖLMƏSİ
-   ========================================================================== */
-
-:root {
-    --mtrans-red: #E31E24;
-    --mtrans-black: #111111;
-    --mtrans-dark-gray: #222222;
-    --mtrans-light-gray: #F5F6F8;
-    --mtrans-border: #EAEAEA;
-    --mtrans-text-color: #444444;
 }
 
 .mtrans-contact-section {
@@ -2305,4 +2290,208 @@ padding-left: 24px;
 @media(max-width: 680px) {
     .repair-grid { grid-template-columns: 1fr; }
     .process-grid { grid-template-columns: 1fr; }
+}
+#root {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  display: block !important;
+}
+/* ========================================================= */
+/* BÜTÜN KARTLAR ÜÇÜN UNİFİKA EDİLMİŞ DİZAYN (ƏLAQƏ KARTLARI KİMİ) */
+/* ========================================================= */
+.why-card, .srv-card, .repair-card, .vac-card {
+    background-color: #FFFFFF !important;
+    border: 2px solid var(--gray-2) !important;
+    border-radius: 16px !important;
+    padding: 35px 30px !important;
+    position: relative !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    color: var(--ink) !important;
+    text-decoration: none !important;
+    overflow: hidden !important;
+    min-height: auto !important;
+    z-index: 1 !important;
+}
+
+.why-card:hover, .srv-card:hover, .repair-card:hover, .vac-card:hover {
+    border-color: var(--red) !important;
+    transform: translateY(-8px) !important;
+    box-shadow: 0 15px 30px rgba(227, 30, 36, 0.08) !important;
+}
+
+/* İkonların arxa fonu və rəngi */
+.why-ico, .srv-ico, .repair-ico, .vac-icon-wrap {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    background-color: var(--gray) !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 20px !important;
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+    border: none !important;
+    backdrop-filter: none !important;
+}
+
+.why-card:hover .why-ico, 
+.srv-card:hover .srv-ico, 
+.repair-card:hover .repair-ico,
+.vac-card:hover .vac-icon-wrap {
+    background-color: #FFF3F3 !important;
+    transform: scale(1.08) !important;
+}
+
+.why-ico svg, .srv-ico svg, .repair-ico svg, .vac-icon-wrap svg {
+    width: 24px !important;
+    height: 24px !important;
+    color: var(--red) !important;
+}
+
+/* Mətnlərin Dizaynı */
+.why-card h3, .srv-card h3, .repair-card h3, .vac-card-title {
+    font-family: var(--f-display) !important;
+    font-weight: 700 !important;
+    font-size: 1.2rem !important;
+    color: var(--navy) !important;
+    margin-bottom: 12px !important;
+    margin-top: 0 !important;
+}
+
+.why-card p, .srv-card p, .repair-card p, .vac-card-desc {
+    color: var(--ink-2) !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 15px !important;
+    opacity: 1 !important;
+    max-height: none !important;
+}
+
+/* Kartın altındakı "Ətraflı" düyməsi (yalnız Xidmətlər üçün) */
+.srv-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    font-family: var(--f-mono) !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: var(--red) !important;
+    font-weight: 600 !important;
+    margin-top: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
+    position: static !important;
+}
+
+.srv-card:hover .srv-link svg {
+    transform: translateX(5px) !important;
+}
+
+/* Köhnə Pseudo-elementləri (Köhnə arxa fon və qara effektləri) Ləğv Edirik */
+.why-card::before, .repair-card::before, .vac-card::before, .srv-card::after, .srv-bg {
+    display: none !important;
+}
+/* ========================================================= */
+/* BÜTÜN SƏHİFƏLƏR ÜÇÜN QLOBAL YUXARI QALXMA (REVEAL) ANİMASİYASI */
+/* ========================================================= */
+
+.reveal-up, .fade-in-up {
+  opacity: 0 !important;
+  transform: translateY(40px) !important;
+  transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  will-change: opacity, transform;
+}
+
+.reveal-up.active, .fade-in-up.active {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Şəkillər və videolar da qəşəng gəlsin deyə */
+img, video {
+  transition: all 0.5s ease-in-out;
+}
+/* ========================================================= */
+/* KARTLARIN "HOVER" (YUXARI QALXMA) DİZAYNI */
+/* ========================================================= */
+
+/* Bütün kartlara tətbiq olunur */
+.why-card, .srv-card, .repair-card, .vac-card, .mtrans-partner-card, .repair-card {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                box-shadow 0.4s ease !important;
+}
+
+/* Üzərinə gələndə (Hover) effektləri */
+.why-card:hover, 
+.srv-card:hover, 
+.repair-card:hover, 
+.vac-card:hover,
+.mtrans-partner-card:hover {
+    transform: translateY(-12px) !important; /* Bir az daha çox yuxarı qalxır */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+    border-color: var(--red) !important; /* Qırmızı çərçivə ilə vurğulanır */
+}
+
+/* İkonların da eyni anda hərəkət etməsi üçün */
+.why-card:hover .why-ico, 
+.srv-card:hover .srv-ico, 
+.repair-card:hover .repair-ico {
+    transform: scale(1.1) rotate(5deg); /* İkon da yüngülcə böyüyür və fırlanır */
+}
+/* ========================================================= */
+/* BAŞLIQLARIN VİZUAL İYERARXİYASI VƏ RESPONSİV ŞRİFTLƏR */
+/* ========================================================= */
+
+.eyebrow {
+    display: inline-block !important;
+    font-family: var(--f-mono) !important;
+    font-size: clamp(0.75rem, 2vw, 0.85rem) !important; /* Mobildə kiçilir, PC-də böyüyür */
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+    color: var(--red) !important;
+    font-weight: 700 !important;
+    margin-bottom: 16px !important;
+    padding: 6px 14px !important;
+    background: rgba(230,0,0,0.06) !important; /* Yüngül qırmızı fonla vurğulanır */
+    border-radius: 6px !important;
+}
+
+.sec-title {
+    font-family: var(--f-display) !important;
+    font-weight: 800 !important;
+    font-size: clamp(2rem, 5vw, 3.2rem) !important; /* Qorxunc dərəcədə gözəgəlimli və responsiv */
+    line-height: 1.15 !important;
+    color: var(--navy) !important;
+    margin-bottom: 20px !important;
+    letter-spacing: -0.02em !important;
+}
+
+/* Qlobal Responsive Zəmanəti (Şəkillər heç vaxt ekrandan kənara daşmasın deyə) */
+img, video, iframe {
+    max-width: 100% !important;
+    height: auto;
+}
+/* Ağ və Qalın (Bold) Başlıq Dizaynı */
+.standout-title {
+    color: #ffffff !important; /* Tam ağ rəng */
+    font-weight: 900 !important; /* Ən qalın (extra bold) format */
+    text-transform: uppercase; /* Bütün hərfləri böyük edərək daha diqqətçəkici edir */
+    letter-spacing: 1px;
+    font-size: 2.2rem !important; /* Yazını bir az daha böyüdür */
+    
+    /* Qırmızı/Qara arxa plandan ayırmaq üçün kəskin qara kontur və kölgə */
+    text-shadow: 2px 2px 0px #000, 
+                 -1px -1px 0px #000, 
+                  1px -1px 0px #000, 
+                 -1px 1px 0px #000, 
+                  5px 5px 10px rgba(0,0,0,0.9) !important;
 }
