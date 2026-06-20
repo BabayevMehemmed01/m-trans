@@ -1,14 +1,39 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { useTranslation } from 'react-i18next';
 
 export default function Header() {
   const { t, i18n } = useTranslation();
+  const location = useLocation();
+
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
+
+  const closeMenu = () => setMenuOpen(false);
+
+  // (B) Səhifə aşağı sürüşdürüldükdə nav-a "scrolled" class-ı verilir
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // (C) Mobil menyu açıq ikən səhifənin scroll-unu kilitləyirik
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', menuOpen);
+    return () => document.body.classList.remove('menu-open');
+  }, [menuOpen]);
+
+  // Səhifə dəyişəndə mobil menyu avtomatik bağlanır
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname, location.hash]);
 
   return (
     <>
@@ -35,7 +60,7 @@ export default function Header() {
         </div>
       </div>
 
-      <nav className="nav" id="nav">
+      <nav className={`nav ${scrolled ? 'scrolled' : ''}`} id="nav">
         <div className="wrap nav-inner">
           <div className="logo-wrapper" style={{ flexShrink: 0, minWidth: '160px' }}>
             <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center' }}>
@@ -48,7 +73,7 @@ export default function Header() {
             <Link to="/about">{t('nav_about')}</Link>
             <Link to="/partners">{t('nav_partners')}</Link>
             <Link to="/vacancies">{t('nav_vacancies')}</Link>
-            
+
             <div className="nav-drop">
               <Link to="/tools">
                 {t('nav_tools')}
@@ -81,10 +106,47 @@ export default function Header() {
 
             <Link to="/contact">{t('nav_contact')}</Link>
           </div>
-          
-          <button className="burger" id="burger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+
+          <button className="burger" id="burger" aria-label="Menyu" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
         </div>
       </nav>
+
+      {/* (C) MOBİL MENYU */}
+      <div className={`scrim ${menuOpen ? 'show' : ''}`} onClick={closeMenu} aria-hidden="true"></div>
+
+      <aside className={`mobile-menu ${menuOpen ? 'open' : ''}`} aria-hidden={!menuOpen}>
+        <button className="m-close" aria-label="Bağla" onClick={closeMenu}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+
+        <Link to="/" onClick={closeMenu}>{t('nav_home')}</Link>
+        <Link to="/about" onClick={closeMenu}>{t('nav_about')}</Link>
+        <Link to="/partners" onClick={closeMenu}>{t('nav_partners')}</Link>
+        <Link to="/vacancies" onClick={closeMenu}>{t('nav_vacancies')}</Link>
+        <Link to="/tools" onClick={closeMenu}>{t('nav_tools')}</Link>
+
+        <div className="mm-group-label">{t('nav_services')}</div>
+        <HashLink smooth to="/services#deniz" onClick={closeMenu}>{t('srv_sea')}</HashLink>
+        <HashLink smooth to="/services#hava" onClick={closeMenu}>{t('srv_air')}</HashLink>
+        <HashLink smooth to="/services#demir" onClick={closeMenu}>{t('srv_rail')}</HashLink>
+        <HashLink smooth to="/services#quru" onClick={closeMenu}>{t('srv_road')}</HashLink>
+        <Link to="/repair" onClick={closeMenu}>{t('srv_repair')}</Link>
+        <Link to="/spare-parts" onClick={closeMenu}>{t('srv_parts')}</Link>
+
+        <Link to="/contact" onClick={closeMenu}>{t('nav_contact')}</Link>
+
+        <div className="mm-lang">
+          <button className={`${i18n.language === 'az' ? 'on' : ''}`} onClick={() => changeLanguage('az')}>AZ</button>
+          <button className={`${i18n.language === 'en' ? 'on' : ''}`} onClick={() => changeLanguage('en')}>EN</button>
+          <button className={`${i18n.language === 'ru' ? 'on' : ''}`} onClick={() => changeLanguage('ru')}>RU</button>
+        </div>
+
+        <div className="mm-cta">
+          <HashLink smooth to="/#elaqe" className="btn btn-primary btn-block" onClick={closeMenu}>{t('nav_price')}</HashLink>
+        </div>
+      </aside>
     </>
   );
 }

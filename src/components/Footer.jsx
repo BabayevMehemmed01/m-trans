@@ -55,7 +55,7 @@ export default function Footer() {
             <h4>{t('nav_contact')}</h4>
             <p><span>{t('label_address')}</span>: <span>{t('val_address')}</span></p>
             <p>{t('label_phone')}: *0027</p>
-            <p>{t('label_email')}: birlik1020@gmail.com</p>
+            <p>{t('label_email')}: info@m-trans.az</p>
           </div>
 
         </div>
