@@ -333,12 +333,24 @@ a {
 .btn-ghost {
   background: transparent;
   color: #fff;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255,255,255,0.25);
 }
 
 .btn-ghost:hover {
   border-color: var(--red);
+  color: #fff;
   transform: translateY(-2px);
+}
+
+/* On light backgrounds, ghost buttons should use dark colors */
+.btn-ghost.dark {
+  color: var(--navy);
+  border-color: var(--gray-2);
+}
+
+.btn-ghost.dark:hover {
+  border-color: var(--red);
+  color: var(--red);
 }
 
 .btn-block {
@@ -1630,32 +1642,42 @@ textarea.input {
   gap: 20px;
 }
 
-.nav {
-  position: sticky;
-  top: 0;
-  background: var(--navy);
-  border-bottom: 1px solid var(--line);
-  padding: 15px 0;
-  z-index: 100;
-}
-
+/* NOTE: .nav main definition is at line ~353 (position: fixed).
+   Do NOT redefine position here — it creates a cascade conflict. */
 @media (max-width: 680px) {
   .top-bar {
     display: none;
   }
-
-  .nav {
-    position: fixed;
-    width: 100%;
-  }
 }
 
+/* Fix nav padding for the skewed logo layout */
 .nav {
   padding: 0 !important;
 }
 
 .nav.scrolled {
   padding: 0 !important;
+}
+
+/* ---- Textarea input style (matches .input) ---- */
+textarea.textarea {
+  width: 100%;
+  background: var(--gray);
+  border: 1.5px solid var(--gray-2);
+  border-radius: 11px;
+  padding: .95rem 1rem;
+  font-family: var(--f-body);
+  font-size: 1rem;
+  color: var(--ink);
+  transition: border-color .2s, background .2s;
+  resize: vertical;
+  min-height: 104px;
+}
+
+textarea.textarea:focus {
+  border-color: var(--red);
+  background: #fff;
+  outline: none;
 }
 
 .nav-inner {
@@ -3415,9 +3437,16 @@ img, video {
   letter-spacing: -0.02em !important;
 }
 
-img, video, iframe {
-  max-width: 100% !important;
-  height: auto;
+/* Global media — only standalone images get height: auto */
+img {
+  max-width: 100%;
+}
+
+/* Do NOT apply height: auto to iframe/video inside containers —
+   it would break the map and video player layouts */
+video:not([style*="height"]),
+iframe:not([style*="height"]) {
+  max-width: 100%;
 }
 
 .standout-title {
@@ -3570,3 +3599,727 @@ img, video, iframe {
 body.menu-open {
   overflow: hidden;
 }
+
+/* =================================================================
+   PREMIUM DARK INDUSTRIAL HEADER — BEM Architecture
+   M-Trans Parts 2026
+   ================================================================= */
+
+/* ── Top Bar ─────────────────────────────────────────────────── */
+.hdr-topbar {
+  background: #0a0d10;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  height: 38px;
+}
+
+.hdr-topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.hdr-topbar__contact {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hdr-topbar__link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: #8a9bb0;
+  text-decoration: none;
+  font-family: var(--f-body);
+  transition: color 0.2s;
+}
+
+.hdr-topbar__link:hover { color: #fff; }
+
+.hdr-topbar__sep {
+  color: rgba(255,255,255,0.15);
+  font-size: 0.7rem;
+}
+
+.hdr-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ── Language Switcher ───────────────────────────────────────── */
+.hdr-lang {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.hdr-lang__btn {
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-family: var(--f-mono);
+  color: #6b7a8d;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 3px 7px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.hdr-lang__btn--on {
+  background: var(--red);
+  color: #fff;
+}
+
+.hdr-lang__btn:not(.hdr-lang__btn--on):hover {
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+}
+
+/* ── Inquiry Button (Top Bar) ────────────────────────────────── */
+.hdr-inquiry-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--red);
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  color: #fff;
+  font-size: 0.73rem;
+  font-weight: 700;
+  font-family: var(--f-body);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  position: relative;
+}
+
+.hdr-inquiry-btn:hover {
+  background: #c50000;
+  transform: translateY(-1px);
+}
+
+.hdr-inquiry-btn__label { white-space: nowrap; }
+
+.hdr-inquiry-btn__badge {
+  background: #fff;
+  color: var(--red);
+  font-size: 0.65rem;
+  font-weight: 900;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  animation: badgePop 0.3s var(--ease);
+}
+
+@keyframes badgePop {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ── Main Nav ────────────────────────────────────────────────── */
+.hdr-nav {
+  position: fixed;
+  top: 38px; /* below topbar */
+  left: 0;
+  right: 0;
+  z-index: 199;
+  background: rgba(10, 13, 18, 0.88);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hdr-nav--scrolled {
+  background: rgba(7, 9, 13, 0.97);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+}
+
+.hdr-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: 24px;
+}
+
+/* ── Logo ────────────────────────────────────────────────────── */
+.hdr-logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.hdr-logo__img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* ── Nav Links ───────────────────────────────────────────────── */
+.hdr-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-lnk {
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: var(--f-body);
+  color: #8a9bb0;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 7px;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+  letter-spacing: 0.01em;
+  position: relative;
+}
+
+.nav-lnk::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--red);
+  transition: transform 0.25s var(--ease);
+}
+
+.nav-lnk:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.06);
+}
+
+.nav-lnk:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ACTIVE STATE — NavLink isActive */
+.nav-lnk--active {
+  color: #fff !important;
+  background: rgba(230, 0, 0, 0.12) !important;
+}
+
+.nav-lnk--active::after {
+  transform: translateX(-50%) scaleX(1) !important;
+}
+
+/* ── Nav Actions (VIN CTA + Burger) ──────────────────────────── */
+.hdr-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.hdr-vin-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid rgba(230, 0, 0, 0.45);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.22s;
+  font-family: var(--f-body);
+}
+
+.hdr-vin-btn:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(230,0,0,0.35);
+}
+
+/* ── Burger (3-line animated) ────────────────────────────────── */
+.hdr-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+
+.hdr-burger:hover { background: rgba(255,255,255,0.12); }
+
+.hdr-burger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.3s var(--ease), opacity 0.2s, width 0.3s;
+  transform-origin: center;
+}
+
+.hdr-burger--open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hdr-burger--open span:nth-child(2) { opacity: 0; width: 0; }
+.hdr-burger--open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Scrim (backdrop) ────────────────────────────────────────── */
+.hdr-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 197;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.hdr-scrim--show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ── Mobile Menu (Drawer) ────────────────────────────────────── */
+.hdr-mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(320px, 90vw);
+  z-index: 198;
+  background: #0d1117;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+
+.hdr-mobile-menu--open {
+  transform: translateX(0);
+}
+
+.hdr-mobile-menu__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.hdr-mobile-menu__close {
+  background: rgba(255,255,255,0.07);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.hdr-mobile-menu__close:hover { background: rgba(255,255,255,0.14); }
+
+.hdr-mobile-menu__links {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px;
+  gap: 4px;
+  flex: 1;
+}
+
+.hdr-mobile-menu__links .nav-lnk {
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  border-radius: 10px;
+}
+
+.hdr-mobile-menu__links .nav-lnk--active {
+  background: rgba(230,0,0,0.15) !important;
+}
+
+.hdr-mobile-menu__footer {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hdr-lang--mobile { justify-content: flex-start; }
+.hdr-lang--mobile .hdr-lang__btn { font-size: 0.8rem; padding: 6px 12px; }
+
+.hdr-mobile-menu__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: var(--f-body);
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.hdr-mobile-menu__cta:hover { background: #c50000; }
+
+/* ── Responsive Breakpoints ──────────────────────────────────── */
+@media (max-width: 1024px) {
+  .hdr-nav__links .nav-lnk { font-size: 0.78rem; padding: 6px 8px; }
+  .hdr-vin-btn { display: none; }
+}
+
+@media (max-width: 768px) {
+  .hdr-topbar { height: 34px; }
+  .hdr-nav { top: 34px; }
+  .hdr-nav__links { display: none; }
+  .hdr-burger { display: flex; }
+  .hdr-topbar__contact { display: none; }
+  .hdr-nav__inner { height: 56px; }
+}
+
+@media (max-width: 480px) {
+  .hdr-inquiry-btn__label { display: none; }
+}
+
+/* ── Page padding correction (header height = topbar + nav) ──── */
+main, .page-main {
+  padding-top: calc(38px + 64px) !important;
+}
+
+@media (max-width: 768px) {
+  main, .page-main {
+    padding-top: calc(34px + 56px) !important;
+  }
+}
+
+/* =================================================================
+   3D TILT CARD — GPU-Accelerated Glassmorphism
+   ================================================================= */
+
+.tilt-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease, box-shadow 0.25s ease;
+  will-change: transform;
+  cursor: pointer;
+  border-radius: 16px;
+  overflow: visible;
+}
+
+.tilt-card:hover {
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.25),
+    0 0 0 1px rgba(230,0,0,0.15);
+}
+
+.tilt-card__glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  background: radial-gradient(ellipse at var(--mx, 50%) var(--my, 50%),
+    rgba(230,0,0,0.18) 0%,
+    transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tilt-card:hover .tilt-card__glow { opacity: 1; }
+
+/* =================================================================
+   PREMIUM DARK SECTION UTILITIES
+   ================================================================= */
+
+.dark-section {
+  background: #090d13;
+  color: #fff;
+}
+
+.glass-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+}
+
+.glow-red {
+  box-shadow: 0 0 30px rgba(230,0,0,0.2);
+}
+
+/* Hero mouse-parallax layer */
+.hero-parallax-layer {
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+
+/* =================================================================
+   PREMIUM ANIMATIONS — 60+ FPS GPU-Accelerated
+   M-Trans Parts 2026
+   ================================================================= */
+
+/* ── Hero Entrance Stagger ──────────────────────────────────────── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(230,0,0,0.15); }
+  50%       { box-shadow: 0 0 40px rgba(230,0,0,0.35), 0 0 80px rgba(230,0,0,0.1); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes borderRotate {
+  from { --border-angle: 0deg; }
+  to   { --border-angle: 360deg; }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Hero Content Entrance (cascade) ────────────────────────────── */
+.hero-badge {
+  animation: fadeSlideDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.15s;
+}
+.hero-title {
+  animation: fadeSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.3s;
+}
+.hero-subtitle {
+  animation: fadeSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.45s;
+}
+.hero-searchbox {
+  animation: fadeSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.6s;
+}
+.hero-vin-bar {
+  animation: fadeIn 0.8s ease both;
+  animation-delay: 0.75s;
+}
+.hero-scroll-indicator {
+  animation: fadeIn 1s ease both;
+  animation-delay: 1.2s;
+}
+
+/* ── Scroll Reveal ───────────────────────────────────────────────── */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-up.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Stagger children ────────────────────────────────────────────── */
+.stagger-children > *:nth-child(1) { transition-delay: 0s; }
+.stagger-children > *:nth-child(2) { transition-delay: 0.08s; }
+.stagger-children > *:nth-child(3) { transition-delay: 0.16s; }
+.stagger-children > *:nth-child(4) { transition-delay: 0.24s; }
+.stagger-children > *:nth-child(5) { transition-delay: 0.32s; }
+.stagger-children > *:nth-child(6) { transition-delay: 0.40s; }
+.stagger-children > *:nth-child(7) { transition-delay: 0.48s; }
+.stagger-children > *:nth-child(8) { transition-delay: 0.56s; }
+
+/* ── Stat Counter Entrance ───────────────────────────────────────── */
+.stat-item {
+  animation: countUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stat-item:nth-child(1) { animation-delay: 0s; }
+.stat-item:nth-child(2) { animation-delay: 0.1s; }
+.stat-item:nth-child(3) { animation-delay: 0.2s; }
+.stat-item:nth-child(4) { animation-delay: 0.3s; }
+
+/* ── Glow Pulse Button ───────────────────────────────────────────── */
+.btn-glow {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* ── Floating badge ──────────────────────────────────────────────── */
+.float-anim {
+  animation: floatY 4s ease-in-out infinite;
+}
+
+/* ── Premium Shimmer (skeleton / loading) ────────────────────────── */
+.shimmer {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.05) 25%,
+    rgba(255,255,255,0.12) 50%,
+    rgba(255,255,255,0.05) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+
+/* ── PartCard premium hover transitions ─────────────────────────── */
+.part-card-img {
+  transition: transform 0.55s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ── Button micro-interactions ──────────────────────────────────── */
+.btn {
+  transition: background 0.2s ease, transform 0.15s ease,
+              box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.btn:active { transform: scale(0.97) !important; }
+
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(230,0,0,0.35);
+  transform: translateY(-2px);
+}
+
+/* ── Nav Link underline slide ────────────────────────────────────── */
+.nav-lnk {
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+/* ── Category card hover depth ──────────────────────────────────── */
+.cat-card {
+  transition: transform 0.25s cubic-bezier(0.22,1,0.36,1),
+              box-shadow 0.25s ease,
+              border-color 0.25s ease,
+              background 0.25s ease;
+}
+.cat-card:hover {
+  transform: translateY(-6px) scale(1.02);
+}
+
+/* ── Page transition (fade) ─────────────────────────────────────── */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+main {
+  animation: pageFadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Input focus glow ────────────────────────────────────────────── */
+input:focus, textarea:focus, select:focus {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ── VIN input mono animated caret ─────────────────────────────── */
+input[style*="IBM Plex Mono"] {
+  caret-color: var(--red);
+}
+
+/* ── Scroll-driven parallax (CSS only, modern browsers) ─────────── */
+@supports (animation-timeline: scroll()) {
+  .parallax-slow {
+    animation: parallaxSlide linear both;
+    animation-timeline: scroll();
+    animation-range: 0% 100%;
+  }
+  @keyframes parallaxSlide {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-60px); }
+  }
+}
+
+
+/* =================================================================
+   TRUCK CONVOY ANIMATIONS — Hero Dark Industrial
+   ================================================================= */
+
+/* Right → Left direction (sağdan sola) */
+@keyframes truckDrive1 {
+  0%   { transform: translateX(calc(100vw + 200px)); }
+  100% { transform: translateX(-200px); }
+}
+@keyframes truckDrive2 {
+  0%   { transform: translateX(calc(100vw + 160px)); }
+  100% { transform: translateX(-160px); }
+}
+@keyframes truckDrive3 {
+  0%   { transform: translateX(calc(100vw + 120px)); }
+  100% { transform: translateX(-120px); }
+}
+
+/* Stagger start points so they don't all begin together */
+svg[style*="truckDrive1"] { animation-delay: 0s; }
+svg[style*="truckDrive2"] { animation-delay: -5s; }
+svg[style*="truckDrive3"] { animation-delay: -2s; }
+
+/* Road dash scroll */
+@keyframes roadDash {
+  from { background-position: 0 0; }
+  to   { background-position: -160px 0; }
+}
+
+/* Wheel spin keyframe (applied via JS or inline style rotation) */
+@keyframes wheelSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+

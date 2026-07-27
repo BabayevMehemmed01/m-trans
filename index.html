@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>M Trans Logistik — Qlobal Daşıma Şəbəkəsi</title>
+    <title>M-Trans | Orijinal Yük Texnikası Ehtiyyat Hissələri</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,28 +16,27 @@
       .ld-brand { text-align: center; font-family: 'Montserrat', sans-serif; color: #fff; }
       .ld-word { font-size: 2.5rem; font-weight: 800; letter-spacing: 4px; display: flex; gap: 2px; }
       .ld-word .ch { color: #fff; }
+      .ld-word .ch.red { color: #E60000; }
       .ld-sub { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: #999; margin-top: 8px; text-transform: uppercase; letter-spacing: 2px; }
       .ld-route { position: relative; width: 200px; height: 40px; display: flex; align-items: center; }
       .ld-pct { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #E60000; font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; font-weight: 500; }
       .track { width: 100%; height: 2px; background: #333; position: relative; border-radius: 2px; overflow: hidden; }
-      .fill { height: 100%; width: 0%; background: #E60000; transition: width 0.15s linear; }
-      .ld-truck { position: absolute; left: 0; top: 50%; transform: translate(-50%, -50%); color: #fff; width: 24px; height: 24px; transition: left 0.15s linear; }
+      .fill { height: 100%; width: 0%; background: #E60000; transition: width 0.1s linear; }
+      .ld-truck { position: absolute; left: 0; top: 50%; transform: translate(-50%, -50%); color: #fff; width: 24px; height: 24px; transition: left 0.1s linear; }
     </style>
   </head>
   <body class="locked">
     
     <div id="loader">
-      <div class="ld-grid"></div>
       <div class="ld-brand">
         <div class="ld-word" id="ldWord">
-          <span class="ch">M</span><span class="ch">-</span><span class="ch">T</span><span class="ch">R</span><span class="ch">A</span><span class="ch">N</span><span class="ch">S</span>
+          <span class="ch">M</span><span class="ch">-</span><span class="ch">T</span><span class="ch">R</span><span class="ch">A</span><span class="ch">N</span><span class="ch red">S</span>
         </div>
-        <div class="ld-sub">Logistics · Service · Parts</div>
+        <div class="ld-sub">Spare Parts · OEM · Logistics</div>
       </div>
       <div class="ld-route">
         <span class="ld-pct" id="ldPct">0%</span>
         <div class="track"><div class="fill" id="ldFill"></div></div>
-        <div class="ld-pin"></div>
         <div class="ld-truck" id="ldTruck">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17V7h11v10"/><path d="M14 10h4l3 3v4h-7"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17.5" cy="18.5" r="1.6"/></svg>
         </div>
@@ -46,6 +45,45 @@
 
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- =====================================================
+         PRELOADER — React-dən ASILI DEYİL.
+         Pure JS ilə idarə olunur. React mount olsa da, olmasa da
+         preloader 2.5 saniyədə bitib body.locked-u silir.
+         ===================================================== -->
+    <script>
+      (function() {
+        var progress = 0;
+        var ldFill   = document.getElementById('ldFill');
+        var ldPct    = document.getElementById('ldPct');
+        var ldTruck  = document.getElementById('ldTruck');
+        var loader   = document.getElementById('loader');
+
+        var interval = setInterval(function() {
+          progress += Math.floor(Math.random() * 18) + 8;
+          if (progress >= 100) progress = 100;
+
+          if (ldFill)  ldFill.style.width = progress + '%';
+          if (ldTruck) ldTruck.style.left = 'calc(' + progress + '% - 12px)';
+          if (ldPct)   ldPct.textContent  = progress + '%';
+
+          if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(function() {
+              if (loader) loader.classList.add('done');
+              document.body.classList.remove('locked');
+            }, 350);
+          }
+        }, 40);
+
+        // Fail-safe: React JS-i yükləməsə belə, 4 saniyə sonra açılır
+        setTimeout(function() {
+          clearInterval(interval);
+          if (loader) loader.classList.add('done');
+          document.body.classList.remove('locked');
+        }, 4000);
+      })();
+    </script>
     
   </body>
 </html>

@@ -1,75 +1,100 @@
+// =================================================================
+// FAYL: src/components/Footer.jsx
+// TƏSVİR: Yenidən yazılmış Ehtiyyat Hissələri Footer komponenti
+// =================================================================
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
 import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
   const { t } = useTranslation();
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <footer className="site-footer">
+    <footer className="footer" style={{ background: 'var(--navy)', color: '#fff', paddingTop: '70px', paddingBottom: '30px', borderTop: '3px solid var(--red)' }}>
       <div className="wrap">
-        <div className="foot-grid">
-          
-          <div className="foot-brand">
-            <Link to="/" style={{ display: 'block', marginBottom: '20px' }}>
-              <img 
-                src="/M-Trans_logo_dark_site.png" 
-                alt="M-Trans" 
-                style={{ height: '48px', width: 'auto', objectFit: 'contain', flexShrink: 0 }} 
-              />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '40px', marginBottom: '50px' }}>
+
+          {/* Şirkət Haqqında */}
+          <div>
+            <Link to="/" style={{ display: 'inline-block', marginBottom: '20px' }}>
+              <img src="/M-Trans_logo_dark_site.png" alt="M-Trans Logistics" style={{ height: '42px', width: 'auto' }} />
             </Link>
-            <p>{t('ft_brand_desc')}</p>
-            <div className="socials">
-              <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2 0-3 1-3 3v2H9v3h2v6h3v-6h2.5l.5-3H14V9.5c0-.4.2-.5.6-.5z"/></svg></a>
-              <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 8A1.5 1.5 0 1 0 6.5 5a1.5 1.5 0 0 0 0 3zM5 10h3v9H5zM11 10h3v1.3c.5-.8 1.6-1.5 3-1.5 2.3 0 3 1.5 3 4v5h-3v-4.5c0-1.2-.5-1.8-1.5-1.8s-1.5.7-1.5 1.8V19h-3z"/></svg></a>
-              <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '20px' }}>
+              {t('ft_brand_desc_parts')}
+            </p>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <span style={{ backgroundColor: '#1e293b', color: '#38bdf8', padding: '6px 12px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '700' }}>
+                ISO 9001:2015
+              </span>
+              <span style={{ backgroundColor: '#1e293b', color: '#4ade80', padding: '6px 12px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '700' }}>
+                ISO 14001
+              </span>
+              <span style={{ backgroundColor: '#1e293b', color: '#facc15', padding: '6px 12px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '700' }}>
+                ISO 45001
+              </span>
             </div>
           </div>
 
-          <div className="foot-col">
-            <h4>{t('nav_home') || 'Səhifələr'}</h4>
-            <Link to="/">{t('nav_home')}</Link>
-            <Link to="/about">{t('nav_about')}</Link>
-            <Link to="/partners">{t('nav_partners')}</Link>
-            <Link to="/vacancies">{t('nav_vacancies')}</Link>
-            <Link to="/tools">{t('nav_tools')}</Link>
-            <Link to="/contact">{t('nav_contact')}</Link>
+          {/* Kateqoriyalar */}
+          <div>
+            <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: '700', marginBottom: '20px', letterSpacing: '0.5px' }}>
+              {t('ft_heading_categories')}
+            </h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.9rem' }}>
+              <li><Link to="/spare-parts" style={{ color: '#94a3b8', transition: 'color 0.2s' }}>{t('parts_category_brakes')}</Link></li>
+              <li><Link to="/spare-parts" style={{ color: '#94a3b8', transition: 'color 0.2s' }}>{t('parts_category_pneumatics')}</Link></li>
+              <li><Link to="/spare-parts" style={{ color: '#94a3b8', transition: 'color 0.2s' }}>{t('parts_category_filters')}</Link></li>
+              <li><Link to="/spare-parts" style={{ color: '#94a3b8', transition: 'color 0.2s' }}>{t('parts_category_electronics')}</Link></li>
+              <li><Link to="/spare-parts" style={{ color: '#94a3b8', transition: 'color 0.2s' }}>{t('parts_category_suspension')}</Link></li>
+              <li><Link to="/spare-parts" style={{ color: '#94a3b8', transition: 'color 0.2s' }}>{t('parts_category_transmission')}</Link></li>
+            </ul>
           </div>
 
-          <div className="foot-col">
-            <h4>{t('nav_services')}</h4>
-            <HashLink smooth to="/services#deniz">{t('srv_sea')}</HashLink>
-            <HashLink smooth to="/services#hava">{t('srv_air')}</HashLink>
-            <HashLink smooth to="/services#demir">{t('srv_rail')}</HashLink>
-            <HashLink smooth to="/services#quru">{t('srv_road')}</HashLink>
-            <Link to="/repair">{t('srv_repair')}</Link>
-            <Link to="/spare-parts">{t('srv_parts')}</Link>
+          {/* İstehsalçı Brendlər */}
+          <div>
+            <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: '700', marginBottom: '20px', letterSpacing: '0.5px' }}>
+              {t('ft_heading_brands')}
+            </h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.9rem' }}>
+              <li><Link to="/partners" style={{ color: '#94a3b8' }}>Knorr-Bremse OEM</Link></li>
+              <li><Link to="/partners" style={{ color: '#94a3b8' }}>WABCO Systems</Link></li>
+              <li><Link to="/partners" style={{ color: '#94a3b8' }}>Hengst Filtration</Link></li>
+              <li><Link to="/partners" style={{ color: '#94a3b8' }}>Sachs Shock Absorbers</Link></li>
+              <li><Link to="/partners" style={{ color: '#94a3b8' }}>Bosch Commercial</Link></li>
+              <li><Link to="/partners" style={{ color: '#94a3b8' }}>Volvo & Mercedes Parts</Link></li>
+            </ul>
           </div>
 
-          <div className="foot-col">
-            <h4>{t('nav_contact')}</h4>
-            <p><span>{t('label_address')}</span>: <span>{t('val_address')}</span></p>
-            <p>{t('label_phone')}: *0027</p>
-            <p>{t('label_email')}: info@m-trans.az</p>
+          {/* Əlaqə & Mərkəzi Ofis */}
+          <div>
+            <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: '700', marginBottom: '20px', letterSpacing: '0.5px' }}>
+              {t('contact_heading')}
+            </h4>
+            <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '10px' }}>
+              📍 {t('hq_address')}
+            </p>
+            <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '10px' }}>
+              📞 <a href="tel:*0027" style={{ color: '#fff' }}>*0027</a> / (+994 12) 345-6789
+            </p>
+            <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '20px' }}>
+              ✉️ <a href="mailto:info@m-trans.az" style={{ color: '#fff' }}>info@m-trans.az</a>
+            </p>
+            <Link to="/contact" className="btn btn-primary" style={{ fontSize: '0.8rem', padding: '10px 16px' }}>
+              🚘 {t('btn_vin_quote_request')}
+            </Link>
           </div>
 
         </div>
-      </div>
-      
-      <div className="foot-bottom-wrapper">
-        <div className="wrap foot-bottom">
-          <p>{t('ft_copyright')}</p>
+
+        <div style={{ borderTop: '1px solid #334155', paddingTop: '25px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px', color: '#64748b', fontSize: '0.85rem' }}>
+          <div>{t('ft_copyright')}</div>
+          <div style={{ display: 'flex', gap: '20px' }}>
+            <Link to="/about" style={{ color: '#64748b' }}>{t('nav_about')}</Link>
+            <Link to="/spare-parts" style={{ color: '#64748b' }}>{t('nav_catalog')}</Link>
+            <Link to="/contact" style={{ color: '#64748b' }}>{t('nav_contact')}</Link>
+          </div>
         </div>
-        <button className="scroll-top" aria-label="Yuxarı qalx" onClick={scrollToTop}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 19V5M5 12l7-7 7 7"/>
-          </svg>
-        </button>
       </div>
     </footer>
   );

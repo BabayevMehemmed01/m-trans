@@ -1,81 +1,83 @@
-import React from 'react';
+// =================================================================
+// FAYL: src/pages/Vacancies.jsx
+// TƏSVİR: Vakansiyalar Və Karyera Müraciəti Səhifəsi
+// =================================================================
+
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Vacancies() {
   const { t } = useTranslation();
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(t('vac_success_msg'));
-    e.target.reset(); // Formu təmizləyir
+    setSubmitted(true);
   };
 
   return (
-    <main>
-      <section className="section vacancies-section" id="vakansiyalar">
-        <div className="vac-bg" aria-hidden="true"></div>
-        <div className="wrap" style={{ position: 'relative', zIndex: 2 }}>
-          
-          <div className="sec-head fade-in-up" style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <span className="eyebrow">{t('nav_vacancies')}</span>
-            <h2 className="sec-title standout-title">{t('vac_title')}</h2>
-            <p className="sec-lead" style={{ margin: '15px auto', color: '#c4d1e0' }}>{t('vac_desc')}</p>
-          </div>
+    <main style={{ paddingTop: '130px', backgroundColor: 'var(--gray)', minHeight: '100vh' }}>
+      {/* HERO */}
+      <section className="section" style={{ background: 'var(--navy)', color: '#fff', textAlign: 'center', padding: '70px 0' }}>
+        <div className="wrap">
+          <span className="eyebrow" style={{ color: 'var(--red)' }}>CAREERS AT M-TRANS</span>
+          <h1 className="sec-title standout-title" style={{ marginTop: '10px', color: '#fff' }}>{t('vac_title')}</h1>
+          <p className="sec-lead" style={{ margin: '15px auto', color: '#c4d1e0', maxWidth: '650px' }}>
+            {t('vac_desc')}
+          </p>
+        </div>
+      </section>
 
-          <div className="vac-card fade-in-up" style={{ animationDelay: '0.2s', textAlign: 'center', maxWidth: '600px', margin: '0 auto 24px' }}>
-            <div className="vac-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+      <section className="section" style={{ padding: '80px 0' }}>
+        <div className="wrap">
+          <div style={{ backgroundColor: '#fff', borderRadius: '24px', padding: '50px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', border: '1px solid var(--gray-2)', maxWidth: '750px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '35px' }}>
+              <div style={{ fontSize: '3rem', marginBottom: '10px' }}>📋</div>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--navy)', marginBottom: '8px' }}>
+                {t('vac_add_cv_title')}
+              </h3>
+              <p style={{ color: 'var(--dim)', fontSize: '0.92rem' }}>
+                {t('vac_add_cv_desc')}
+              </p>
             </div>
-            <h3 className="vac-card-title">{t('vac_no_open_title')}</h3>
-            <p className="vac-card-desc">{t('vac_no_open_desc')}</p>
-          </div>
 
-          <div className="vac-card fade-in-up" style={{ animationDelay: '0.4s', maxWidth: '720px', margin: '0 auto' }}>
-            <div className="vac-card-header">
-              <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '26px', height: '26px' }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              <h3 className="vac-card-title" style={{ margin: 0 }}>{t('vac_add_cv_title')}</h3>
-            </div>
-            <p className="vac-card-desc" style={{ marginLeft: '38px', marginTop: '4px', marginBottom: '26px', textAlign: 'left' }}>{t('vac_add_cv_desc')}</p>
-
-            <form id="cvForm" className="vac-form" onSubmit={handleSubmit}>
-              <div className="calc-grid">
+            {submitted ? (
+              <div style={{ textAlign: 'center', padding: '40px 20px', backgroundColor: '#f0fdf4', borderRadius: '16px', border: '1px solid #bbf7d0' }}>
+                <h4 style={{ color: '#166534', fontSize: '1.2rem', fontWeight: '800', marginBottom: '8px' }}>
+                  {t('vac_success_msg')}
+                </h4>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                 <div>
-                  <label className="field-label">{t('input_name')}</label>
-                  <input type="text" className="input" placeholder={t('vac_name_ph')} required />
-                </div>
-                <div>
-                  <label className="field-label">{t('vac_email_label')}</label>
-                  <input type="email" className="input" placeholder={t('vac_email_ph')} required />
-                </div>
-                <div>
-                  <label className="field-label">{t('label_phone')}</label>
-                  <input type="tel" className="input mono" placeholder={t('placeholder_phone')} required />
-                </div>
-                <div>
-                  <label className="field-label">{t('vac_field_label')}</label>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: 'var(--navy)', marginBottom: '6px' }}>{t('vac_field_label')} *</label>
                   <input type="text" className="input" placeholder={t('vac_field_placeholder')} required />
                 </div>
-              </div>
 
-              <div className="vac-upload-area" id="dropZone">
-                <input type="file" id="cvFile" accept=".pdf,.doc,.docx" required style={{ width: '100%', marginBottom: '10px' }} />
-                <div className="vac-upload-title">{t('vac_upload_title')}</div>
-                <div className="vac-upload-desc">{t('vac_upload_desc')}</div>
-              </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: 'var(--navy)', marginBottom: '6px' }}>{t('input_name')} *</label>
+                    <input type="text" className="input" placeholder={t('vac_name_ph')} required />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: 'var(--navy)', marginBottom: '6px' }}>{t('vac_email_label')} *</label>
+                    <input type="email" className="input" placeholder={t('vac_email_ph')} required />
+                  </div>
+                </div>
 
-              <div className="vac-form-footer">
-                <span className="vac-privacy">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                  {t('vac_privacy')}
-                </span>
-                <button type="submit" className="btn btn-primary">
-                  <span>{t('btn_send_cv')}</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                <div style={{ border: '2px dashed var(--gray-2)', padding: '30px', borderRadius: '14px', textAlign: 'center', backgroundColor: '#f8fafc', cursor: 'pointer' }}>
+                  <span style={{ fontSize: '1.8rem', display: 'block', marginBottom: '8px' }}>📁</span>
+                  <strong style={{ display: 'block', color: 'var(--navy)', fontSize: '0.95rem' }}>{t('vac_upload_title')}</strong>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--dim)' }}>{t('vac_upload_desc')}</span>
+                  <input type="file" style={{ display: 'none' }} id="cv-upload-input" />
+                </div>
+
+                <button type="submit" className="btn btn-primary" style={{ padding: '14px', fontSize: '1rem', marginTop: '10px' }}>
+                  🚀 {t('btn_send_cv')}
                 </button>
-              </div>
-            </form>
+              </form>
+            )}
           </div>
-
         </div>
       </section>
     </main>
