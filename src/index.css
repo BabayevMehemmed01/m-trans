@@ -5,36 +5,55 @@
 
 
 :root {
-  --navy: #111111;
-  --navy-1: #1A1A1A;
-  --navy-2: #262626;
-  --line: #333333;
-  --gray: #F4F5F7;
-  --gray-2: #E6EAF0;
-  --white: #FFFFFF;
-  --ink: #111111;
-  --ink-2: #555555;
-  --dim: #999999;
-  --red: #E60000;
-  --red-d: #B30000;
+  /* ── AUTRO PARTS Brend Rəng Sistemi ────────────────────────── */
+  /* Əsas fon: Tünd Navy Göy */
+  --navy:   #0A1128;
+  --navy-1: #0F1A35;
+  --navy-2: #162248;
+  --line:   #1E2D50;
+
+  /* Neytral tonlar */
+  --gray:   #F0F2F7;
+  --gray-2: #E2E6F0;
+  --white:  #FFFFFF;
+  --ink:    #060B19;
+  --ink-2:  #1A2540;
+  --dim:    #A0AEC0;
+
+  /* Əsas Vurğu: Alovlu Narıncı (AUTRO PARTS)
+     --red dəyişəni köhnə kod uyumluluğu üçün narıncıya yönləndirilir */
+  --red:   #FF6B1A;
+  --red-d: #E55A0F;
+
+  /* Gradient token-lər */
+  --orange:    #FF6B1A;
+  --orange-d:  #FF9500;
+  --orange-grad: linear-gradient(135deg, #FF5E1A 0%, #FF9500 100%);
+
+  /* Köməkçi rənglər */
   --green: #1BC47D;
-  /* Previously referenced via var() but never defined -> now restored */
-  --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
-  --mut: #999999;
-  --mtrans-red: #E31E24;
-  --mtrans-black: #111111;
-  --mtrans-dark-gray: #222222;
-  --mtrans-light-gray: #F5F6F8;
-  --mtrans-border: #EAEAEA;
-  --mtrans-border-color: #EAEAEA;
-  --mtrans-text-color: #444444;
-  --mtrans-text-muted: #666666;
-  --radius: 14px;
+  --ease:  cubic-bezier(0.25, 0.8, 0.25, 1);
+  --mut:   #A0AEC0;
+
+  /* Legacy uyumluluq aliases */
+  --mtrans-red:         #FF6B1A;
+  --mtrans-black:       #060B19;
+  --mtrans-dark-gray:   #0F1A35;
+  --mtrans-light-gray:  #F0F2F7;
+  --mtrans-border:      #1E2D50;
+  --mtrans-border-color:#1E2D50;
+  --mtrans-text-color:  #CBD5E1;
+  --mtrans-text-muted:  #A0AEC0;
+
+  /* Layout */
+  --radius:    14px;
   --radius-lg: 22px;
-  --maxw: 1180px;
+  --maxw:      1180px;
+
+  /* Tipografiya */
   --f-display: "Montserrat", system-ui, sans-serif;
-  --f-body: "Inter", system-ui, sans-serif;
-  --f-mono: "IBM Plex Mono", monospace;
+  --f-body:    "Inter", system-ui, sans-serif;
+  --f-mono:    "IBM Plex Mono", monospace;
 }
 
 body.locked {
@@ -320,14 +339,14 @@ a {
 }
 
 .btn-primary {
-  background: var(--red);
+  background: var(--orange-grad, linear-gradient(135deg, #FF5E1A 0%, #FF9500 100%));
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: var(--red-d);
+  background: linear-gradient(135deg, #FF4800 0%, #FF8000 100%);
   transform: translateY(-2px);
-  box-shadow: 0 12px 26px rgba(230,0,0,.34);
+  box-shadow: 0 12px 26px rgba(255,107,26,0.4);
 }
 
 .btn-ghost {
@@ -3768,9 +3787,10 @@ body.menu-open {
 }
 
 .hdr-logo__img {
-  height: 40px;
+  height: 50px;
   width: auto;
   object-fit: contain;
+  display: block;
 }
 
 /* ── Nav Links ───────────────────────────────────────────────── */
@@ -4323,3 +4343,5 @@ svg[style*="truckDrive3"] { animation-delay: -2s; }
   to   { transform: rotate(360deg); }
 }
 
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

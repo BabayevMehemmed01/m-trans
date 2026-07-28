@@ -11,14 +11,18 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className="footer" style={{ background: 'var(--navy)', color: '#fff', paddingTop: '70px', paddingBottom: '30px', borderTop: '3px solid var(--red)' }}>
+    <footer className="footer" style={{ background: 'var(--navy)', color: '#fff', paddingTop: '70px', paddingBottom: '30px', borderTop: '3px solid var(--orange, #FF6B1A)' }}>
       <div className="wrap">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '40px', marginBottom: '50px' }}>
 
           {/* Şirkət Haqqında */}
           <div>
             <Link to="/" style={{ display: 'inline-block', marginBottom: '20px' }}>
-              <img src="/M-Trans_logo_dark_site.png" alt="M-Trans Logistics" style={{ height: '42px', width: 'auto' }} />
+              <img
+                src="/autro-logo.png"
+                alt="AUTRO PARTS"
+                style={{ height: '52px', width: 'auto', objectFit: 'contain' }}
+              />
             </Link>
             <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '20px' }}>
               {t('ft_brand_desc_parts')}

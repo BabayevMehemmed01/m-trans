@@ -249,21 +249,24 @@ export default function Home() {
 
             {/* Title */}
             <h1 className="hero-title" style={{
-              fontSize: 'clamp(2.4rem, 6vw, 4.2rem)',
+              fontSize: 'clamp(2.6rem, 7vw, 5rem)',
               fontWeight: '900',
-              lineHeight: '1.1',
+              lineHeight: '1.05',
               fontFamily: 'var(--f-display)',
               margin: '0 0 24px',
-              letterSpacing: '-0.02em',
+              letterSpacing: '-0.03em',
             }}>
-              {t('home_hero_t1')}{' '}
+              {t('home_hero_t1') && <>{t('home_hero_t1')}{' '}</>}
               <span style={{
-                color: 'var(--red)',
+                background: 'linear-gradient(135deg, #FF5E1A 0%, #FF9500 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
                 display: 'inline-block',
                 position: 'relative',
               }}>
                 {t('home_hero_t2')}
-                <span style={{ position: 'absolute', bottom: '-4px', left: 0, right: 0, height: '3px', background: 'var(--red)', borderRadius: '2px', opacity: 0.6 }} />
+                <span style={{ position:'absolute', bottom:'-6px', left:0, right:0, height:'4px', background:'linear-gradient(90deg, #FF5E1A, #FF9500)', borderRadius:'2px', opacity:0.7 }} />
               </span>
             </h1>
 

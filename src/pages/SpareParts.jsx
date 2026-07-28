@@ -1,32 +1,16 @@
-// =================================================================
+﻿// =================================================================
 // FAYL: src/pages/SpareParts.jsx
 // TƏSVİR: Premium Dark Industrial Kataloq — Glassmorphism Filtrlər,
 //         3D TiltCard Məhsul Grid, Animated Empty State
+//         allParts → AdminContext-dən (default + admin məhsullar)
 // =================================================================
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import PartCard from '../components/PartCard';
-
-// ─── Tam Məhsul Bazası (12 məhsul) ──────────────────────────────
-const fullProducts = [
-  { id: 1,  oemCode: 'K020345',  brand: 'Knorr-Bremse', nameKey: 'part1_name', catKey: 'parts_category_brakes',       descKey: 'part1_desc', img: 'https://images.unsplash.com/photo-1486006920555-c77dcf18193c?w=600&q=80', compatibility: 'Volvo FH, Actros MP4, Scania R' },
-  { id: 2,  oemCode: 'WB911504', brand: 'WABCO',         nameKey: 'part2_name', catKey: 'parts_category_pneumatics',  descKey: 'part2_desc', img: 'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=600&q=80', compatibility: 'MAN TGX, DAF XF, Actros' },
-  { id: 3,  oemCode: 'E500KP02', brand: 'Hengst',        nameKey: 'part3_name', catKey: 'parts_category_filters',     descKey: 'part3_desc', img: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80', compatibility: 'Volvo FH16, Scania Streamline' },
-  { id: 4,  oemCode: 'VL214589', brand: 'Volvo OEM',     nameKey: 'part4_name', catKey: 'parts_category_electronics', descKey: 'part4_desc', img: 'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=600&q=80', compatibility: 'Volvo FH4, Volvo FM' },
-  { id: 5,  oemCode: 'SA315480', brand: 'Sachs',         nameKey: 'part5_name', catKey: 'parts_category_suspension',  descKey: 'part5_desc', img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=600&q=80', compatibility: 'Mercedes Actros, DAF 105' },
-  { id: 6,  oemCode: 'BS020147', brand: 'Bosch',         nameKey: 'part6_name', catKey: 'parts_category_transmission',descKey: 'part6_desc', img: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80', compatibility: 'MAN TGA, Scania P-series' },
-  { id: 7,  oemCode: 'H300W01',  brand: 'Hengst',        nameKey: 'part7_name', catKey: 'parts_category_filters',     descKey: 'part7_desc', img: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80', compatibility: 'Mercedes Actros MP5, DAF XF' },
-  { id: 8,  oemCode: 'MB004541', brand: 'Mercedes OEM',  nameKey: 'part8_name', catKey: 'parts_category_electronics', descKey: 'part8_desc', img: 'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=600&q=80', compatibility: 'Mercedes Actros MP4' },
-  { id: 9,  oemCode: 'K048122',  brand: 'Knorr-Bremse', nameKey: 'part1_name', catKey: 'parts_category_brakes',       descKey: 'part1_desc', img: 'https://images.unsplash.com/photo-1486006920555-c77dcf18193c?w=600&q=80', compatibility: 'MAN TGX, Volvo FM' },
-  { id: 10, oemCode: 'WB472195', brand: 'WABCO',         nameKey: 'part2_name', catKey: 'parts_category_pneumatics',  descKey: 'part2_desc', img: 'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=600&q=80', compatibility: 'Scania R450, DAF XF106' },
-  { id: 11, oemCode: 'SA290123', brand: 'Sachs',         nameKey: 'part5_name', catKey: 'parts_category_suspension',  descKey: 'part5_desc', img: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=600&q=80', compatibility: 'Volvo FH13, Renault T-Range' },
-  { id: 12, oemCode: 'CAT09845', brand: 'CAT OEM',       nameKey: 'part6_name', catKey: 'parts_category_engine',      descKey: 'part6_desc', img: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80', compatibility: 'Caterpillar Heavy Machinery' },
-];
-
-const categoryKeys = ['parts_all', ...new Set(fullProducts.map(p => p.catKey))];
-const brandList    = ['all_brands', ...new Set(fullProducts.map(p => p.brand))];
+import { useAdmin } from '../context/AdminContext';
+import { useCart } from '../context/CartContext';
 
 // ─── Styled Select ───────────────────────────────────────────────
 function FilterSelect({ label, value, onChange, options }) {
@@ -61,6 +45,19 @@ function FilterSelect({ label, value, onChange, options }) {
 export default function SpareParts() {
   const { t } = useTranslation();
   const location = useLocation();
+  const { allParts } = useAdmin();   // ← AdminContext: default + admin məhsullar
+  const { addToCart } = useCart();
+
+  const categoryKeys = useMemo(() => [
+    'parts_all',
+    ...new Set(allParts.map(p => p.catKey).filter(Boolean)),
+  ], [allParts]);
+
+  const brandList = useMemo(() => [
+    'all_brands',
+    ...new Set(allParts.map(p => p.brand).filter(Boolean)),
+  ], [allParts]);
+
 
   const [searchTerm,       setSearchTerm]       = useState('');
   const [selectedCategory, setSelectedCategory] = useState('parts_all');
@@ -78,15 +75,16 @@ export default function SpareParts() {
     }
   }, [location.search]);
 
-  const filteredProducts = fullProducts.filter(product => {
-    const name   = t(product.nameKey).toLowerCase();
-    const oem    = (product.oemCode || '').toLowerCase();
-    const term   = searchTerm.toLowerCase();
-    const matchS = !term || name.includes(term) || oem.includes(term);
-    const matchC = selectedCategory === 'parts_all' || product.catKey === selectedCategory;
-    const matchB = selectedBrand    === 'all_brands' || product.brand === selectedBrand;
-    return matchS && matchC && matchB;
-  });
+  const filteredProducts = useMemo(() => {
+    return allParts.filter(p => {
+      const catMatch = selectedCategory === 'parts_all' || p.catKey === selectedCategory;
+      const brandMatch = selectedBrand === 'all_brands' || p.brand === selectedBrand;
+      const q = searchTerm.toLowerCase();
+      const nameText = p.name || t(p.nameKey) || '';
+      const searchMatch = !q || nameText.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.oemCode.toLowerCase().includes(q);
+      return catMatch && brandMatch && searchMatch;
+    });
+  }, [allParts, selectedCategory, selectedBrand, searchTerm, t]);
 
   const hasFilters = searchTerm || selectedCategory !== 'parts_all' || selectedBrand !== 'all_brands';
   const resetFilters = () => { setSearchTerm(''); setSelectedCategory('parts_all'); setSelectedBrand('all_brands'); };
@@ -217,7 +215,20 @@ export default function SpareParts() {
           {filteredProducts.length > 0 ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '26px' }}>
               {filteredProducts.map((product, index) => (
-                <PartCard key={product.id} product={product} index={index} />
+                <PartCard
+                  key={product.id}
+                  product={product}
+                  index={index}
+                  onAddToCart={() => addToCart({
+                    id: product.id,
+                    name: product.name || t(product.nameKey),
+                    brand: product.brand,
+                    sku: product.oemCode,
+                    img: product.img,
+                    price: product.price || '',
+                    currency: product.currency || 'USD',
+                  })}
+                />
               ))}
             </div>
           ) : (
