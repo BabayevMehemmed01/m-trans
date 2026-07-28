@@ -172,12 +172,18 @@ export default function AuthModal() {
 
           {/* Logo / Brand */}
           <div style={{ textAlign:'center', marginBottom:'24px' }}>
-            <img src="/M-Trans_logo_dark_site.png" alt="M-Trans" style={{ height:'40px', marginBottom:'14px', filter:'drop-shadow(0 4px 14px rgba(230,0,0,0.3))' }} onError={e=>e.target.style.display='none'} />
-            <div style={{ display:'inline-flex', alignItems:'center', gap:'6px', background:'rgba(230,0,0,0.08)', border:'1px solid rgba(230,0,0,0.18)', borderRadius:'16px', padding:'4px 12px', marginBottom:'10px' }}>
-              <span style={{ width:'5px', height:'5px', borderRadius:'50%', background:R, display:'inline-block', boxShadow:`0 0 6px ${R}` }} />
-              <span style={{ fontFamily:'var(--f-mono)', fontSize:'0.62rem', color:'#ff8080', fontWeight:'800', letterSpacing:'2px', textTransform:'uppercase' }}>M-TRANS</span>
+            <img
+              src="/autro-logo.png"
+              alt="AUTRO PARTS"
+              style={{ height:'54px', marginBottom:'14px', objectFit:'contain', filter:'drop-shadow(0 4px 18px rgba(255,107,26,0.45))' }}
+              onError={e => e.target.style.display='none'}
+            />
+            <div style={{ display:'inline-flex', alignItems:'center', gap:'6px', background:'rgba(255,107,26,0.08)', border:'1px solid rgba(255,107,26,0.2)', borderRadius:'16px', padding:'4px 12px', marginBottom:'10px' }}>
+              <span style={{ width:'5px', height:'5px', borderRadius:'50%', background:'#FF6B1A', display:'inline-block', boxShadow:'0 0 6px rgba(255,107,26,0.7)', animation:'pulse 2s infinite' }} />
+              <span style={{ fontFamily:'var(--f-mono)', fontSize:'0.62rem', color:'#FF9500', fontWeight:'800', letterSpacing:'2px', textTransform:'uppercase' }}>AUTRO PARTS</span>
             </div>
           </div>
+
 
           {/* Tabs */}
           <div style={{ display:'flex', marginBottom:'24px', borderRadius:'12px', overflow:'hidden', border:`1px solid ${BORDER}` }}>
