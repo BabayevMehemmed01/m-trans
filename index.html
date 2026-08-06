@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AUTRO PARTS | Orijinal Yük Texnikası Ehtiyyat Hissələri</title>
+    <meta name="description" content="AUTRO PARTS — Volvo, Mercedes-Benz Actros, Scania, DAF, MAN üçün 100% orijinal OEM ehtiyyat hissələrinin topdan və pərakəndə satışı." />
+    <meta name="keywords" content="AUTRO PARTS, ehtiyyat hissələri, OEM, Volvo, Scania, Mercedes, MAN, DAF, yük avtomobili" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+      body.locked { overflow: hidden; height: 100vh; margin: 0; background-color: #060B19; }
+
+      /* ── Preloader ── */
+      #loader {
+        position: fixed; inset: 0; z-index: 9999;
+        background: linear-gradient(135deg, #060B19 0%, #0A1128 100%);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+        transition: transform .9s cubic-bezier(0.25, 0.8, 0.25, 1), opacity .6s ease;
+      }
+      #loader.done { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+
+      /* Grid overlay */
+      #loader::before {
+        content: '';
+        position: absolute; inset: 0;
+        background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 32px 32px;
+      }
+
+      /* Orange glow */
+      #loader::after {
+        content: '';
+        position: absolute;
+        width: 500px; height: 500px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,107,26,0.08) 0%, transparent 70%);
+        top: -100px; right: -50px; pointer-events: none;
+      }
+
+      .ld-brand {
+        position: relative; z-index: 2;
+        text-align: center; font-family: 'Montserrat', sans-serif; color: #fff;
+      }
+
+      /* AUTRO PARTS logo text */
+      .ld-logo-img {
+        height: 72px;
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 0 20px rgba(255,107,26,0.4));
+        animation: ldPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes ldPulse {
+        0%, 100% { filter: drop-shadow(0 0 20px rgba(255,107,26,0.4)); }
+        50%       { filter: drop-shadow(0 0 35px rgba(255,107,26,0.7)); }
+      }
+
+      .ld-sub {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem; color: #4a6080; margin-top: 14px;
+        text-transform: uppercase; letter-spacing: 3px;
+        animation: ldFadeIn 0.8s ease 0.3s both;
+      }
+
+      @keyframes ldFadeIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform:none; } }
+
+      .ld-route {
+        position: relative; width: 240px; height: 44px;
+        display: flex; align-items: center;
+        z-index: 2;
+      }
+
+      .ld-pct {
+        position: absolute; top: -22px; left: 50%;
+        transform: translateX(-50%);
+        color: #FF6B1A; font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.82rem; font-weight: 600;
+        text-shadow: 0 0 12px rgba(255,107,26,0.5);
+      }
+
+      .track {
+        width: 100%; height: 2px;
+        background: rgba(255,255,255,0.06);
+        position: relative; border-radius: 2px; overflow: hidden;
+      }
+
+      .fill {
+        height: 100%; width: 0%;
+        background: linear-gradient(90deg, #FF5E1A, #FF9500);
+        transition: width 0.08s linear;
+        box-shadow: 0 0 8px rgba(255,107,26,0.6);
+      }
+
+      .ld-truck {
+        position: absolute; left: 0; top: 50%;
+        transform: translate(-50%, -55%);
+        color: #FF6B1A; width: 26px; height: 26px;
+        transition: left 0.08s linear;
+        filter: drop-shadow(0 0 4px rgba(255,107,26,0.5));
+      }
+    </style>
+  </head>
+  <body class="locked">
+
+    <!-- ════════════════════════════════════════
+         PRELOADER — React-dən asılı deyil
+         ════════════════════════════════════════ -->
+    <div id="loader">
+      <div class="ld-brand">
+        <img src="/autro-logo.png" alt="AUTRO PARTS" class="ld-logo-img"
+             onerror="this.style.display='none'; document.getElementById('ld-fallback').style.display='block'" />
+        <!-- Fallback əgər şəkil yüklənməsə -->
+        <div id="ld-fallback" style="display:none; font-size:2.2rem; font-weight:900; letter-spacing:3px; color:#fff; font-family:'Montserrat',sans-serif;">
+          <span style="color:#FF6B1A">AUTRO</span> PARTS
+        </div>
+        <div class="ld-sub">Premium · OEM · Logistics</div>
+      </div>
+
+      <div class="ld-route">
+        <span class="ld-pct" id="ldPct">0%</span>
+        <div class="track"><div class="fill" id="ldFill"></div></div>
+        <div class="ld-truck" id="ldTruck">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 17V7h11v10"/><path d="M14 10h4l3 3v4h-7"/>
+            <circle cx="7" cy="18.5" r="1.6"/><circle cx="17.5" cy="18.5" r="1.6"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+
+    <script>
+      (function() {
+        var progress = 0;
+        var ldFill  = document.getElementById('ldFill');
+        var ldPct   = document.getElementById('ldPct');
+        var ldTruck = document.getElementById('ldTruck');
+        var loader  = document.getElementById('loader');
+
+        var interval = setInterval(function() {
+          progress += Math.floor(Math.random() * 16) + 8;
+          if (progress >= 100) progress = 100;
+
+          if (ldFill)  ldFill.style.width = progress + '%';
+          if (ldTruck) ldTruck.style.left = 'calc(' + progress + '% - 13px)';
+          if (ldPct)   ldPct.textContent  = progress + '%';
+
+          if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(function() {
+              if (loader) loader.classList.add('done');
+              document.body.classList.remove('locked');
+            }, 380);
+          }
+        }, 42);
+
+        // Fail-safe: 4 saniyə sonra hər halda açılır
+        setTimeout(function() {
+          clearInterval(interval);
+          if (loader) loader.classList.add('done');
+          document.body.classList.remove('locked');
+        }, 4000);
+      })();
+    </script>
+
+  </body>
+</html>
