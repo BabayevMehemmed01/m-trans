@@ -9,7 +9,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 // ── Konfiqurasiya ─────────────────────────────────────────────────
-const API_BASE    = 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const BOT_NAME    = 'AUTRO Assistant';
 const MAX_HISTORY = 20; // saxlanacaq tarixçə sayı
 
