@@ -1,4 +1,0 @@
-# M-Trans Server — .gitignore
-node_modules/
-.env
-*.log
