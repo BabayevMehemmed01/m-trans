@@ -27,8 +27,8 @@ app.set('trust proxy', config.server.trustProxy);
 app.use(helmet());
 app.use(compression());
 app.use(cors({
-  origin: config.server.corsOrigins,
-  methods: ['GET', 'POST', 'OPTIONS'],
+  origin: '*', // Hər kəsə (Netlify daxil) tam açıq buraxırıq
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Admin-Token'],
 }));
 
