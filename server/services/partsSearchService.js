@@ -10,7 +10,7 @@
 //          ↓ nəticəni
 //    3️⃣  PostgreSQL-ə YAZ           — növbəti dəfə lokal tapılsın
 //          ↓ sonra
-//    4️⃣  1C-dən CANLI STOK          — miqdar/qiymət dəqiqləşdirilir
+//    4️⃣  Xarici SQL DB-dən CANLI STOK — miqdar/qiymət dəqiqləşdirilir
 //
 //  Beləliklə hər OEM üçün TecDoc-a YALNIZ BİR DƏFƏ müraciət olunur.
 // ============================================================
@@ -19,7 +19,7 @@
 
 const partsRepo     = require('../db/repositories/partsRepository');
 const tecdocService = require('./tecdocService');
-const onecService   = require('./onecService');
+const externalProductService = require('./externalProductService');
 const { cleanPartRecords } = require('./dataCleaningService');
 const { normalizeCode } = require('../utils/normalize');
 const { createLogger } = require('../utils/logger');
@@ -45,8 +45,8 @@ function looksLikePartCode(text) {
 }
 
 /**
- * Nəticələri 1C-dən gələn canlı stokla zənginləşdirir.
- * 1C əlçatmaz olarsa nəticələr OLDUĞU KİMİ qaytarılır (axtarış çökmür).
+ * Nəticələri xarici SQL DB-dən gələn canlı stokla zənginləşdirir.
+ * Xarici DB əlçatmaz olarsa nəticələr OLDUĞU KİMİ qaytarılır (axtarış çökmür).
  *
  * @param {Object[]} products
  * @returns {Promise<{products: Object[], stockMode: string}>}
@@ -58,7 +58,7 @@ async function enrichWithLiveStock(products) {
 
   try {
     const articleNumbers = products.map(p => p.part_key).filter(Boolean);
-    const { stock, mode } = await onecService.fetchStock(articleNumbers);
+    const { stock, mode } = await externalProductService.fetchStock(articleNumbers);
 
     if (stock.size === 0) {
       return { products, stockMode: mode };
@@ -77,7 +77,7 @@ async function enrichWithLiveStock(products) {
         stock_quantity: live.quantity,
         in_stock:       live.quantity > 0,
         warehouse:      live.warehouse || product.warehouse,
-        stock_source:   'live_1c',
+        stock_source:   'live_external_db',
       };
     });
 
@@ -197,7 +197,7 @@ async function search(queryText, options = {}) {
     trace.tecdoc = 'skipped (sorğu kod formasında deyil)';
   }
 
-  // ── ADDIM 4: 1C canlı stok ──────────────────────────────────
+  // ── ADDIM 4: Xarici SQL DB-dən canlı stok ────────────────────
   if (useLiveStock && products.length > 0) {
     const enriched = await enrichWithLiveStock(products);
     products = enriched.products;
@@ -211,8 +211,8 @@ async function search(queryText, options = {}) {
     source,
     trace,
     modes: {
-      tecdoc: tecdocService.getMode(),
-      onec:   onecService.getMode(),
+      tecdoc:      tecdocService.getMode(),
+      external_db: externalProductService.getMode(),
     },
     took_ms: Date.now() - startedAt,
   };
@@ -259,7 +259,7 @@ async function searchByOem(oemCode, options = {}) {
     total:   products.length,
     source,
     trace,
-    modes: { tecdoc: tecdocService.getMode(), onec: onecService.getMode() },
+    modes: { tecdoc: tecdocService.getMode(), external_db: externalProductService.getMode() },
     took_ms: Date.now() - startedAt,
   };
 }

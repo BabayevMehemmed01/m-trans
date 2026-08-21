@@ -1,29 +1,33 @@
 // ============================================================
 // FAYL: server/services/syncService.js
-// TƏSVİR: 1C → Təmizləmə → PostgreSQL anbarı sinxronizasiyası.
+// TƏSVİR: Xarici SQL DB → Təmizləmə → PostgreSQL anbarı sinxronizasiyası.
 //
 //  AXIN:
-//    1C-dən çək  →  dataCleaningService (dublikat + zibil təmizliyi)
-//                →  partsRepository.upsertMany (paket-paket)
-//                →  rədd edilənlər karantinə
-//                →  nəticə `sync_runs` audit cədvəlinə
+//    Xarici SQL DB-dən çək →  dataCleaningService (dublikat + zibil təmizliyi)
+//                          →  partsRepository.upsertMany (paket-paket)
+//                          →  rədd edilənlər karantinə
+//                          →  nəticə `sync_runs` audit cədvəlinə
 //
 //  Bu modul cron-dan da, manual admin endpoint-indən də çağırılır.
+//
+//  ⚠️  1C REST/OData inteqrasiyası ARTIQ İSTİFADƏ OLUNMUR — mənbə
+//  indi birbaşa xarici (yalnız-oxu) MS SQL Server bazasıdır
+//  (bax `externalProductService.js`).
 // ============================================================
 
 'use strict';
 
-const config      = require('../config/env');
-const db          = require('../db');
-const partsRepo   = require('../db/repositories/partsRepository');
-const syncRepo    = require('../db/repositories/syncRepository');
-const onecService = require('./onecService');
+const config    = require('../config/env');
+const db        = require('../db');
+const partsRepo = require('../db/repositories/partsRepository');
+const syncRepo  = require('../db/repositories/syncRepository');
+const externalProductService = require('./externalProductService');
 const { cleanPartRecords } = require('./dataCleaningService');
 const { createLogger } = require('../utils/logger');
 
 const log = createLogger('Sync');
 
-const JOB_NAME = 'onec_products';
+const JOB_NAME = 'external_db_products';
 
 // ── Eyni vaxtda iki icranın qarşısını alan kilid ─────────────────
 // Cron 15 dəqiqədən bir işləyir; əvvəlki icra hələ bitməyibsə
@@ -66,26 +70,34 @@ async function runSync(options = {}) {
   let runId = null;
 
   try {
-    const mode = onecService.getMode();
+    const mode = externalProductService.getMode();
     runId = await syncRepo.startRun({ jobName: JOB_NAME, triggerType, sourceMode: mode });
 
     log.info(`Sinxronizasiya başladı (${triggerType}, mənbə: ${mode})`);
 
-    // ── 1. 1C-dən məlumatları çək ────────────────────────────
-    const { items, mode: actualMode } = await onecService.fetchProducts();
+    // ── 1. Xarici SQL DB-dən məlumatları çək ─────────────────
+    const { items, mode: actualMode } = await externalProductService.fetchProducts();
 
     if (!Array.isArray(items) || items.length === 0) {
-      log.warn('1C-dən boş cavab gəldi — anbar dəyişdirilmir.');
+      log.warn('Xarici DB-dən boş cavab gəldi — anbar dəyişdirilmir.');
       await syncRepo.finishRun(runId, {
         status: 'partial',
         fetched: 0,
         durationMs: Date.now() - startedAt,
-        errorMessage: '1C boş cavab qaytardı',
+        errorMessage: 'Xarici DB boş cavab qaytardı',
       });
       return { status: 'partial', fetched: 0, reason: 'empty_source' };
     }
 
     // ── 2. Təmizlə (dublikat + zibil) ────────────────────────
+    // QEYD: `source: '1c'` DƏYƏRİ QƜSDƜN DƏYİŞDİRİLMƜYİB.
+    // `products.source` sütununda CHECK (source IN ('1c','tecdoc',
+    // 'manual','import')) məhdudiyyəti var (bax db/migrations/002_warehouse.sql)
+    // və partsRepository.upsertMany bu dəyərə əsasən "əsas kataloq
+    // mənbəyi" prioritetini tətbiq edir (TecDoc onu üstələməsin).
+    // Xarici SQL DB indi bizim ƏSAS kataloq mənbəyimiz olduğu üçün
+    // eyni prioritet semantikasını qorumaq üçün '1c' işarəsi saxlanılıb —
+    // sxem/DB miqrasiyası TƏLƏB OLUNMUR.
     const { accepted, rejected, stats } = cleanPartRecords(items, {
       source: '1c',
       defaultCurrency: 'AZN',
@@ -143,7 +155,7 @@ async function runSync(options = {}) {
 
   } catch (err) {
     const durationMs = Date.now() - startedAt;
-    log.error('Sinxronizasiya xətası', { message: err.message, status: err.response?.status });
+    log.error('Sinxronizasiya xətası', { message: err.message, code: err.code });
 
     if (runId) {
       await syncRepo.finishRun(runId, {

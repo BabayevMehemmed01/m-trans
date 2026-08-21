@@ -3,8 +3,8 @@
 // TƏSVİR: Verilənlər Anbarı üçün MƏLUMAT TƏMİZLƏMƏ (data cleaning)
 //         servisi.
 //
-//  Hansı mənbədən (1C, TecDoc, manual import) gəlməsindən asılı
-//  olmayaraq BÜTÜN məlumatlar bazaya düşməzdən əvvəl buradan keçir.
+//  Hansı mənbədən (xarici SQL DB, TecDoc, manual import) gəlməsindən
+//  asılı olmayaraq BÜTÜN məlumatlar bazaya düşməzdən əvvəl buradan keçir.
 //
 //  MƏRHƏLƏLƏR:
 //    1. NORMALLAŞDIRMA — kodlar, brendlər, qiymətlər vahid formaya
@@ -158,7 +158,7 @@ function normalizeRecord(raw, context) {
   const quantity = parseQuantity(raw.stock_quantity ?? raw.quantity ?? raw.stock);
   const currency = normalizeCurrency(raw.currency, context.defaultCurrency || 'AZN');
 
-  // ── 1C identifikatoru ────────────────────────────────────────
+  // ── Xarici mənbə identifikatoru (bazada `onec_id` sütununda saxlanılır) ──
   const onecId = cleanText(raw.onec_id, 100) || null;
 
   const record = {

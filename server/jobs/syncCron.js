@@ -1,6 +1,6 @@
 // ============================================================
 // FAYL: server/jobs/syncCron.js
-// TƏSVİR: 1C sinxronizasiyası üçün cron planlayıcısı.
+// TƏSVİR: Xarici SQL DB sinxronizasiyası üçün cron planlayıcısı.
 //
 //  CƏDVƏL: hər 15 dəqiqədən bir (SYNC_CRON=*/15 * * * *)
 //  Zaman qurşağı: Asia/Baku (SYNC_TIMEZONE)
@@ -64,12 +64,12 @@ function start() {
     },
     {
       timezone: config.sync.timezone,
-      name: 'onec-product-sync',
+      name: 'external-db-product-sync',
     }
   );
 
   log.info(
-    `1C sinxronizasiya job-u aktivdir — ${describeSchedule(config.sync.cronExpression)} ` +
+    `Xarici DB sinxronizasiya job-u aktivdir — ${describeSchedule(config.sync.cronExpression)} ` +
     `(${config.sync.timezone}).`
   );
 

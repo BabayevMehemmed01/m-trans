@@ -115,7 +115,7 @@ router.get('/health', asyncHandler(healthController.health));
 
 // ── Admin (fail-closed, ADMIN_API_TOKEN tələb edir) ────────────────
 
-/** POST /api/admin/sync — 1C sinxronizasiyasını əl ilə tetikləyir. */
+/** POST /api/admin/sync — xarici SQL DB sinxronizasiyasını əl ilə tetikləyir. */
 router.post('/admin/sync', adminLimiter, adminAuth, asyncHandler(adminController.triggerSync));
 
 /** GET /api/admin/sync/history?limit=10 */

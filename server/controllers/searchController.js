@@ -1,7 +1,7 @@
 // ============================================================
 // FAYL: server/controllers/searchController.js
 // TƏSVİR: Ehtiyat hissəsi axtarış kontrolleri.
-//         Bütün orkestrasiya (lokal baza → TecDoc → 1C canlı stok)
+//         Bütün orkestrasiya (lokal baza → TecDoc → xarici DB canlı stok)
 //         partsSearchService-də cəmlənib — bu fayl yalnız HTTP qatıdır.
 // ============================================================
 
@@ -39,7 +39,7 @@ async function listProducts(req, res) {
   };
 
   if (!q) {
-    // Sorğu yoxdursa TecDoc/1C orkestrasiyasına ehtiyac yoxdur — sadəcə siyahı.
+    // Sorğu yoxdursa TecDoc/xarici DB orkestrasiyasına ehtiyac yoxdur — sadəcə siyahı.
     const results = await partsRepo.listRecent(options);
     return res.json({ query: '', results, total: results.length, source: 'local_db' });
   }

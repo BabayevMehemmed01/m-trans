@@ -13,6 +13,7 @@ const compression = require('compression');
 
 const config = require('./config/env');
 const db     = require('./db');
+const externalDb = require('./db/externalDb');
 const apiRoutes = require('./routes/api');
 const syncCron   = require('./jobs/syncCron');
 const knowledgeRepo = require('./db/repositories/knowledgeRepository');
@@ -117,10 +118,10 @@ async function start() {
     log.info(`✅ ${config.server.port} portunda işləyir → http://localhost:${config.server.port}`);
     log.info(`DB rejim: ${dbReady ? '🐘 PostgreSQL (bağlı)' : '⚠️  Degraded (bağlantı gözlənilir)'}`);
     log.info(`Gemini: ${config.ai.enabled ? '🤖 Aktiv (' + config.ai.model + ')' : '⚠️  Mock'}`);
-    log.info(`1C: ${config.onec.enabled ? '🔌 Live' : '🧪 Mock'} | TecDoc: ${config.tecdoc.enabled ? '🔌 Live' : '🧪 Mock'}`);
+    log.info(`Xarici SQL DB: ${config.externalDb.enabled ? '🔌 Live' : '🧪 Mock'} | TecDoc: ${config.tecdoc.enabled ? '🔌 Live' : '🧪 Mock'}`);
   });
 
-  // 4. 1C Sinxronizasiya Cron-u başlat
+  // 4. Xarici DB Sinxronizasiya Cron-u başlat
   syncCron.start();
 }
 
@@ -131,6 +132,7 @@ async function shutdown(signal) {
     await syncCron.stop();
     if (server) await new Promise((resolve) => server.close(resolve));
     await db.close();
+    await externalDb.close();
     log.info('Server təmiz bağlandı.');
     process.exit(0);
   } catch (err) {

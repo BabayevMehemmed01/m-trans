@@ -66,35 +66,56 @@ function isConfigured(value) {
 const NODE_ENV = readRaw('NODE_ENV', 'development');
 const IS_PROD  = NODE_ENV === 'production';
 
-// ── 1C inteqrasiyası ─────────────────────────────────────────────
-// DİQQƏT: Bu dəyərlər hazırda BOŞ/MOCK saxlanılır.
-// Real URL və login məlumatlarını yalnız .env faylına yazın.
-// Kodda heç vaxt hardcoded saxlamayın.
+// ── Xarici SQL Server (Read-Only) inteqrasiyası ───────────────────
+// DİQQƏT: 1C REST/OData inteqrasiyası ARTIQ İSTİFADƏ OLUNMUR.
+// Məhsul kataloqu birbaşa xarici (yalnız-oxu) MS SQL Server bazasından
+// çəkilir. Bütün kimlik məlumatları `.env` faylından oxunur:
+//
+//     EXTERNAL_DB_HOST=sql.sirketiniz.local
+//     EXTERNAL_DB_PORT=1433
+//     EXTERNAL_DB_NAME=Warehouse1C
+//     EXTERNAL_DB_USER=readonly_user
+//     EXTERNAL_DB_PASSWORD=parol
+//
+// Yuxarıdakılar boş və ya "mock..." olduqda servis avtomatik MOCK
+// rejimdə işləyir — sistem xarici DB olmadan da tam işlək qalır.
 
-const onecBaseUrl = readRaw('ONEC_BASE_URL');
-const onecUser    = readRaw('ONEC_USER');
-const onecPass    = readRaw('ONEC_PASS');
+const externalDbHost     = readRaw('EXTERNAL_DB_HOST');
+const externalDbName     = readRaw('EXTERNAL_DB_NAME');
+const externalDbUser     = readRaw('EXTERNAL_DB_USER');
+const externalDbPassword = readRaw('EXTERNAL_DB_PASSWORD');
 
-const onec = {
-  baseUrl:  onecBaseUrl.replace(/\/+$/, ''),
-  user:     onecUser,
-  password: onecPass,
-  // Endpoint yolları da konfiqurasiya edilə bilər — 1C quraşdırması
-  // fərqli ola bilər (OData, HTTP-servis və s.)
-  productsPath: readRaw('ONEC_PRODUCTS_PATH', '/products'),
-  stockPath:    readRaw('ONEC_STOCK_PATH',    '/stock'),
-  authType:     readRaw('ONEC_AUTH_TYPE', 'basic').toLowerCase(), // basic | bearer | none
-  token:        readRaw('ONEC_TOKEN'),
-  timeoutMs:    readInt('ONEC_TIMEOUT_MS', 15_000),
-  pageSize:     readInt('ONEC_PAGE_SIZE', 500),
-  maxPages:     readInt('ONEC_MAX_PAGES', 50),
-  rejectUnauthorized: readBool('ONEC_TLS_VERIFY', true),
-  /** Real 1C-yə qoşulmaq üçün URL + (auth tələb olunursa) kimlik lazımdır. */
+const externalDb = {
+  host:     externalDbHost,
+  port:     readInt('EXTERNAL_DB_PORT', 1433),
+  database: externalDbName,
+  user:     externalDbUser,
+  password: externalDbPassword,
+  // Şirkət daxili şəbəkədə çox vaxt özü-imzalı sertifikat olur.
+  encrypt:                readBool('EXTERNAL_DB_ENCRYPT', true),
+  trustServerCertificate: readBool('EXTERNAL_DB_TRUST_SERVER_CERTIFICATE', false),
+  connectTimeoutMs: readInt('EXTERNAL_DB_CONNECT_TIMEOUT_MS', 15_000),
+  requestTimeoutMs: readInt('EXTERNAL_DB_REQUEST_TIMEOUT_MS', 30_000),
+  poolMax:          readInt('EXTERNAL_DB_POOL_MAX', 5),
+  poolMin:          readInt('EXTERNAL_DB_POOL_MIN', 0),
+  poolIdleTimeoutMs: readInt('EXTERNAL_DB_POOL_IDLE_TIMEOUT_MS', 30_000),
+  // Cədvəl/görünüş adı fərqli ola bilər — sxem sizin tərəfdə dəyişsə
+  // kodu toxunmadan .env-dən düzəldə bilərsiniz.
+  productsTable: readRaw('EXTERNAL_DB_PRODUCTS_TABLE', 'dbo.Products'),
+  // Tam sərbəst SELECT lazım olarsa (JOIN, fərqli sütun adları və s.)
+  // bunu .env-də yazın — productsTable/sütun adları nəzərə alınmır.
+  // Sorğu sütunları MÜTLƏQ bu adlarla alias edilməlidir:
+  //   external_id, oem_code, article_no, brand, category, title,
+  //   description, price, currency, stock_quantity, warehouse
+  productsQuery: readRaw('EXTERNAL_DB_PRODUCTS_QUERY', ''),
+  pageSize:      readInt('EXTERNAL_DB_PAGE_SIZE', 2000),
+  maxPages:      readInt('EXTERNAL_DB_MAX_PAGES', 200),
+  /** Real xarici bazaya qoşulmaq üçün host+baza+istifadəçi+parol lazımdır. */
   get enabled() {
-    if (!isConfigured(onecBaseUrl)) return false;
-    if (this.authType === 'none')   return true;
-    if (this.authType === 'bearer') return isConfigured(this.token);
-    return isConfigured(onecUser) && isConfigured(onecPass);
+    return isConfigured(externalDbHost)
+      && isConfigured(externalDbName)
+      && isConfigured(externalDbUser)
+      && isConfigured(externalDbPassword);
   },
 };
 
@@ -238,8 +259,8 @@ function validate() {
     warnings.push('TECDOC_API_KEY konfiqurasiya edilməyib — TecDoc mock rejimdə işləyəcək.');
   }
 
-  if (!onec.enabled) {
-    warnings.push('1C konfiqurasiya edilməyib (ONEC_BASE_URL/ONEC_USER) — sinxronizasiya mock data ilə işləyəcək.');
+  if (!externalDb.enabled) {
+    warnings.push('Xarici SQL DB konfiqurasiya edilməyib (EXTERNAL_DB_HOST/NAME/USER/PASSWORD) — sinxronizasiya mock data ilə işləyəcək.');
   }
 
   if (!server.adminEnabled) {
@@ -269,7 +290,7 @@ module.exports = {
   isConfigured,
   server,
   db,
-  onec,
+  externalDb,
   tecdoc,
   ai,
   sync,
