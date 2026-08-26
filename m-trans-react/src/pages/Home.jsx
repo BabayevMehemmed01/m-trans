@@ -175,68 +175,94 @@ export default function Home() {
         {/* Accent lines */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--red), transparent)', opacity: 0.5 }} />
 
-        {/* ── Animated Truck Convoy ───────────────────────────────── */}
-        {/* Road surface */}
-        <div style={{ position: 'absolute', bottom: '60px', left: 0, right: 0, height: '80px', background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)', pointerEvents: 'none' }} />
-        {/* Road dashes */}
-        <div style={{ position: 'absolute', bottom: '92px', left: 0, right: 0, height: '3px', background: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 40px, transparent 40px, transparent 80px)', pointerEvents: 'none' }} />
+        {/* ── Modern autroparts cargo rig (LTR, professional) ── */}
+        <div className="hero-logistics" aria-hidden="true">
+          <div className="hero-logistics__haze" />
+          <div className="hero-logistics__conveyor">
+            <span className="hero-pkg hero-pkg--a" />
+            <span className="hero-pkg hero-pkg--b" />
+            <span className="hero-pkg hero-pkg--c" />
+          </div>
+          <div className="hero-logistics__road">
+            <div className="hero-logistics__lane" />
+          </div>
+          <div className="hero-logistics__rig">
+            <svg className="hero-logistics__svg" viewBox="0 0 540 168" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="apTrailer" x1="20" y1="30" x2="20" y2="128" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#1c2a48"/>
+                  <stop offset="100%" stopColor="#0d1528"/>
+                </linearGradient>
+                <linearGradient id="apCab" x1="338" y1="28" x2="338" y2="132" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#243656"/>
+                  <stop offset="100%" stopColor="#121c32"/>
+                </linearGradient>
+                <linearGradient id="apGlass" x1="360" y1="42" x2="430" y2="88" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#9fd4f0" stopOpacity="0.55"/>
+                  <stop offset="100%" stopColor="#3a6a88" stopOpacity="0.28"/>
+                </linearGradient>
+                <linearGradient id="apBeam" x1="508" y1="78" x2="538" y2="78" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#fff3c4" stopOpacity="0.45"/>
+                  <stop offset="100%" stopColor="#fff3c4" stopOpacity="0"/>
+                </linearGradient>
+              </defs>
 
-        {/* Truck 1 — Large, slow */}
-        <svg style={{ position: 'absolute', bottom: '68px', animation: 'truckDrive1 18s linear infinite', willChange: 'transform', pointerEvents: 'none' }}
-          width="160" height="50" viewBox="0 0 160 50" fill="none">
-          {/* Trailer */}
-          <rect x="0" y="8" width="105" height="34" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
-          <text x="52" y="29" textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.3)" fontFamily="monospace" fontWeight="bold">M-TRANS PARTS</text>
-          {/* Cab */}
-          <rect x="108" y="4" width="50" height="38" rx="4" fill="rgba(230,0,0,0.15)" stroke="rgba(230,0,0,0.3)" strokeWidth="1"/>
-          <rect x="115" y="10" width="28" height="16" rx="2" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5"/>
-          {/* Exhaust smoke */}
-          <circle cx="152" cy="4" r="3" fill="rgba(255,255,255,0.04)"/>
-          <circle cx="155" cy="0" r="2" fill="rgba(255,255,255,0.03)"/>
-          {/* Wheels */}
-          <circle cx="20"  cy="44" r="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-          <circle cx="55"  cy="44" r="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-          <circle cx="90"  cy="44" r="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-          <circle cx="123" cy="44" r="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-          <circle cx="148" cy="44" r="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-          {/* Headlights */}
-          <rect x="155" y="18" width="4" height="6" rx="1" fill="rgba(255,240,150,0.5)"/>
-          <rect x="155" y="26" width="4" height="5" rx="1" fill="rgba(255,240,150,0.3)"/>
-          {/* Light beam */}
-          <polygon points="159,19 180,10 180,34 159,31" fill="rgba(255,240,150,0.03)"/>
-        </svg>
+              <ellipse cx="262" cy="154" rx="210" ry="9" fill="#000" opacity="0.38"/>
 
-        {/* Truck 2 — Medium, faster, offset */}
-        <svg style={{ position: 'absolute', bottom: '70px', animation: 'truckDrive2 12s linear infinite', willChange: 'transform', pointerEvents: 'none', opacity: 0.7 }}
-          width="130" height="42" viewBox="0 0 130 42" fill="none">
-          <rect x="0" y="6" width="82" height="28" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
-          <text x="41" y="23" textAnchor="middle" fontSize="7" fill="rgba(255,255,255,0.2)" fontFamily="monospace">SPARE PARTS</text>
-          <rect x="85" y="2" width="44" height="32" rx="3" fill="rgba(30,80,160,0.12)" stroke="rgba(80,140,255,0.2)" strokeWidth="1"/>
-          <rect x="91" y="7" width="24" height="13" rx="2" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5"/>
-          <circle cx="16"  cy="38" r="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
-          <circle cx="46"  cy="38" r="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
-          <circle cx="76"  cy="38" r="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
-          <circle cx="100" cy="38" r="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
-          <circle cx="120" cy="38" r="5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
-          <rect x="126" y="14" width="3" height="5" rx="1" fill="rgba(255,240,150,0.4)"/>
-          <polygon points="129,14 148,6 148,28 129,19" fill="rgba(255,240,150,0.02)"/>
-        </svg>
+              {/* Trailer */}
+              <rect x="18" y="38" width="318" height="86" rx="10" fill="url(#apTrailer)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.2"/>
+              <rect x="18" y="38" width="318" height="11" rx="5" fill="#FF6B1A"/>
+              <rect x="18" y="108" width="318" height="5" fill="#FF6B1A" opacity="0.85"/>
+              <rect x="34" y="58" width="286" height="42" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)"/>
+              <rect x="22" y="78" width="8" height="18" rx="1" fill="#E60000" opacity="0.85"/>
+              <rect x="22" y="78" width="8" height="7" rx="1" fill="#FFB020"/>
 
-        {/* Truck 3 — Small, fastest */}
-        <svg style={{ position: 'absolute', bottom: '72px', animation: 'truckDrive3 8s linear infinite', willChange: 'transform', pointerEvents: 'none', opacity: 0.5 }}
-          width="90" height="34" viewBox="0 0 90 34" fill="none">
-          <rect x="0" y="4" width="56" height="22" rx="2" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
-          <rect x="59" y="1" width="30" height="26" rx="3" fill="rgba(230,0,0,0.08)" stroke="rgba(230,0,0,0.15)" strokeWidth="1"/>
-          <rect x="64" y="5" width="16" height="10" rx="1" fill="rgba(255,255,255,0.04)"/>
-          <circle cx="12"  cy="30" r="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-          <circle cx="36"  cy="30" r="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-          <circle cx="62"  cy="30" r="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-          <circle cx="82"  cy="30" r="4" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-          <rect x="88" y="11" width="2" height="4" rx="1" fill="rgba(255,240,150,0.35)"/>
-        </svg>
+              {/* Cab */}
+              <path d="M342 52 L342 124 L508 124 C512 124 516 120 516 116 L516 78 C516 54 496 40 470 40 L392 40 C368 40 342 44 342 52Z" fill="url(#apCab)" stroke="rgba(255,255,255,0.12)" strokeWidth="1.2"/>
+              <path d="M368 48 L478 48 C494 48 506 58 506 74 L506 86 C506 90 502 92 498 92 L372 92 C364 92 360 88 360 82 L360 56 C360 50 364 48 368 48Z" fill="url(#apGlass)"/>
+              <rect x="352" y="98" width="148" height="4" rx="2" fill="#FF6B1A" opacity="0.9"/>
+              <rect x="508" y="72" width="8" height="14" rx="2" fill="#FFF4C2"/>
+              <rect x="508" y="90" width="8" height="10" rx="2" fill="#FFF4C2" opacity="0.7"/>
+              <polygon points="516,74 540,58 540,112 516,100" fill="url(#apBeam)"/>
+              <rect x="478" y="54" width="6" height="28" rx="2" fill="rgba(8,12,22,0.45)"/>
+              <path d="M516 58 L528 50 L528 62 L516 66Z" fill="#1a2438" stroke="rgba(255,255,255,0.15)"/>
+
+              {/* Chassis */}
+              <rect x="40" y="124" width="456" height="6" rx="2" fill="#0a101c"/>
+
+              {/* Wheels */}
+              <g className="ap-wheel">
+                <circle cx="78" cy="136" r="16" fill="#121820" stroke="#3a4658" strokeWidth="3"/>
+                <circle cx="78" cy="136" r="6" fill="#FF6B1A"/>
+                <path d="M78 124 V132 M78 140 V148 M66 136 H74 M82 136 H90" stroke="#6b7788" strokeWidth="1.6"/>
+              </g>
+              <g className="ap-wheel">
+                <circle cx="132" cy="136" r="16" fill="#121820" stroke="#3a4658" strokeWidth="3"/>
+                <circle cx="132" cy="136" r="6" fill="#FF6B1A"/>
+                <path d="M132 124 V132 M132 140 V148 M120 136 H128 M136 136 H144" stroke="#6b7788" strokeWidth="1.6"/>
+              </g>
+              <g className="ap-wheel">
+                <circle cx="248" cy="136" r="16" fill="#121820" stroke="#3a4658" strokeWidth="3"/>
+                <circle cx="248" cy="136" r="6" fill="#FF6B1A"/>
+                <path d="M248 124 V132 M248 140 V148 M236 136 H244 M252 136 H260" stroke="#6b7788" strokeWidth="1.6"/>
+              </g>
+              <g className="ap-wheel">
+                <circle cx="430" cy="136" r="16" fill="#121820" stroke="#3a4658" strokeWidth="3"/>
+                <circle cx="430" cy="136" r="6" fill="#FF6B1A"/>
+                <path d="M430 124 V132 M430 140 V148 M418 136 H426 M434 136 H442" stroke="#6b7788" strokeWidth="1.6"/>
+              </g>
+              <g className="ap-wheel">
+                <circle cx="478" cy="136" r="16" fill="#121820" stroke="#3a4658" strokeWidth="3"/>
+                <circle cx="478" cy="136" r="6" fill="#FF6B1A"/>
+                <path d="M478 124 V132 M478 140 V148 M466 136 H474 M482 136 H490" stroke="#6b7788" strokeWidth="1.6"/>
+              </g>
+            </svg>
+            <span className="hero-logistics__brand">autroparts</span>
+          </div>
+        </div>
 
 
-        <div className="wrap" style={{ position: 'relative', zIndex: 2, paddingTop: '60px', paddingBottom: '80px' }}>
+        <div className="wrap" style={{ position: 'relative', zIndex: 2, paddingTop: '60px', paddingBottom: '150px' }}>
           <div style={{ maxWidth: '860px', margin: '0 auto', textAlign: 'center' }}>
 
             {/* Badge */}

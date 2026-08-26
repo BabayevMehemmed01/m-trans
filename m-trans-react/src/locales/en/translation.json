@@ -343,10 +343,7 @@
   "admin_promo_added": "Promo added!",
   "admin_promo_updated": "Promo updated!",
   "admin_promos_list": "Promo Codes",
-  "cert_qms": "Quality Management System",
-  "cert_ems": "Environmental Management System",
-  "cert_ohs": "Occupational Health & Safety"
-,
+
   "auth_login_signup": "Login / Sign Up",
   "auth_tab_login": "Login",
   "auth_tab_signup": "Sign Up",
@@ -376,8 +373,5 @@
   "cart_added": "Added!",
   "auth_secure_note": "Secure login system. Your data is encrypted and protected.",
   "brand_name": "AUTRO PARTS",
-  "brand_tagline": "Premium Commercial Vehicle Parts",
-  "home_hero_t1": "",
-  "home_hero_t2": "AUTRO PARTS",
-  "home_hero_badge": "ORIGINAL HEAVY-DUTY & COMMERCIAL VEHICLE PARTS"
+  "brand_tagline": "Premium Commercial Vehicle Parts"
 }

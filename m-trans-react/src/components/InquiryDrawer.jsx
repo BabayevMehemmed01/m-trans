@@ -51,7 +51,7 @@ export default function InquiryDrawer() {
     if (inquiryList.length === 0) return;
 
     const subject = encodeURIComponent(`Ehtiyyat Hissəsi Sorğusu - VIN: ${vinNumber || 'Bilinmir'}`);
-    let body = `Salam M-Trans Logistics,\n\nAşağıdakı ehtiyyat hissələri üçün qiymət və mövcudluq təklifi almaq istəyirəm:\n\n`;
+    let body = `Salam M-Trans Logistics,\n\nAşağıdakı ehtiyat hissələri üçün qiymət və mövcudluq təklifi almaq istəyirəm:\n\n`;
     if (vinNumber) body += `VIN / Şassi Kodu: ${vinNumber}\n`;
     if (customerName) body += `Ad, Soyad: ${customerName}\n`;
     if (customerPhone) body += `Telefon: ${customerPhone}\n`;

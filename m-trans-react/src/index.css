@@ -3848,6 +3848,41 @@ body.menu-open {
   transform: translateX(-50%) scaleX(1) !important;
 }
 
+/* ── Contact CTA — larger type, button treatment ─────────────── */
+.nav-lnk--cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 10px 18px;
+  margin-left: 6px;
+  color: #fff;
+  background: var(--orange-grad);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 14px rgba(255, 107, 26, 0.28);
+  transition: color 0.2s ease, background 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.nav-lnk--cta::after {
+  display: none;
+}
+
+.nav-lnk--cta:hover {
+  color: #fff;
+  background: linear-gradient(135deg, #FF7A2E 0%, #FFA733 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(255, 107, 26, 0.42);
+}
+
+.nav-lnk--cta.nav-lnk--active {
+  color: #fff !important;
+  background: var(--orange-grad) !important;
+  box-shadow: 0 4px 16px rgba(255, 107, 26, 0.4);
+}
+
 /* ── Nav Actions (VIN CTA + Burger) ──────────────────────────── */
 .hdr-nav__actions {
   display: flex;
@@ -3994,6 +4029,14 @@ body.menu-open {
   background: rgba(230,0,0,0.15) !important;
 }
 
+.hdr-mobile-menu__links .nav-lnk--cta {
+  margin: 8px 0 0;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.05rem;
+  padding: 14px 18px;
+}
+
 .hdr-mobile-menu__footer {
   padding: 20px 24px;
   border-top: 1px solid rgba(255,255,255,0.07);
@@ -4028,6 +4071,7 @@ body.menu-open {
 /* ── Responsive Breakpoints ──────────────────────────────────── */
 @media (max-width: 1024px) {
   .hdr-nav__links .nav-lnk { font-size: 0.78rem; padding: 6px 8px; }
+  .hdr-nav__links .nav-lnk--cta { font-size: 0.86rem; padding: 8px 12px; }
   .hdr-vin-btn { display: none; }
 }
 
@@ -4309,38 +4353,167 @@ input[style*="IBM Plex Mono"] {
 
 
 /* =================================================================
-   TRUCK CONVOY ANIMATIONS — Hero Dark Industrial
+   HERO LOGISTICS SCENE — modern cargo rig + conveyor
    ================================================================= */
 
-/* Right → Left direction (sağdan sola) */
-@keyframes truckDrive1 {
-  0%   { transform: translateX(calc(100vw + 200px)); }
-  100% { transform: translateX(-200px); }
-}
-@keyframes truckDrive2 {
-  0%   { transform: translateX(calc(100vw + 160px)); }
-  100% { transform: translateX(-160px); }
-}
-@keyframes truckDrive3 {
-  0%   { transform: translateX(calc(100vw + 120px)); }
-  100% { transform: translateX(-120px); }
+.hero-logistics {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 188px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
 }
 
-/* Stagger start points so they don't all begin together */
-svg[style*="truckDrive1"] { animation-delay: 0s; }
-svg[style*="truckDrive2"] { animation-delay: -5s; }
-svg[style*="truckDrive3"] { animation-delay: -2s; }
-
-/* Road dash scroll */
-@keyframes roadDash {
-  from { background-position: 0 0; }
-  to   { background-position: -160px 0; }
+.hero-logistics__haze {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 120px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 100%);
 }
 
-/* Wheel spin keyframe (applied via JS or inline style rotation) */
-@keyframes wheelSpin {
+.hero-logistics__conveyor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 54px;
+  height: 10px;
+  background:
+    linear-gradient(90deg, rgba(255,107,26,0.0), rgba(255,107,26,0.35), rgba(255,107,26,0.0)),
+    repeating-linear-gradient(90deg, #1a2438 0 18px, #0f1624 18px 36px);
+  box-shadow: 0 0 16px rgba(255, 107, 26, 0.18);
+  animation: apBelt 1.1s linear infinite;
+}
+
+.hero-pkg {
+  position: absolute;
+  bottom: 10px;
+  width: 28px;
+  height: 22px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #2a3c5c 0%, #17233a 100%);
+  border: 1px solid rgba(255, 107, 26, 0.35);
+  animation: apPackage 10s linear infinite;
+}
+
+.hero-pkg--a { animation-delay: 0s; }
+.hero-pkg--b { animation-delay: -3.4s; width: 34px; height: 18px; }
+.hero-pkg--c { animation-delay: -6.8s; width: 22px; height: 26px; }
+
+.hero-logistics__road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.hero-logistics__lane {
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.28) 0 28px,
+    transparent 28px 64px
+  );
+  animation: apRoad 0.7s linear infinite;
+}
+
+.hero-logistics__rig {
+  position: absolute;
+  bottom: 8px;
+  width: min(540px, 86vw);
+  will-change: transform;
+  animation: apTruckCruise 22s linear infinite;
+}
+
+.hero-logistics__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+}
+
+.hero-logistics__brand {
+  position: absolute;
+  left: 6.5%;
+  top: 36%;
+  width: 52%;
+  text-align: center;
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(1.05rem, 2.6vw, 1.7rem);
+  letter-spacing: 0.18em;
+  line-height: 1;
+  color: #fff;
+  text-transform: lowercase;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.45),
+    0 0 22px rgba(255, 107, 26, 0.35);
+}
+
+.hero-logistics__brand::after {
+  content: '';
+  display: block;
+  width: 42%;
+  height: 3px;
+  margin: 8px auto 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #FF6B1A, transparent);
+}
+
+.hero-logistics .ap-wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: apWheel 0.55s linear infinite;
+}
+
+@keyframes apTruckCruise {
+  0%   { transform: translateX(-560px); }
+  100% { transform: translateX(100vw); }
+}
+
+@keyframes apWheel {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
+}
+
+@keyframes apRoad {
+  from { background-position: 0 0; }
+  to   { background-position: -64px 0; }
+}
+
+@keyframes apBelt {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 36px 0, 36px 0; }
+}
+
+@keyframes apPackage {
+  0%   { left: -40px; opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logistics__rig {
+    animation: none;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .hero-logistics .ap-wheel,
+  .hero-logistics__lane,
+  .hero-logistics__conveyor,
+  .hero-pkg {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-logistics { height: 140px; }
+  .hero-logistics__brand { letter-spacing: 0.12em; }
 }
 
 

@@ -43,7 +43,7 @@
   "parts_reset": "Filtrləri Sıfırla",
   "parts_in_stock": "Stokda Mövcuddur",
   "parts_not_found": "Məhsul tapılmadı",
-  "parts_not_found_desc": "Axtarışınıza və ya filtrlərinizə uyğun ehtiyyat hissəsi tapılmadı. Zəhmət olmasa fərqli açar sözü ilə yoxlayın və ya VIN kodunuzu daxil edərək sorğu göndərin.",
+  "parts_not_found_desc": "Axtarışınıza və ya filtrlərinizə uyğun ehtiyat hissəsi tapılmadı. Zəhmət olmasa fərqli açar sözü ilə yoxlayın və ya VIN kodunuzu daxil edərək sorğu göndərin.",
 
   "catalog_search_label": "Detal / OEM Kodu Axtarışı",
   "catalog_filter_category": "Kateqoriya Seçin",
@@ -53,7 +53,7 @@
   "parts_category_brakes": "Əyləc Sistemi",
   "parts_category_pneumatics": "Pnevmatika & Kompressor",
   "parts_category_filters": "Filtrlər & Yağlama",
-  "parts_category_electronics": "Elektrik & İşiqlandırma",
+  "parts_category_electronics": "Elektrik & İşıqlandırma",
   "parts_category_suspension": "Asqı & Amortizasiya",
   "parts_category_transmission": "Transmissiya & Mufta",
   "parts_category_engine": "Mühərrik Detalları",
@@ -69,8 +69,8 @@
   "part4_desc": "Gecə sürüşlərində maksimum görünüş təmin edən tam LED orijinal fara.",
   "part5_name": "Sachs Gücləndirilmiş Amortizator",
   "part5_desc": "İri həcmli qoşqular və TIR-lar üçün sarsıntıya davamlı amortizator.",
-  "part6_name": "Bosch Mufta (Sçeplyeniya) Komplekti",
-  "part6_desc": "MAN və Scania yük maşınları üçün uzunömürlü mufta diski və vıjimnoy komplekti.",
+  "part6_name": "Bosch Mufta Komplekti",
+  "part6_desc": "MAN və Scania yük maşınları üçün uzunömürlü mufta diski və sıxıcı rulman komplekti.",
   "part7_name": "Hengst Yanacaq Separator Filtri",
   "part7_desc": "Mühərrikə daxil olan yanacağı sudan və kənar hissəciklərdən təmizləyən filtr.",
   "part8_name": "Mercedes Actros Dinamo 28V/100A",
@@ -120,14 +120,14 @@
 
   "about_page_eyebrow": "M-TRANS SPARE PARTS & LOGISTICS",
   "about_page_title": "Şirkətimiz Haqqında Və Sertifikatlar",
-  "about_desc": "M-Trans MMC 2011-ci ildən etibarən beynəlxalq standartlara cavab verən yük avtomobilləri parkı və rəsmi ehtiyat hissələri distributiyası ilə regionun etibarlı tərəfdaşıdır.",
+  "about_desc": "M-Trans MMC 2011-ci ildən etibarən beynəlxalq standartlara cavab verən yük avtomobilləri parkı və rəsmi ehtiyat hissələri distribusiyası ilə regionun etibarlı tərəfdaşıdır.",
   "about_eyebrow": "BİZİM HAQQIMIZDA",
   "about_title": "Etibarlı Ehtiyat Hissələri Təchizatçınız",
   "about_p1": "\"M-Trans\" MMC 2011-ci ildə yaradılmışdır və \"M-Forward\" şirkətlər qrupuna daxildir. Şirkətimiz özünün 80-dən çox Euro 5 və Euro 6 yük avtomobil parkı ilə yanaşı, Volvo, Scania, Mercedes Actros, MAN və DAF markalı ağır tonnajlı nəqliyyat vasitələri üçün orijinal OEM ehtiyat hissələrinin təchizatı ilə məşğuldur.",
   "about_p2": "Şirkətimiz Knorr-Bremse, WABCO, Hengst, Sachs və Bosch kimi dünya nəhəngləri ilə sıx əməkdaşlıq edərək orijinal keyfiyyət və fasiləsiz zəmanət təmin edir.",
   "about_certs_title": "KEYFİYYƏT STANDARTLARI",
-  "cert_qms": "ISO 9001:2015 Keyfiyyəti İdarəetmə Sistemi",
-  "cert_ems": "ISO 14001:2015 Ətraf Mühiti İdarəetmə Sistemi",
+  "cert_qms": "ISO 9001:2015 Keyfiyyət İdarəetmə Sistemi",
+  "cert_ems": "ISO 14001:2015 Ətraf Mühit İdarəetmə Sistemi",
   "cert_ohs": "ISO 45001:2018 İş Sağlamlığı Və Təhlükəsizliyi",
 
   "about_mission_title": "MİSSİYAMIZ",
@@ -157,7 +157,7 @@
   "partners_bosch_li1": "Kommersiya texnikası üçün dinamo və starterlər",
   "partners_bosch_li2": "Yanacaq püskürtmə və injektor detalları",
   "partners_bosch_li3": "Dəqiq alman mühəndisliyi",
-  "partners_volvo_desc": "Volvo FH/FM və Mercedes Actros orijinal ehtiyyat hissələri.",
+  "partners_volvo_desc": "Volvo FH/FM və Mercedes Actros orijinal ehtiyat hissələri.",
   "partners_volvo_li1": "Şassi, optika və mühərrik komponentləri",
   "partners_volvo_li2": "Kabin və salon aksesuarları",
   "partners_volvo_li3": "100% zavod istehsalı orijinal detallar",
@@ -190,9 +190,9 @@
   "placeholder_phone": "+994 (50) 000-0000",
   "label_email": "E-poçt Ünvanı",
   "placeholder_email": "ad@şirkət.az",
-  "input_msg": "Sorqu Qeydiniz",
-  "btn_submit": "Sorqunu Göndər",
-  "success_title": "Sorqunuz Qəbul Olundu!",
+  "input_msg": "Sorğu Qeydiniz",
+  "btn_submit": "Sorğunu Göndər",
+  "success_title": "Sorğunuz Qəbul Olundu!",
   "btn_send_cv": "📤 CV Göndər"
 ,
 
@@ -343,10 +343,7 @@
   "admin_promo_added": "Promokod əlavə edildi!",
   "admin_promo_updated": "Promokod yeniləndi!",
   "admin_promos_list": "Promokodlar",
-  "cert_qms": "Keyfiyyət İdarəetmə Sistemi",
-  "cert_ems": "Ətraf Mühit İdarəetmə Sistemi",
-  "cert_ohs": "Peşə Sağlamlığı və Təhlükəsizliyi"
-,
+
   "auth_login_signup": "Giriş / Qeydiyyat",
   "auth_tab_login": "Giriş",
   "auth_tab_signup": "Qeydiyyat",
@@ -376,8 +373,5 @@
   "cart_added": "Əlavə edildi!",
   "auth_secure_note": "Təhlükəsiz giriş sistemi. Məlumatlarınız şifrələnərək saxlanılır.",
   "brand_name": "AUTRO PARTS",
-  "brand_tagline": "Premium Kommersiya Nəqliyyat Vasitələri Hissələri",
-  "home_hero_t1": "",
-  "home_hero_t2": "AUTRO PARTS",
-  "home_hero_badge": "ORİJİNAL YÜK VƏ AĞIR TEXNİKA EHTİYAT HİSSƏLƏRİ"
+  "brand_tagline": "Premium Kommersiya Nəqliyyat Vasitələri Hissələri"
 }

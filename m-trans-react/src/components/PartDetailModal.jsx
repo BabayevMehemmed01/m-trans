@@ -25,7 +25,7 @@ export default function PartDetailModal() {
 
   const handleDirectWhatsApp = () => {
     const message = encodeURIComponent(
-      `Salam M-Trans Logistics, "OEM: ${activeModalPart.oemCode} - ${partName}" ehtiyyat hissəsi haqqında qiymət və mövcudluq öyrənmək istəyirəm.`
+      `Salam M-Trans Logistics, "OEM: ${activeModalPart.oemCode} - ${partName}" ehtiyat hissəsi haqqında qiymət və mövcudluq öyrənmək istəyirəm.`
     );
     window.open(`https://wa.me/994500000000?text=${message}`, '_blank');
   };

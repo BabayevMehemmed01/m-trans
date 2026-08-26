@@ -42,6 +42,9 @@ export default function Header() {
   const navLinkClass = ({ isActive }) =>
     isActive ? 'nav-lnk nav-lnk--active' : 'nav-lnk';
 
+  const contactLinkClass = ({ isActive }) =>
+    isActive ? 'nav-lnk nav-lnk--cta nav-lnk--active' : 'nav-lnk nav-lnk--cta';
+
   // ── Shared button base style ─────────────────────────────────
   const topBtn = (color, bg, border) => ({
     display: 'inline-flex', alignItems: 'center', gap: '6px',
@@ -217,7 +220,7 @@ export default function Header() {
             <NavLink to="/partners"        className={navLinkClass}>{t('nav_brands')}</NavLink>
             <NavLink to="/about"           className={navLinkClass}>{t('nav_about')}</NavLink>
             <NavLink to="/vacancies"       className={navLinkClass}>{t('nav_vacancies')}</NavLink>
-            <NavLink to="/contact"         className={navLinkClass}>{t('nav_contact')}</NavLink>
+            <NavLink to="/contact"         className={contactLinkClass}>{t('nav_contact')}</NavLink>
           </div>
 
           <div className="hdr-nav__actions">
@@ -259,7 +262,7 @@ export default function Header() {
           <NavLink to="/partners"        className={navLinkClass} onClick={closeMenu}>{t('nav_brands')}</NavLink>
           <NavLink to="/about"           className={navLinkClass} onClick={closeMenu}>{t('nav_about')}</NavLink>
           <NavLink to="/vacancies"       className={navLinkClass} onClick={closeMenu}>{t('nav_vacancies')}</NavLink>
-          <NavLink to="/contact"         className={navLinkClass} onClick={closeMenu}>{t('nav_contact')}</NavLink>
+          <NavLink to="/contact"         className={contactLinkClass} onClick={closeMenu}>{t('nav_contact')}</NavLink>
         </nav>
 
         <div className="hdr-mobile-menu__footer">
