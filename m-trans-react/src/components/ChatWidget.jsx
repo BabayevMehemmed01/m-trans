@@ -140,6 +140,12 @@ export default function ChatWidget() {
     return () => clearTimeout(t);
   }, []);
 
+  useEffect(() => {
+    const open = () => setIsOpen(true);
+    window.addEventListener('mtrans-open-chat', open);
+    return () => window.removeEventListener('mtrans-open-chat', open);
+  }, []);
+
   // ── Avtomatik scroll ─────────────────────────────────────────
   useEffect(() => {
     if (isOpen) {
@@ -293,7 +299,7 @@ export default function ChatWidget() {
         aria-expanded={isOpen}
         style={{
           position:  'fixed',
-          bottom:    '28px',
+          bottom:    'calc(28px + var(--anav-offset, 0px))',
           right:     '28px',
           zIndex:    10000,
           cursor:    'pointer',
@@ -349,7 +355,7 @@ export default function ChatWidget() {
           aria-label="AUTRO AI Asistent"
           style={{
             position:     'fixed',
-            bottom:       '100px',
+            bottom:       'calc(100px + var(--anav-offset, 0px))',
             right:        '28px',
             width:        'min(380px, calc(100vw - 40px))',
             height:       'min(540px, calc(100vh - 140px))',

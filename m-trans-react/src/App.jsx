@@ -17,6 +17,7 @@ import CartDrawer      from './components/CartDrawer';
 import AuthModal       from './components/AuthModal';
 import ProtectedRoute  from './components/ProtectedRoute';
 import ChatWidget      from './components/ChatWidget';
+import AnimatedNavbar  from './components/AnimatedNavbar';
 
 import { AuthProvider }    from './context/AuthContext';
 import { AdminProvider }   from './context/AdminContext';
@@ -89,6 +90,7 @@ function AppRoutes() {
       <AuthModal />   {/* 🔐 Global — hər səhifədən openAuth() ilə açılır */}
 
       <ChatWidget /> {/* 🤖 Floating AI Chat — Gemini 2.5 Flash */}
+      <AnimatedNavbar />
 
       <Footer />
     </>
