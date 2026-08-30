@@ -12,7 +12,7 @@ import { useInquiry } from '../context/InquiryContext';
 import { useCart }    from '../context/CartContext';
 import { useAuth }    from '../context/AuthContext';
 
-const NAV_RING_SPRING = { type: 'spring', stiffness: 350, damping: 25 };
+const NAV_RING_SPRING = { type: 'spring', stiffness: 400, damping: 30 };
 
 const CENTER_NAV = [
   { to: '/',            end: true,  key: 'nav_home' },
@@ -243,7 +243,7 @@ export default function Header() {
                       className={active ? 'nav-lnk nav-lnk--active' : 'nav-lnk'}
                     >
                       {active && (
-                        <motion.span
+                        <motion.div
                           className="nav-lnk__ring"
                           layoutId="activeNavRing"
                           transition={NAV_RING_SPRING}
