@@ -1,15 +1,7 @@
 // =================================================================
 // FAYL: src/components/Truck3DViewer.jsx
-// TƏSVİR: Interaktiv 3D yük maşını — R3F + drei + three
-//         Hissə klik → kamera zoom, highlight, OEM overlay
-//
-// İstifadə:
-//   import Truck3DViewer from '../components/Truck3DViewer';
-//   <Truck3DViewer />
-//   <Truck3DViewer modelUrl="/models/truck.glb" height={560} />
-//
-// Qeyd: /public/models/truck.glb əlavə etdikdə modelUrl verin.
-//       Fayl yoxdursa prosedural (box/cylinder) TIR maketi işləyir.
+// TƏSVİR: High-Tech Hologram / Blueprint 3D TIR — R3F + drei +
+//         postprocessing Bloom + maath (yağ kimi kamera)
 // =================================================================
 
 import React, {
@@ -20,23 +12,25 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {
   CameraControls,
-  ContactShadows,
   Grid,
   Html,
   useGLTF,
   useProgress,
 } from '@react-three/drei';
+import { EffectComposer, Bloom } from '@react-three/postprocessing';
+import { easing } from 'maath';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import * as THREE from 'three';
 
-// ─── Kamera və hissə konfiqurasiyası ─────────────────────────────
-const DEFAULT_EYE = [7.4, 3.9, 8.6];
-const DEFAULT_TARGET = [0, 1.15, 0.2];
+const ACCENT = '#E60000';
+const DEFAULT_EYE = [7.6, 3.7, 8.4];
+const DEFAULT_TARGET = [0, 1.2, 0.15];
 
-export const TRUCK_PARTS = {
+const TRUCK_PARTS = {
   wheels: {
     id: 'wheels',
     nameKey: 'truck3d_part_wheels',
@@ -44,9 +38,9 @@ export const TRUCK_PARTS = {
     oem: 'AL-22.5-10H',
     brand: 'Alcoa / Michelin',
     catalogCat: 'parts_category_suspension',
-    eye: [4.6, 1.55, 5.4],
-    target: [1.05, 0.48, 3.45],
-    marker: [1.35, 1.15, 3.45],
+    eye: [4.35, 1.45, 5.55],
+    target: [1.08, 0.52, 3.48],
+    marker: [1.42, 1.22, 3.48],
   },
   engine: {
     id: 'engine',
@@ -55,9 +49,9 @@ export const TRUCK_PARTS = {
     oem: 'D13K-460',
     brand: 'Volvo OEM',
     catalogCat: 'parts_category_engine',
-    eye: [3.15, 2.15, 6.35],
-    target: [0, 0.92, 4.15],
-    marker: [0, 1.85, 4.35],
+    eye: [3.05, 2.05, 6.55],
+    target: [0, 0.95, 4.18],
+    marker: [0.15, 1.92, 4.42],
   },
   brakes: {
     id: 'brakes',
@@ -66,9 +60,9 @@ export const TRUCK_PARTS = {
     oem: 'K020345',
     brand: 'Knorr-Bremse',
     catalogCat: 'parts_category_brakes',
-    eye: [3.55, 1.15, 4.85],
-    target: [1.08, 0.46, 3.45],
-    marker: [1.45, 0.85, 3.15],
+    eye: [3.4, 1.05, 5.05],
+    target: [1.1, 0.48, 3.42],
+    marker: [1.52, 0.88, 3.12],
   },
   cabin: {
     id: 'cabin',
@@ -77,26 +71,26 @@ export const TRUCK_PARTS = {
     oem: 'VL-CAB-FH4',
     brand: 'Volvo OEM',
     catalogCat: 'parts_category_body',
-    eye: [5.6, 3.35, 6.9],
-    target: [0, 1.85, 3.25],
-    marker: [0, 3.35, 3.35],
+    eye: [5.45, 3.25, 6.75],
+    target: [0, 1.88, 3.28],
+    marker: [0, 3.42, 3.32],
   },
 };
 
 const PART_ORDER = ['cabin', 'engine', 'brakes', 'wheels'];
 
-const COL = {
-  body: '#1a2744',
-  bodyHi: '#243656',
-  metal: '#3a4558',
-  steel: '#6b7788',
-  tire: '#14181e',
-  rim: '#9aa3b2',
-  orange: '#FF6B1A',
-  glass: '#6a9bb8',
-  accent: '#E60000',
-  highlight: '#ff3b3b',
-};
+const WHEEL_LAYOUT = [
+  { pos: [-1.08, 0.54, 3.52], brake: true },
+  { pos: [1.08, 0.54, 3.52], brake: true },
+  { pos: [-1.08, 0.54, 1.38], brake: true },
+  { pos: [1.08, 0.54, 1.38], brake: true },
+  { pos: [-1.08, 0.54, 0.44], brake: true },
+  { pos: [1.08, 0.54, 0.44], brake: true },
+  { pos: [-1.08, 0.54, -5.52], brake: false },
+  { pos: [1.08, 0.54, -5.52], brake: false },
+  { pos: [-1.08, 0.54, -6.48], brake: false },
+  { pos: [1.08, 0.54, -6.48], brake: false },
+];
 
 function useIsMobile(breakpoint = 768) {
   const [mobile, setMobile] = useState(
@@ -110,61 +104,41 @@ function useIsMobile(breakpoint = 768) {
   return mobile;
 }
 
-function partMaterial(selected, base, extras = {}) {
-  return {
-    color: selected ? COL.highlight : base,
-    metalness: selected ? 0.55 : extras.metalness ?? 0.35,
-    roughness: selected ? 0.28 : extras.roughness ?? 0.55,
-    emissive: selected ? COL.accent : '#000000',
-    emissiveIntensity: selected ? 0.45 : 0,
-  };
-}
-
 function setCursor(on) {
   document.body.style.cursor = on ? 'pointer' : '';
 }
 
-// ─── Kamera idarəsi ──────────────────────────────────────────────
-function FocusControls({ focusId, controlsRef }) {
-  const { invalidate } = useThree();
+// ─── Hologram material ───────────────────────────────────────────
+function HoloMaterial({ active = false }) {
+  const ref = useRef(null);
 
-  useEffect(() => {
-    const ctrl = controlsRef.current;
-    if (!ctrl) return;
-
-    ctrl.truckSpeed = 0;
-    ctrl.smoothTime = 0.55;
-    ctrl.draggingSmoothTime = 0.18;
-
-    const part = focusId ? TRUCK_PARTS[focusId] : null;
-    const [ex, ey, ez] = part ? part.eye : DEFAULT_EYE;
-    const [tx, ty, tz] = part ? part.target : DEFAULT_TARGET;
-    ctrl.setLookAt(ex, ey, ez, tx, ty, tz, true);
-    invalidate();
-  }, [focusId, controlsRef, invalidate]);
+  useFrame((state, delta) => {
+    const mat = ref.current;
+    if (!mat) return;
+    const pulse = active ? 2.15 + Math.sin(state.clock.elapsedTime * 3.1) * 0.55 : 0.62;
+    easing.damp(mat, 'emissiveIntensity', pulse, 0.32, delta);
+    easing.damp(mat, 'opacity', active ? 0.6 : 0.15, 0.38, delta);
+    easing.dampC(mat.emissive, active ? ACCENT : '#444444', 0.34, delta);
+  });
 
   return (
-    <CameraControls
-      ref={controlsRef}
-      makeDefault
-      minPolarAngle={0.72}
-      maxPolarAngle={1.38}
-      minDistance={4.2}
-      maxDistance={14.5}
-      minAzimuthAngle={-Math.PI * 0.88}
-      maxAzimuthAngle={Math.PI * 0.88}
+    <meshStandardMaterial
+      ref={ref}
+      transparent
+      opacity={0.15}
+      wireframe
+      color="#ffffff"
+      emissive="#444444"
+      emissiveIntensity={0.62}
+      toneMapped={false}
+      depthWrite={false}
     />
   );
 }
 
-// ─── Material + klik helper ──────────────────────────────────────
-function ClickMesh({ partId, selectedId, onPartClick, children, ...props }) {
-  const selected = selectedId === partId;
+function Interactive({ partId, onPartClick, children }) {
   return (
-    <mesh
-      castShadow
-      receiveShadow
-      {...props}
+    <group
       onClick={(e) => {
         e.stopPropagation();
         onPartClick(partId);
@@ -176,34 +150,114 @@ function ClickMesh({ partId, selectedId, onPartClick, children, ...props }) {
       onPointerOut={() => setCursor(false)}
     >
       {children}
-      {selected && (
-        <meshStandardMaterial
-          attach="material"
-          {...partMaterial(true, COL.body)}
-        />
-      )}
+    </group>
+  );
+}
+
+function HoloMesh({ active, children, ...props }) {
+  return (
+    <mesh {...props}>
+      {children}
+      <HoloMaterial active={active} />
     </mesh>
   );
 }
 
-// ─── Təkər + əyləc ───────────────────────────────────────────────
-function Wheel({
-  position,
-  selectedId,
-  onPartClick,
-  showBrake = true,
-  scale = 1,
-}) {
-  const wheelOn = selectedId === 'wheels';
-  const brakeOn = selectedId === 'brakes';
+// ─── Kamera: CameraControls + maath ──────────────────────────────
+function FocusControls({ focusId, controlsRef }) {
+  const { invalidate } = useThree();
+  const guiding = useRef(false);
+  const dragging = useRef(false);
+  const goalEye = useRef(new THREE.Vector3(...DEFAULT_EYE));
+  const goalTarget = useRef(new THREE.Vector3(...DEFAULT_TARGET));
+  const liveEye = useRef(new THREE.Vector3(...DEFAULT_EYE));
+  const liveTarget = useRef(new THREE.Vector3(...DEFAULT_TARGET));
+
+  useEffect(() => {
+    const ctrl = controlsRef.current;
+    const part = focusId ? TRUCK_PARTS[focusId] : null;
+    goalEye.current.set(...(part ? part.eye : DEFAULT_EYE));
+    goalTarget.current.set(...(part ? part.target : DEFAULT_TARGET));
+    guiding.current = true;
+
+    if (!ctrl) return;
+    ctrl.truckSpeed = 0;
+    ctrl.dollyToCursor = false;
+    ctrl.infinityDolly = false;
+    ctrl.smoothTime = 0.88;
+    ctrl.draggingSmoothTime = 0.2;
+    ctrl.getPosition(liveEye.current);
+    ctrl.getTarget(liveTarget.current);
+    const e = goalEye.current;
+    const t = goalTarget.current;
+    ctrl.setLookAt(e.x, e.y, e.z, t.x, t.y, t.z, true);
+    invalidate();
+  }, [focusId, controlsRef, invalidate]);
+
+  useFrame((_, delta) => {
+    const ctrl = controlsRef.current;
+    if (!ctrl) return;
+
+    easing.damp(ctrl, 'smoothTime', guiding.current ? 0.9 : 0.28, 0.45, delta);
+
+    if (!guiding.current || dragging.current) return;
+
+    easing.damp3(liveEye.current, goalEye.current, 0.42, delta);
+    easing.damp3(liveTarget.current, goalTarget.current, 0.42, delta);
+
+    const e = liveEye.current;
+    const t = liveTarget.current;
+    ctrl.setLookAt(e.x, e.y, e.z, t.x, t.y, t.z, true);
+
+    if (
+      e.distanceTo(goalEye.current) < 0.035 &&
+      t.distanceTo(goalTarget.current) < 0.035
+    ) {
+      guiding.current = false;
+    }
+  });
 
   return (
-    <group position={position} scale={scale}>
+    <CameraControls
+      ref={controlsRef}
+      makeDefault
+      minPolarAngle={0.78}
+      maxPolarAngle={1.4}
+      minDistance={4.6}
+      maxDistance={13.8}
+      minAzimuthAngle={-Math.PI * 0.8}
+      maxAzimuthAngle={Math.PI * 0.8}
+      smoothTime={0.88}
+      draggingSmoothTime={0.2}
+      onStart={() => {
+        dragging.current = true;
+        guiding.current = false;
+      }}
+      onEnd={() => {
+        dragging.current = false;
+      }}
+    />
+  );
+}
+
+// ─── Glassmorphism Html marker ───────────────────────────────────
+function HoloMarker({ part, active, label, oem, onClick }) {
+  const group = useRef(null);
+  const anchor = useMemo(() => new THREE.Vector3(...part.marker), [part]);
+
+  useFrame((state, delta) => {
+    if (!group.current) return;
+    const dist = state.camera.position.distanceTo(anchor);
+    const next = THREE.MathUtils.clamp(8.6 / dist, 0.7, 1.26) * (active ? 1.1 : 1);
+    easing.damp3(group.current.scale, [next, next, next], 0.26, delta);
+  });
+
+  return (
+    <group ref={group} position={part.marker}>
       <mesh
-        rotation={[0, 0, Math.PI / 2]}
         onClick={(e) => {
           e.stopPropagation();
-          onPartClick('wheels');
+          onClick();
         }}
         onPointerOver={(e) => {
           e.stopPropagation();
@@ -211,253 +265,392 @@ function Wheel({
         }}
         onPointerOut={() => setCursor(false)}
       >
-        <cylinderGeometry args={[0.52, 0.52, 0.34, 22]} />
-        <meshStandardMaterial {...partMaterial(wheelOn, COL.tire, { roughness: 0.82, metalness: 0.12 })} />
+        <sphereGeometry args={[0.05, 12, 12]} />
+        <HoloMaterial active={active} />
       </mesh>
-      <mesh rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.3, 0.3, 0.36, 16]} />
-        <meshStandardMaterial {...partMaterial(wheelOn, COL.rim, { metalness: 0.82, roughness: 0.22 })} />
-      </mesh>
-      <mesh rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.4, 10]} />
-        <meshStandardMaterial color={COL.orange} metalness={0.55} roughness={0.3} />
-      </mesh>
+      <Html
+        center
+        sprite
+        transform
+        occlude={false}
+        zIndexRange={[90, 0]}
+        style={{ pointerEvents: 'auto' }}
+      >
+        <button
+          type="button"
+          className={`t3d-mark${active ? ' is-on' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
+        >
+          <span className="t3d-mark__dot" />
+          <span className="t3d-mark__label">{label}</span>
+          <span className="t3d-mark__oem">{oem}</span>
+        </button>
+      </Html>
+    </group>
+  );
+}
+
+function Hotspots({ selectedId, onPartClick, labels }) {
+  return (
+    <group>
+      {PART_ORDER.map((id) => {
+        const part = TRUCK_PARTS[id];
+        return (
+          <HoloMarker
+            key={id}
+            part={part}
+            active={selectedId === id}
+            label={labels[id]}
+            oem={part.oem}
+            onClick={() => onPartClick(id)}
+          />
+        );
+      })}
+    </group>
+  );
+}
+
+// ─── Təkər + disk + kaliper ──────────────────────────────────────
+function WheelAssembly({ position, selectedId, onPartClick, showBrake }) {
+  const wheelOn = selectedId === 'wheels';
+  const brakeOn = selectedId === 'brakes';
+  const side = position[0] >= 0 ? 1 : -1;
+
+  const lugs = useMemo(
+    () =>
+      Array.from({ length: 8 }, (_, i) => {
+        const a = (i / 8) * Math.PI * 2;
+        return [Math.cos(a) * 0.145, Math.sin(a) * 0.145];
+      }),
+    []
+  );
+  const spokes = useMemo(
+    () => Array.from({ length: 6 }, (_, i) => (i / 6) * Math.PI),
+    []
+  );
+
+  return (
+    <group position={position}>
+      <Interactive partId="wheels" onPartClick={onPartClick}>
+        <HoloMesh active={wheelOn} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.55, 0.55, 0.33, 28]} />
+        </HoloMesh>
+        <HoloMesh active={wheelOn} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.42, 0.42, 0.34, 20]} />
+        </HoloMesh>
+        <HoloMesh active={wheelOn} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.34, 0.34, 0.24, 20]} />
+        </HoloMesh>
+        <HoloMesh active={wheelOn} rotation={[0, Math.PI / 2, 0]}>
+          <torusGeometry args={[0.37, 0.028, 8, 24]} />
+        </HoloMesh>
+        <HoloMesh active={wheelOn} rotation={[0, Math.PI / 2, 0]}>
+          <torusGeometry args={[0.26, 0.02, 8, 18]} />
+        </HoloMesh>
+        <HoloMesh active={wheelOn} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.11, 0.11, 0.38, 12]} />
+        </HoloMesh>
+        <HoloMesh active={wheelOn} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.055, 0.055, 0.4, 10]} />
+        </HoloMesh>
+        {spokes.map((a, i) => (
+          <HoloMesh key={`sp-${i}`} active={wheelOn} rotation={[a, 0, 0]}>
+            <boxGeometry args={[0.038, 0.3, 0.032]} />
+          </HoloMesh>
+        ))}
+        {lugs.map(([y, z], i) => (
+          <HoloMesh
+            key={`lg-${i}`}
+            active={wheelOn}
+            position={[side * 0.17, y, z]}
+            rotation={[0, 0, Math.PI / 2]}
+          >
+            <cylinderGeometry args={[0.016, 0.016, 0.055, 6]} />
+          </HoloMesh>
+        ))}
+      </Interactive>
 
       {showBrake && (
-        <>
-          <mesh
+        <Interactive partId="brakes" onPartClick={onPartClick}>
+          <HoloMesh
+            active={brakeOn}
             rotation={[0, 0, Math.PI / 2]}
-            position={[position[0] > 0 ? -0.2 : 0.2, 0, 0]}
-            onClick={(e) => {
-              e.stopPropagation();
-              onPartClick('brakes');
-            }}
-            onPointerOver={(e) => {
-              e.stopPropagation();
-              setCursor(true);
-            }}
-            onPointerOut={() => setCursor(false)}
+            position={[side * -0.19, 0, 0]}
           >
-            <cylinderGeometry args={[0.34, 0.34, 0.055, 22]} />
-            <meshStandardMaterial {...partMaterial(brakeOn, '#4a5568', { metalness: 0.9, roughness: 0.18 })} />
-          </mesh>
-          <mesh
-            position={[position[0] > 0 ? -0.16 : 0.16, 0.2, 0]}
-            onClick={(e) => {
-              e.stopPropagation();
-              onPartClick('brakes');
-            }}
-            onPointerOver={(e) => {
-              e.stopPropagation();
-              setCursor(true);
-            }}
-            onPointerOut={() => setCursor(false)}
+            <cylinderGeometry args={[0.37, 0.37, 0.038, 28]} />
+          </HoloMesh>
+          <HoloMesh
+            active={brakeOn}
+            rotation={[0, 0, Math.PI / 2]}
+            position={[side * -0.19, 0, 0]}
           >
-            <boxGeometry args={[0.14, 0.12, 0.2]} />
-            <meshStandardMaterial {...partMaterial(brakeOn, '#2a3140', { metalness: 0.65, roughness: 0.35 })} />
-          </mesh>
-        </>
+            <cylinderGeometry args={[0.21, 0.21, 0.048, 16]} />
+          </HoloMesh>
+          <HoloMesh active={brakeOn} position={[side * -0.17, 0.24, 0]}>
+            <boxGeometry args={[0.13, 0.15, 0.24]} />
+          </HoloMesh>
+          <HoloMesh active={brakeOn} position={[side * -0.17, 0.2, 0.09]}>
+            <boxGeometry args={[0.055, 0.08, 0.075]} />
+          </HoloMesh>
+          <HoloMesh active={brakeOn} position={[side * -0.17, 0.2, -0.09]}>
+            <boxGeometry args={[0.055, 0.08, 0.075]} />
+          </HoloMesh>
+        </Interactive>
       )}
     </group>
   );
 }
 
-// ─── Prosedural TIR maketi ───────────────────────────────────────
-function ProceduralTruck({ selectedId, onPartClick }) {
+// ─── Çertyoj TIR maketi ──────────────────────────────────────────
+function BlueprintTruck({ selectedId, onPartClick }) {
   const cabinOn = selectedId === 'cabin';
   const engineOn = selectedId === 'engine';
+  const group = useRef(null);
 
-  const wheelZ = useMemo(
-    () => [
-      { pos: [-1.05, 0.52, 3.5], brake: true },
-      { pos: [1.05, 0.52, 3.5], brake: true },
-      { pos: [-1.05, 0.52, 1.35], brake: true },
-      { pos: [1.05, 0.52, 1.35], brake: true },
-      { pos: [-1.05, 0.52, 0.42], brake: true },
-      { pos: [1.05, 0.52, 0.42], brake: true },
-      { pos: [-1.05, 0.52, -5.55], brake: false },
-      { pos: [1.05, 0.52, -5.55], brake: false },
-      { pos: [-1.05, 0.52, -6.5], brake: false },
-      { pos: [1.05, 0.52, -6.5], brake: false },
-    ],
+  const ribs = useMemo(
+    () => Array.from({ length: 8 }, (_, i) => -0.85 - i * 0.86),
+    []
+  );
+  const crosses = useMemo(
+    () => [3.6, 2.4, 1.2, 0.1, -1.2, -2.6, -4.0, -5.5, -6.7],
+    []
+  );
+  const pistons = useMemo(
+    () => [-0.28, -0.1, 0.08, 0.26, 0.44],
     []
   );
 
+  useFrame((state, delta) => {
+    if (!group.current) return;
+    const idle = selectedId ? 0 : Math.sin(state.clock.elapsedTime * 0.22) * 0.035;
+    easing.damp(group.current.rotation, 'y', idle, 0.7, delta);
+  });
+
   return (
-    <group>
-      {/* Şassi */}
-      <mesh position={[0, 0.62, 2.15]} receiveShadow>
-        <boxGeometry args={[0.95, 0.16, 5.4]} />
-        <meshStandardMaterial color="#0a101c" metalness={0.5} roughness={0.45} />
-      </mesh>
-      <mesh position={[0, 0.62, -3.85]} receiveShadow>
-        <boxGeometry args={[0.85, 0.14, 7.1]} />
-        <meshStandardMaterial color="#0a101c" metalness={0.5} roughness={0.45} />
-      </mesh>
+    <group ref={group}>
+      {/* Şassi relsləri + eninə tirlər */}
+      <HoloMesh active={false} position={[-0.38, 0.64, -1.15]}>
+        <boxGeometry args={[0.12, 0.16, 12.4]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[0.38, 0.64, -1.15]}>
+        <boxGeometry args={[0.12, 0.16, 12.4]} />
+      </HoloMesh>
+      {crosses.map((z) => (
+        <HoloMesh key={`x-${z}`} active={false} position={[0, 0.64, z]}>
+          <boxGeometry args={[0.86, 0.1, 0.1]} />
+        </HoloMesh>
+      ))}
 
       {/* Kabin */}
-      <ClickMesh
-        partId="cabin"
-        selectedId={selectedId}
-        onPartClick={onPartClick}
-        position={[0, 1.28, 3.45]}
-      >
-        <boxGeometry args={[2.32, 1.12, 1.85]} />
-        {!cabinOn && <meshStandardMaterial color={COL.body} metalness={0.38} roughness={0.48} />}
-      </ClickMesh>
-      <ClickMesh
-        partId="cabin"
-        selectedId={selectedId}
-        onPartClick={onPartClick}
-        position={[0, 2.28, 3.12]}
-      >
-        <boxGeometry args={[2.32, 1.08, 1.42]} />
-        {!cabinOn && <meshStandardMaterial color={COL.bodyHi} metalness={0.4} roughness={0.46} />}
-      </ClickMesh>
+      <Interactive partId="cabin" onPartClick={onPartClick}>
+        <HoloMesh active={cabinOn} position={[0, 1.32, 3.48]}>
+          <boxGeometry args={[2.28, 1.08, 1.82]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[0, 2.3, 3.18]}>
+          <boxGeometry args={[2.28, 1.06, 1.38]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[0, 2.88, 3.05]}>
+          <boxGeometry args={[2.3, 0.1, 1.2]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[0, 3.12, 2.55]} rotation={[0.35, 0, 0]}>
+          <boxGeometry args={[2.18, 0.08, 0.85]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[0, 2.18, 4.2]} rotation={[-0.4, 0, 0]}>
+          <boxGeometry args={[2.08, 0.88, 0.07]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[-1.16, 2.18, 3.22]}>
+          <boxGeometry args={[0.06, 0.72, 0.7]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[1.16, 2.18, 3.22]}>
+          <boxGeometry args={[0.06, 0.72, 0.7]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[0, 2.72, 3.82]}>
+          <boxGeometry args={[2.12, 0.08, 0.28]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[0, 0.58, 4.74]}>
+          <boxGeometry args={[2.4, 0.34, 0.36]} />
+        </HoloMesh>
+        {[-0.55, -0.22, 0.11, 0.44].map((y) => (
+          <HoloMesh key={`gr-${y}`} active={cabinOn} position={[0, 1.05 + y, 4.5]}>
+            <boxGeometry args={[1.42, 0.045, 0.06]} />
+          </HoloMesh>
+        ))}
+        <HoloMesh active={cabinOn} position={[-0.9, 0.74, 4.9]}>
+          <boxGeometry args={[0.36, 0.14, 0.08]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[0.9, 0.74, 4.9]}>
+          <boxGeometry args={[0.36, 0.14, 0.08]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[-0.9, 0.52, 4.86]}>
+          <boxGeometry args={[0.22, 0.08, 0.06]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[0.9, 0.52, 4.86]}>
+          <boxGeometry args={[0.22, 0.08, 0.06]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[-1.38, 1.92, 4.02]}>
+          <boxGeometry args={[0.22, 0.06, 0.06]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[1.38, 1.92, 4.02]}>
+          <boxGeometry args={[0.22, 0.06, 0.06]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[-1.5, 2.08, 4.05]}>
+          <boxGeometry args={[0.07, 0.4, 0.2]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[1.5, 2.08, 4.05]}>
+          <boxGeometry args={[0.07, 0.4, 0.2]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[-1.18, 1.05, 3.95]}>
+          <boxGeometry args={[0.16, 0.08, 0.32]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[1.18, 1.05, 3.95]}>
+          <boxGeometry args={[0.16, 0.08, 0.32]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[-1.18, 0.82, 3.95]}>
+          <boxGeometry args={[0.16, 0.08, 0.32]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[1.18, 0.82, 3.95]}>
+          <boxGeometry args={[0.16, 0.08, 0.32]} />
+        </HoloMesh>
+        <HoloMesh active={cabinOn} position={[0, 1.55, 3.55]}>
+          <boxGeometry args={[0.04, 1.35, 1.55]} />
+        </HoloMesh>
+      </Interactive>
 
-      {/* Ön şüşə */}
-      <mesh
-        position={[0, 2.12, 4.22]}
-        rotation={[-0.38, 0, 0]}
-        onClick={(e) => {
-          e.stopPropagation();
-          onPartClick('cabin');
-        }}
-        onPointerOver={(e) => {
-          e.stopPropagation();
-          setCursor(true);
-        }}
-        onPointerOut={() => setCursor(false)}
-      >
-        <boxGeometry args={[2.12, 0.92, 0.08]} />
-        <meshStandardMaterial
-          color={cabinOn ? COL.highlight : COL.glass}
-          metalness={0.15}
-          roughness={0.12}
-          transparent
-          opacity={0.55}
-          emissive={cabinOn ? COL.accent : '#1a3344'}
-          emissiveIntensity={cabinOn ? 0.35 : 0.15}
-        />
-      </mesh>
+      {/* Mühərrik — kabinin içindən görünür */}
+      <Interactive partId="engine" onPartClick={onPartClick}>
+        <HoloMesh active={engineOn} position={[0, 0.92, 4.14]}>
+          <boxGeometry args={[1.18, 0.72, 1.08]} />
+        </HoloMesh>
+        <HoloMesh active={engineOn} position={[0, 1.38, 4.08]}>
+          <boxGeometry args={[0.78, 0.26, 0.72]} />
+        </HoloMesh>
+        <HoloMesh active={engineOn} position={[0, 0.5, 4.14]}>
+          <boxGeometry args={[1.02, 0.16, 0.88]} />
+        </HoloMesh>
+        <HoloMesh active={engineOn} position={[0, 1.12, 4.62]}>
+          <boxGeometry args={[1.05, 0.55, 0.08]} />
+        </HoloMesh>
+        <HoloMesh active={engineOn} position={[0, 1.05, 4.72]}>
+          <boxGeometry args={[1.12, 0.62, 0.06]} />
+        </HoloMesh>
+        {pistons.map((z) => (
+          <HoloMesh
+            key={`p-${z}`}
+            active={engineOn}
+            position={[0.62, 0.98, 4.05 + z]}
+            rotation={[0, 0, Math.PI / 2]}
+          >
+            <cylinderGeometry args={[0.07, 0.07, 0.18, 10]} />
+          </HoloMesh>
+        ))}
+        <HoloMesh active={engineOn} position={[0.58, 1.22, 3.72]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.12, 0.12, 0.22, 12]} />
+        </HoloMesh>
+        <HoloMesh active={engineOn} position={[0.58, 1.22, 3.72]} rotation={[0, Math.PI / 2, 0]}>
+          <torusGeometry args={[0.14, 0.03, 8, 16]} />
+        </HoloMesh>
+        <HoloMesh active={engineOn} position={[-0.62, 0.88, 4.35]}>
+          <cylinderGeometry args={[0.1, 0.1, 0.32, 12]} />
+        </HoloMesh>
+        <HoloMesh active={engineOn} position={[-0.62, 0.88, 3.95]}>
+          <cylinderGeometry args={[0.1, 0.1, 0.32, 12]} />
+        </HoloMesh>
+        <HoloMesh active={engineOn} position={[0.52, 0.72, 4.35]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.09, 0.09, 0.14, 12]} />
+        </HoloMesh>
+        <HoloMesh active={engineOn} position={[0.52, 0.72, 4.12]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.07, 0.07, 0.12, 10]} />
+        </HoloMesh>
+      </Interactive>
 
-      {/* Bamper / ızgara */}
-      <ClickMesh
-        partId="cabin"
-        selectedId={selectedId}
-        onPartClick={onPartClick}
-        position={[0, 0.58, 4.72]}
-      >
-        <boxGeometry args={[2.42, 0.36, 0.38]} />
-        {!cabinOn && <meshStandardMaterial color="#121820" metalness={0.45} roughness={0.4} />}
-      </ClickMesh>
-      <mesh position={[0, 1.12, 4.48]}>
-        <boxGeometry args={[1.55, 0.62, 0.1]} />
-        <meshStandardMaterial color={cabinOn ? COL.highlight : COL.metal} metalness={0.7} roughness={0.3} />
-      </mesh>
-      <mesh position={[0, 0.82, 4.55]}>
-        <boxGeometry args={[2.28, 0.06, 0.08]} />
-        <meshStandardMaterial color={COL.orange} metalness={0.4} roughness={0.35} />
-      </mesh>
+      {/* Yanacaq bakları, hava balonları, egzoz */}
+      <HoloMesh active={false} position={[-1.2, 0.84, 2.08]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.27, 0.27, 1.32, 16]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[1.2, 0.84, 2.08]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.27, 0.27, 1.32, 16]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[-1.2, 0.84, 2.08]}>
+        <boxGeometry args={[0.08, 0.58, 0.08]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[1.2, 0.84, 2.08]}>
+        <boxGeometry args={[0.08, 0.58, 0.08]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[-0.55, 0.52, 1.55]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.12, 0.12, 0.42, 12]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[0.55, 0.52, 1.55]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.12, 0.12, 0.42, 12]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[-1.12, 1.95, 2.42]}>
+        <cylinderGeometry args={[0.085, 0.085, 2.2, 12]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[-1.12, 1.15, 2.42]}>
+        <cylinderGeometry args={[0.14, 0.14, 0.42, 12]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[0, 0.48, 1.9]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.05, 0.05, 2.2, 8]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[0, 0.78, -0.85]}>
+        <cylinderGeometry args={[0.32, 0.32, 0.1, 16]} />
+      </HoloMesh>
 
-      {/* Faralar */}
-      <mesh position={[-0.88, 0.72, 4.88]}>
-        <boxGeometry args={[0.38, 0.16, 0.1]} />
-        <meshStandardMaterial color="#fff4c2" emissive="#fff3c4" emissiveIntensity={0.85} />
-      </mesh>
-      <mesh position={[0.88, 0.72, 4.88]}>
-        <boxGeometry args={[0.38, 0.16, 0.1]} />
-        <meshStandardMaterial color="#fff4c2" emissive="#fff3c4" emissiveIntensity={0.85} />
-      </mesh>
+      {/* Treyler — büzməli panellər */}
+      <HoloMesh active={false} position={[0, 2.05, -3.95]}>
+        <boxGeometry args={[2.48, 2.48, 7.12]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[0, 3.32, -3.95]}>
+        <boxGeometry args={[2.52, 0.08, 7.16]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[0, 0.84, -3.95]}>
+        <boxGeometry args={[2.5, 0.07, 7.14]} />
+      </HoloMesh>
+      {ribs.map((z) => (
+        <React.Fragment key={`rib-${z}`}>
+          <HoloMesh active={false} position={[-1.26, 2.05, z]}>
+            <boxGeometry args={[0.05, 2.2, 0.08]} />
+          </HoloMesh>
+          <HoloMesh active={false} position={[1.26, 2.05, z]}>
+            <boxGeometry args={[0.05, 2.2, 0.08]} />
+          </HoloMesh>
+        </React.Fragment>
+      ))}
+      <HoloMesh active={false} position={[-0.64, 2.05, -7.48]}>
+        <boxGeometry args={[1.16, 2.2, 0.06]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[0.64, 2.05, -7.48]}>
+        <boxGeometry args={[1.16, 2.2, 0.06]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[-0.7, 0.42, -1.18]}>
+        <boxGeometry args={[0.07, 0.58, 0.07]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[0.7, 0.42, -1.18]}>
+        <boxGeometry args={[0.07, 0.58, 0.07]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[0, 0.18, -1.18]}>
+        <boxGeometry args={[1.5, 0.05, 0.12]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[0, 0.95, -7.55]}>
+        <boxGeometry args={[2.4, 0.12, 0.1]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[-1.05, 1.15, -7.58]}>
+        <boxGeometry args={[0.18, 0.1, 0.06]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[1.05, 1.15, -7.58]}>
+        <boxGeometry args={[0.18, 0.1, 0.06]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[-1.18, 0.95, -5.95]}>
+        <boxGeometry args={[0.08, 0.22, 1.35]} />
+      </HoloMesh>
+      <HoloMesh active={false} position={[1.18, 0.95, -5.95]}>
+        <boxGeometry args={[0.08, 0.22, 1.35]} />
+      </HoloMesh>
 
-      {/* Güzgülər */}
-      <mesh position={[-1.32, 2.05, 4.05]}>
-        <boxGeometry args={[0.08, 0.42, 0.22]} />
-        <meshStandardMaterial color={COL.metal} metalness={0.7} roughness={0.25} />
-      </mesh>
-      <mesh position={[1.32, 2.05, 4.05]}>
-        <boxGeometry args={[0.08, 0.42, 0.22]} />
-        <meshStandardMaterial color={COL.metal} metalness={0.7} roughness={0.25} />
-      </mesh>
-
-      {/* Yanacaq bakları */}
-      <mesh position={[-1.18, 0.82, 2.05]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.28, 0.28, 1.35, 14]} />
-        <meshStandardMaterial color={COL.steel} metalness={0.75} roughness={0.28} />
-      </mesh>
-      <mesh position={[1.18, 0.82, 2.05]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.28, 0.28, 1.35, 14]} />
-        <meshStandardMaterial color={COL.steel} metalness={0.75} roughness={0.28} />
-      </mesh>
-
-      {/* Egzoz */}
-      <mesh position={[-1.08, 1.85, 2.45]}>
-        <cylinderGeometry args={[0.09, 0.09, 2.15, 10]} />
-        <meshStandardMaterial color={COL.metal} metalness={0.8} roughness={0.25} />
-      </mesh>
-
-      {/* Mühərrik */}
-      <ClickMesh
-        partId="engine"
-        selectedId={selectedId}
-        onPartClick={onPartClick}
-        position={[0, 0.9, 4.12]}
-      >
-        <boxGeometry args={[1.22, 0.78, 1.12]} />
-        {!engineOn && <meshStandardMaterial color="#2c3340" metalness={0.62} roughness={0.38} />}
-      </ClickMesh>
-      <ClickMesh
-        partId="engine"
-        selectedId={selectedId}
-        onPartClick={onPartClick}
-        position={[0, 1.38, 4.05]}
-      >
-        <boxGeometry args={[0.72, 0.28, 0.7]} />
-        {!engineOn && <meshStandardMaterial color="#3d4656" metalness={0.7} roughness={0.3} />}
-      </ClickMesh>
-      <mesh position={[0.55, 0.95, 4.12]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.16, 0.16, 0.22, 12]} />
-        <meshStandardMaterial {...partMaterial(engineOn, COL.orange, { metalness: 0.5, roughness: 0.35 })} />
-      </mesh>
-      <mesh position={[-0.55, 0.95, 4.12]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.16, 0.16, 0.22, 12]} />
-        <meshStandardMaterial {...partMaterial(engineOn, COL.orange, { metalness: 0.5, roughness: 0.35 })} />
-      </mesh>
-
-      {/* Treyler */}
-      <mesh position={[0, 2.02, -3.95]} receiveShadow>
-        <boxGeometry args={[2.5, 2.5, 7.15]} />
-        <meshStandardMaterial color="#121c32" metalness={0.32} roughness={0.55} />
-      </mesh>
-      <mesh position={[0, 3.3, -3.95]}>
-        <boxGeometry args={[2.52, 0.12, 7.17]} />
-        <meshStandardMaterial color={COL.orange} metalness={0.35} roughness={0.4} />
-      </mesh>
-      <mesh position={[0, 0.82, -3.95]}>
-        <boxGeometry args={[2.5, 0.08, 7.15]} />
-        <meshStandardMaterial color={COL.orange} metalness={0.35} roughness={0.4} />
-      </mesh>
-      <mesh position={[0, 2.05, -3.95]}>
-        <boxGeometry args={[2.36, 1.55, 6.85]} />
-        <meshStandardMaterial color="#0d1528" metalness={0.2} roughness={0.65} />
-      </mesh>
-      <mesh position={[-1.28, 1.55, -0.45]}>
-        <boxGeometry args={[0.06, 0.22, 0.12]} />
-        <meshStandardMaterial color={COL.accent} emissive={COL.accent} emissiveIntensity={0.4} />
-      </mesh>
-
-      {/* Dayaq ayaqları */}
-      <mesh position={[-0.7, 0.42, -1.15]}>
-        <boxGeometry args={[0.08, 0.55, 0.08]} />
-        <meshStandardMaterial color={COL.metal} />
-      </mesh>
-      <mesh position={[0.7, 0.42, -1.15]}>
-        <boxGeometry args={[0.08, 0.55, 0.08]} />
-        <meshStandardMaterial color={COL.metal} />
-      </mesh>
-
-      {wheelZ.map((w, i) => (
-        <Wheel
+      {WHEEL_LAYOUT.map((w, i) => (
+        <WheelAssembly
           key={i}
           position={w.pos}
           selectedId={selectedId}
@@ -466,6 +659,26 @@ function ProceduralTruck({ selectedId, onPartClick }) {
         />
       ))}
     </group>
+  );
+}
+
+function HoloScan() {
+  const ref = useRef(null);
+  useFrame((state) => {
+    if (!ref.current) return;
+    ref.current.position.y = 0.15 + (Math.sin(state.clock.elapsedTime * 0.42) * 0.5 + 0.5) * 3.35;
+  });
+  return (
+    <mesh ref={ref} rotation={[-Math.PI / 2, 0, 0]} position={[0, 1, -0.4]}>
+      <planeGeometry args={[6.4, 14.2]} />
+      <meshBasicMaterial
+        color={ACCENT}
+        transparent
+        opacity={0.045}
+        depthWrite={false}
+        toneMapped={false}
+      />
+    </mesh>
   );
 }
 
@@ -478,42 +691,38 @@ function inferPartId(name = '') {
   return null;
 }
 
-function GltfTruck({ url, selectedId, onPartClick }) {
+function GltfHoloTruck({ url, selectedId, onPartClick }) {
   const { scene } = useGLTF(url);
   const clone = useMemo(() => scene.clone(true), [scene]);
-  const materials = useRef(new Map());
 
   useEffect(() => {
     clone.traverse((child) => {
       if (!child.isMesh) return;
       child.userData.partId = inferPartId(child.name);
-      if (child.material) {
-        child.material = child.material.clone();
-        materials.current.set(child.uuid, {
-          color: child.material.color?.clone(),
-          emissive: child.material.emissive?.clone(),
-          emissiveIntensity: child.material.emissiveIntensity ?? 0,
-        });
-      }
+      child.material = new THREE.MeshStandardMaterial({
+        transparent: true,
+        opacity: 0.15,
+        wireframe: true,
+        color: '#ffffff',
+        emissive: '#444444',
+        emissiveIntensity: 0.62,
+        toneMapped: false,
+        depthWrite: false,
+      });
     });
   }, [clone]);
 
-  useEffect(() => {
+  useFrame((state, delta) => {
     clone.traverse((child) => {
       if (!child.isMesh || !child.material) return;
-      const origin = materials.current.get(child.uuid);
       const active = child.userData.partId && child.userData.partId === selectedId;
-      if (active) {
-        child.material.color?.set(COL.highlight);
-        if (child.material.emissive) child.material.emissive.set(COL.accent);
-        child.material.emissiveIntensity = 0.4;
-      } else if (origin) {
-        if (origin.color) child.material.color.copy(origin.color);
-        if (origin.emissive && child.material.emissive) child.material.emissive.copy(origin.emissive);
-        child.material.emissiveIntensity = origin.emissiveIntensity;
-      }
+      const mat = child.material;
+      const pulse = active ? 2.15 + Math.sin(state.clock.elapsedTime * 3.1) * 0.55 : 0.62;
+      easing.damp(mat, 'emissiveIntensity', pulse, 0.32, delta);
+      easing.damp(mat, 'opacity', active ? 0.6 : 0.15, 0.38, delta);
+      easing.dampC(mat.emissive, active ? ACCENT : '#444444', 0.34, delta);
     });
-  }, [clone, selectedId]);
+  });
 
   return (
     <primitive
@@ -524,44 +733,6 @@ function GltfTruck({ url, selectedId, onPartClick }) {
         if (id) onPartClick(id);
       }}
     />
-  );
-}
-
-function Hotspots({ selectedId, onPartClick, labels }) {
-  return (
-    <group>
-      {PART_ORDER.map((id) => {
-        const part = TRUCK_PARTS[id];
-        const active = selectedId === id;
-        return (
-          <group key={id} position={part.marker}>
-            <mesh
-              onClick={(e) => {
-                e.stopPropagation();
-                onPartClick(id);
-              }}
-              onPointerOver={(e) => {
-                e.stopPropagation();
-                setCursor(true);
-              }}
-              onPointerOut={() => setCursor(false)}
-            >
-              <sphereGeometry args={[active ? 0.13 : 0.1, 16, 16]} />
-              <meshStandardMaterial
-                color={active ? COL.highlight : COL.orange}
-                emissive={active ? COL.accent : COL.orange}
-                emissiveIntensity={active ? 0.9 : 0.45}
-                roughness={0.25}
-                metalness={0.2}
-              />
-            </mesh>
-            <Html center distanceFactor={12} style={{ pointerEvents: 'none', whiteSpace: 'nowrap' }}>
-              <span className={`t3d-pin${active ? ' is-on' : ''}`}>{labels[id]}</span>
-            </Html>
-          </group>
-        );
-      })}
-    </group>
   );
 }
 
@@ -602,54 +773,45 @@ function Scene({
 }) {
   return (
     <>
-      <color attach="background" args={['#070b12']} />
-      <fog attach="fog" args={['#070b12', 14, 32]} />
+      <color attach="background" args={['#05080e']} />
+      <fog attach="fog" args={['#05080e', 16, 34]} />
 
-      <ambientLight intensity={0.32} color="#9eb0c8" />
-      <hemisphereLight args={['#1a2a44', '#0a0d12', 0.55]} />
-      <directionalLight
-        position={[8, 10, 6]}
-        intensity={1.15}
-        color="#f2f4f8"
-        castShadow={!isMobile}
-        shadow-mapSize-width={isMobile ? 512 : 1024}
-        shadow-mapSize-height={isMobile ? 512 : 1024}
-      />
-      <directionalLight position={[-6, 4, -4]} intensity={0.35} color="#4a6a88" />
-      <spotLight
-        position={[2, 6, 8]}
-        angle={0.45}
-        penumbra={0.5}
-        intensity={0.55}
-        color="#FF6B1A"
-      />
+      <ambientLight intensity={0.22} color="#c8d4e4" />
+      <hemisphereLight args={['#1a2438', '#05080e', 0.4]} />
+      <directionalLight position={[7, 9, 5]} intensity={0.85} color="#f4f7fb" />
+      <pointLight position={[0, 4.2, 3.2]} intensity={1.15} color={ACCENT} distance={14} />
+      <pointLight position={[2.5, 2.2, 6]} intensity={0.45} color="#9ec4ff" distance={10} />
 
       <FocusControls focusId={selectedId} controlsRef={controlsRef} />
 
       <Suspense fallback={<SceneLoader text={labels.loading} />}>
-        <ModelErrorBoundary fallback={<ProceduralTruck selectedId={selectedId} onPartClick={onPartClick} />}>
+        <ModelErrorBoundary fallback={<BlueprintTruck selectedId={selectedId} onPartClick={onPartClick} />}>
           {modelUrl ? (
-            <GltfTruck url={modelUrl} selectedId={selectedId} onPartClick={onPartClick} />
+            <GltfHoloTruck url={modelUrl} selectedId={selectedId} onPartClick={onPartClick} />
           ) : (
-            <ProceduralTruck selectedId={selectedId} onPartClick={onPartClick} />
+            <BlueprintTruck selectedId={selectedId} onPartClick={onPartClick} />
           )}
         </ModelErrorBoundary>
         <Hotspots selectedId={selectedId} onPartClick={onPartClick} labels={labels} />
+        <HoloScan />
       </Suspense>
 
-      <ContactShadows position={[0, 0.01, 0]} opacity={0.5} scale={22} blur={2.4} far={7} />
       <Grid
-        args={[28, 28]}
-        cellSize={0.55}
-        cellThickness={0.55}
-        cellColor="#162033"
-        sectionSize={2.75}
+        args={[30, 30]}
+        cellSize={0.5}
+        cellThickness={0.45}
+        cellColor="#1a2a40"
+        sectionSize={2.5}
         sectionThickness={1.05}
-        sectionColor="#c44e14"
-        fadeDistance={20}
-        fadeStrength={1.35}
-        position={[0, 0.005, 0]}
+        sectionColor="#8a1414"
+        fadeDistance={22}
+        fadeStrength={1.4}
+        position={[0, 0.002, 0]}
       />
+
+      <EffectComposer multisampling={isMobile ? 0 : 4} enableNormalPass={false}>
+        <Bloom luminanceThreshold={0.2} mipmapBlur intensity={isMobile ? 1.15 : 1.5} />
+      </EffectComposer>
     </>
   );
 }
@@ -737,14 +899,15 @@ export default function Truck3DViewer({
         {mounted ? (
           <Canvas
             camera={{ position: DEFAULT_EYE, fov: 40, near: 0.1, far: 70 }}
-            dpr={isMobile ? [1, 1] : [1, 1.6]}
+            dpr={isMobile ? [1, 1] : [1, 1.5]}
             gl={{
               antialias: !isMobile,
               alpha: false,
               powerPreference: 'high-performance',
               stencil: false,
+              toneMapping: THREE.ACESFilmicToneMapping,
+              toneMappingExposure: 1.05,
             }}
-            shadows={!isMobile}
             onCreated={() => {
               requestAnimationFrame(() => setBooting(false));
             }}
@@ -766,7 +929,7 @@ export default function Truck3DViewer({
           </div>
         )}
 
-        {(booting && mounted) && (
+        {booting && mounted && (
           <div className="t3d-boot t3d-boot--overlay">
             <div className="t3d-loader__ring" />
             <span>{t('truck3d_loading')}</span>
@@ -825,30 +988,31 @@ export default function Truck3DViewer({
         }
         .t3d__chip {
           appearance: none; cursor: pointer;
-          background: rgba(255,255,255,0.04);
+          background: rgba(255,255,255,0.035);
           border: 1px solid rgba(255,255,255,0.1);
           color: #c5d0de; border-radius: 999px;
           padding: 8px 16px; font-family: var(--f-body);
           font-size: 0.82rem; font-weight: 700;
           display: inline-flex; align-items: center; gap: 8px;
-          transition: background .2s, border-color .2s, color .2s, transform .2s;
+          transition: background .25s, border-color .25s, color .25s, box-shadow .25s;
         }
         .t3d__chip span {
           font-family: var(--f-mono); font-size: 0.68rem;
-          color: #FF6B1A; letter-spacing: .04em;
+          color: #E60000; letter-spacing: .04em;
         }
         .t3d__chip:hover { background: rgba(255,255,255,0.07); color: #fff; }
         .t3d__chip.is-on {
-          background: rgba(230,0,0,0.14);
-          border-color: rgba(255,107,26,0.45);
+          background: rgba(230,0,0,0.16);
+          border-color: rgba(230,0,0,0.5);
           color: #fff;
+          box-shadow: 0 0 18px rgba(230,0,0,0.18);
         }
         .t3d__stage {
           position: relative; width: 100%;
           border-radius: 22px; overflow: hidden;
-          background: #070b12;
-          border: 1px solid rgba(255,255,255,0.08);
-          box-shadow: 0 28px 60px rgba(0,0,0,0.45);
+          background: #05080e;
+          border: 1px solid rgba(230,0,0,0.18);
+          box-shadow: 0 28px 60px rgba(0,0,0,0.5), inset 0 0 80px rgba(230,0,0,0.04);
           touch-action: none;
         }
         .t3d__stage canvas { display: block; width: 100% !important; height: 100% !important; }
@@ -856,27 +1020,30 @@ export default function Truck3DViewer({
           position: absolute; left: 18px; bottom: 14px; margin: 0;
           font-family: var(--f-mono); font-size: 0.68rem;
           letter-spacing: .08em; text-transform: uppercase;
-          color: rgba(255,255,255,0.38); pointer-events: none;
+          color: rgba(255,255,255,0.34); pointer-events: none;
         }
         .t3d__reset {
           position: absolute; right: 14px; bottom: 12px;
           appearance: none; cursor: pointer;
-          background: rgba(8,12,20,0.72);
-          border: 1px solid rgba(255,255,255,0.14);
+          background: rgba(8,10,16,0.62);
+          border: 1px solid rgba(230,0,0,0.28);
           color: #d5deea; border-radius: 999px;
           padding: 7px 14px; font-size: 0.75rem; font-weight: 700;
-          font-family: var(--f-body); backdrop-filter: blur(10px);
+          font-family: var(--f-body);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
         }
-        .t3d__reset:hover { border-color: rgba(255,107,26,0.45); color: #fff; }
+        .t3d__reset:hover { border-color: rgba(230,0,0,0.55); color: #fff; }
         .t3d__pop {
           position: absolute; top: 16px; right: 16px;
           width: min(320px, calc(100% - 28px));
-          background: rgba(10,14,22,0.88);
-          border: 1px solid rgba(255,255,255,0.1);
-          backdrop-filter: blur(16px);
+          background: rgba(8,10,16,0.62);
+          border: 1px solid rgba(230,0,0,0.35);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
           border-radius: 16px; padding: 18px 18px 16px;
-          color: #e8eef6; box-shadow: 0 18px 40px rgba(0,0,0,0.4);
-          animation: t3dPop .28s ease;
+          color: #e8eef6; box-shadow: 0 18px 40px rgba(0,0,0,0.42), 0 0 24px rgba(230,0,0,0.12);
+          animation: t3dPop .4s cubic-bezier(.22,1,.36,1);
         }
         .t3d__pop-x {
           position: absolute; top: 8px; right: 10px;
@@ -886,7 +1053,7 @@ export default function Truck3DViewer({
         .t3d__pop-brand {
           margin: 0 0 4px; font-family: var(--f-mono);
           font-size: 0.68rem; letter-spacing: .14em;
-          text-transform: uppercase; color: #FF6B1A; font-weight: 700;
+          text-transform: uppercase; color: #E60000; font-weight: 700;
         }
         .t3d__pop h3 {
           margin: 0 0 8px; font-family: var(--f-display);
@@ -902,7 +1069,7 @@ export default function Truck3DViewer({
         }
         .t3d__pop-cta {
           width: 100%; appearance: none; cursor: pointer;
-          background: linear-gradient(135deg, #FF5E1A 0%, #FF9500 100%);
+          background: linear-gradient(135deg, #E60000 0%, #9b0000 100%);
           border: none; color: #fff; font-weight: 800;
           border-radius: 10px; padding: 11px 14px; font-size: 0.85rem;
           font-family: var(--f-body);
@@ -910,33 +1077,69 @@ export default function Truck3DViewer({
         .t3d-boot {
           position: absolute; inset: 0; display: flex;
           flex-direction: column; align-items: center; justify-content: center;
-          gap: 14px; background: #070b12; color: #9aa8ba;
+          gap: 14px; background: #05080e; color: #9aa8ba;
           font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: .12em;
           text-transform: uppercase;
         }
-        .t3d-boot--overlay { background: rgba(7,11,18,0.72); z-index: 3; }
+        .t3d-boot--overlay { background: rgba(5,8,14,0.72); z-index: 3; }
         .t3d-loader {
           display: flex; flex-direction: column; align-items: center; gap: 10px;
           color: #c5d0de; font-family: var(--f-mono); font-size: 0.78rem;
           letter-spacing: .1em; text-transform: uppercase; text-align: center;
         }
-        .t3d-loader small { color: #FF6B1A; font-size: 0.7rem; }
+        .t3d-loader small { color: #E60000; font-size: 0.7rem; }
         .t3d-loader__ring {
           width: 42px; height: 42px; border-radius: 50%;
           border: 2px solid rgba(255,255,255,0.12);
-          border-top-color: #FF6B1A;
+          border-top-color: #E60000;
           animation: t3dSpin .8s linear infinite;
         }
-        .t3d-pin {
-          display: inline-block; padding: 3px 8px; border-radius: 999px;
-          background: rgba(8,12,20,0.78); border: 1px solid rgba(255,107,26,0.35);
-          color: #e8eef6; font-size: 10px; font-family: Inter, sans-serif;
-          font-weight: 700; transform: translateY(-18px);
+        .t3d-mark {
+          appearance: none; cursor: pointer;
+          display: flex; flex-direction: column; align-items: flex-start;
+          gap: 0; padding: 7px 11px 7px 10px;
+          border-radius: 9px;
+          background: rgba(8,10,16,0.55);
+          border: 1px solid rgba(230,0,0,0.38);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          box-shadow: 0 0 16px rgba(230,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.04);
+          color: #f2f4f8; white-space: nowrap;
+          font-family: Inter, system-ui, sans-serif;
+          transition: border-color .35s ease, box-shadow .35s ease, background .35s ease;
         }
-        .t3d-pin.is-on { background: rgba(230,0,0,0.75); border-color: #ff6b1a; }
+        .t3d-mark__dot {
+          position: absolute; left: -3px; top: 50%;
+          width: 6px; height: 6px; margin-top: -3px;
+          border-radius: 50%; background: #E60000;
+          box-shadow: 0 0 8px #E60000;
+        }
+        .t3d-mark__label {
+          font-size: 10px; font-weight: 700; letter-spacing: .02em;
+          padding-left: 6px;
+        }
+        .t3d-mark__oem {
+          display: block; max-height: 0; opacity: 0; overflow: hidden;
+          margin: 0; padding-left: 6px;
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 9px; font-weight: 700; letter-spacing: .14em;
+          color: #E60000; text-transform: uppercase;
+          transform: translateY(-5px);
+          transition: max-height .42s cubic-bezier(.22,1,.36,1),
+                      opacity .32s ease, transform .42s cubic-bezier(.22,1,.36,1),
+                      margin .32s ease;
+        }
+        .t3d-mark.is-on {
+          background: rgba(18,6,8,0.62);
+          border-color: rgba(230,0,0,0.85);
+          box-shadow: 0 0 22px rgba(230,0,0,0.28);
+        }
+        .t3d-mark.is-on .t3d-mark__oem {
+          max-height: 22px; opacity: 1; margin-top: 4px; transform: translateY(0);
+        }
         @keyframes t3dSpin { to { transform: rotate(360deg); } }
         @keyframes t3dPop {
-          from { opacity: 0; transform: translateY(8px); }
+          from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
         @media (max-width: 640px) {
