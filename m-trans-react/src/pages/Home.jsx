@@ -4,11 +4,13 @@
 //         Animated Stats, Glassmorphism Category Cards, 3D Parts Grid
 // =================================================================
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import PartCard from '../components/PartCard';
 import { useInquiry } from '../context/InquiryContext';
+
+const Truck3DViewer = lazy(() => import('../components/Truck3DViewer'));
 
 // ─── Məhsul Nümunələri ───────────────────────────────────────────
 const sampleProducts = [
@@ -431,6 +433,38 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════════
+          3b. 3D TRUCK EXPLORER — R3F
+          ════════════════════════════════════════════════ */}
+      <section id="truck-3d" style={{ background: '#080c12', padding: '90px 0 70px', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+        <div className="wrap">
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <span style={{ fontFamily: 'var(--f-mono)', fontSize: '0.72rem', fontWeight: '700', color: 'var(--red)', textTransform: 'uppercase', letterSpacing: '2px' }}>
+              {t('truck3d_eyebrow')}
+            </span>
+            <h2 style={{ fontFamily: 'var(--f-display)', fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: '900', color: '#fff', margin: '12px 0 14px', letterSpacing: '-0.02em' }}>
+              {t('truck3d_title')}
+            </h2>
+            <p style={{ color: '#5e748a', maxWidth: '580px', margin: '0 auto', fontSize: '1rem' }}>
+              {t('truck3d_desc')}
+            </p>
+          </div>
+          <Suspense fallback={
+            <div style={{
+              height: 560, borderRadius: 22, background: '#070b12',
+              border: '1px solid rgba(255,255,255,0.08)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: '#9aa8ba', fontFamily: 'var(--f-mono)', fontSize: '0.78rem',
+              letterSpacing: '0.12em', textTransform: 'uppercase',
+            }}>
+              {t('truck3d_loading')}
+            </div>
+          }>
+            <Truck3DViewer />
+          </Suspense>
         </div>
       </section>
 
