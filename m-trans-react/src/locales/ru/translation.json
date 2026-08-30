@@ -387,13 +387,6 @@
   "role_admin": "АДМИН",
   "role_user": "Пользователь",
   "nav_admin_panel": "Панель склада",
-  "anav_home": "Главная",
-  "anav_search": "Поиск",
-  "anav_create": "Заказ",
-  "anav_inbox": "Сообщения",
-  "anav_saved": "Избранное",
-  "anav_aria": "Основная навигация"
-,
   "btn_add_to_cart": "В корзину",
   "cart_added": "Добавлено!",
   "auth_secure_note": "Безопасная система входа. Ваши данные шифруются и защищаются.",

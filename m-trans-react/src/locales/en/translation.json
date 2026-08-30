@@ -387,13 +387,6 @@
   "role_admin": "ADMIN",
   "role_user": "User",
   "nav_admin_panel": "Warehouse Panel",
-  "anav_home": "Home",
-  "anav_search": "Search",
-  "anav_create": "Create",
-  "anav_inbox": "Inbox",
-  "anav_saved": "Saved",
-  "anav_aria": "Main navigation"
-,
   "btn_add_to_cart": "Add to Cart",
   "cart_added": "Added!",
   "auth_secure_note": "Secure login system. Your data is encrypted and protected.",

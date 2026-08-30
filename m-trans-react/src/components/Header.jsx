@@ -7,9 +7,26 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion, LayoutGroup } from 'framer-motion';
 import { useInquiry } from '../context/InquiryContext';
 import { useCart }    from '../context/CartContext';
 import { useAuth }    from '../context/AuthContext';
+
+const NAV_RING_SPRING = { type: 'spring', stiffness: 350, damping: 25 };
+
+const CENTER_NAV = [
+  { to: '/',            end: true,  key: 'nav_home' },
+  { to: '/spare-parts', end: false, key: 'nav_catalog', aliases: ['/catalog'] },
+  { to: '/partners',    end: false, key: 'nav_brands' },
+  { to: '/about',       end: false, key: 'nav_about' },
+  { to: '/vacancies',   end: false, key: 'nav_vacancies' },
+];
+
+function isCenterNavActive(pathname, item) {
+  if (item.end) return pathname === item.to;
+  const paths = [item.to, ...(item.aliases || [])];
+  return paths.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+}
 
 export default function Header() {
   const { t, i18n } = useTranslation();
@@ -214,14 +231,35 @@ export default function Header() {
             <img src="/autro-logo.png" alt="AUTRO PARTS" className="hdr-logo__img" />
           </Link>
 
-          <div className="hdr-nav__links" role="navigation">
-            <NavLink to="/"            end className={navLinkClass}>{t('nav_home')}</NavLink>
-            <NavLink to="/spare-parts"     className={navLinkClass}>{t('nav_catalog')}</NavLink>
-            <NavLink to="/partners"        className={navLinkClass}>{t('nav_brands')}</NavLink>
-            <NavLink to="/about"           className={navLinkClass}>{t('nav_about')}</NavLink>
-            <NavLink to="/vacancies"       className={navLinkClass}>{t('nav_vacancies')}</NavLink>
-            <NavLink to="/contact"         className={contactLinkClass}>{t('nav_contact')}</NavLink>
-          </div>
+          <LayoutGroup id="header-center-nav">
+            <motion.ul className="hdr-nav__links">
+              {CENTER_NAV.map((item) => {
+                const active = isCenterNavActive(location.pathname, item);
+                return (
+                  <li key={item.to} className="hdr-nav__item">
+                    <NavLink
+                      to={item.to}
+                      end={item.end}
+                      className={active ? 'nav-lnk nav-lnk--active' : 'nav-lnk'}
+                    >
+                      {active && (
+                        <motion.span
+                          className="nav-lnk__ring"
+                          layoutId="activeNavRing"
+                          transition={NAV_RING_SPRING}
+                          initial={false}
+                        />
+                      )}
+                      <span className="nav-lnk__label">{t(item.key)}</span>
+                    </NavLink>
+                  </li>
+                );
+              })}
+              <li className="hdr-nav__item hdr-nav__item--cta">
+                <NavLink to="/contact" className={contactLinkClass}>{t('nav_contact')}</NavLink>
+              </li>
+            </motion.ul>
+          </LayoutGroup>
 
           <div className="hdr-nav__actions">
             <Link to="/contact?scroll=form" className="hdr-vin-btn">

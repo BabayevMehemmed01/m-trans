@@ -387,13 +387,6 @@
   "role_admin": "ADMİN",
   "role_user": "İstifadəçi",
   "nav_admin_panel": "Anbar Paneli",
-  "anav_home": "Ana səhifə",
-  "anav_search": "Axtarış",
-  "anav_create": "Sifariş",
-  "anav_inbox": "Mesajlar",
-  "anav_saved": "Saxlanılanlar",
-  "anav_aria": "Əsas naviqasiya"
-,
   "btn_add_to_cart": "Səbətə əlavə et",
   "cart_added": "Əlavə edildi!",
   "auth_secure_note": "Təhlükəsiz giriş sistemi. Məlumatlarınız şifrələnərək saxlanılır.",
